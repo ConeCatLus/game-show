@@ -3,6 +3,97 @@ let currentIndex = 0;
 let timer;
 let timeLeft = 10;
 let timerEnabled = true;
+let players = [];
+
+function addPlayer() {
+    let playerName = document.getElementById("player-name").value.trim();
+    if (playerName) {
+        let newPlayer = { name: playerName, score: 0 };
+        players.push(newPlayer);
+
+        // Update Player List
+        let playerList = document.getElementById("player-list");
+        let li = document.createElement("li");
+
+        let playerText = document.createElement("span");
+        playerText.textContent = `${newPlayer.name}: ${newPlayer.score}`;
+        // Create the "-" button (subtract points)
+        let minusBtn = document.createElement("button");
+        minusBtn.textContent = "-";
+        minusBtn.classList.add ("minus");
+        minusBtn.addEventListener("click", function() {
+            if (newPlayer.score-1 > 0)
+            {
+                console.info(newPlayer.score-1);
+                newPlayer.score--;
+                updatePlayerList();
+            }
+        });
+
+        // Create the "+" button (add points)
+        let plusBtn = document.createElement("button");
+        plusBtn.textContent = "+";
+        plusBtn.classList.add("plus");
+        plusBtn.addEventListener("click", function() {
+            newPlayer.score++;
+            updatePlayerList();
+        });
+
+        // Append the buttons to the list item
+        li.appendChild(minusBtn);
+        li.appendChild(playerText);
+        li.appendChild(plusBtn);
+
+        // Add the player list item to the player container
+        playerList.appendChild(li);
+
+        // Clear input field
+        document.getElementById("player-name").value = ""; 
+    }
+}
+
+function updatePlayerList() {
+    // Update the player list UI
+    let playerList = document.getElementById("player-list");
+    playerList.innerHTML = ""; // Clear existing player list
+    players.forEach(player => {
+        let li = document.createElement("li");
+
+        // Create player name and score span
+        let playerText = document.createElement("span");
+        playerText.textContent = `${player.name}: ${player.score}`;
+
+        // Create the "-" button (subtract points)
+        let minusBtn = document.createElement("button");
+        minusBtn.textContent = "-";
+        minusBtn.classList.add("minus"); // Add class for styling
+        minusBtn.addEventListener("click", function() {
+            if (player.score-1 >= 0)
+            {
+                console.info(player.score-1);
+                player.score--;
+                updatePlayerList();
+            }
+        });
+
+        // Create the "+" button (add points)
+        let plusBtn = document.createElement("button");
+        plusBtn.textContent = "+";
+        plusBtn.classList.add("plus"); // Add class for styling
+        plusBtn.addEventListener("click", function() {
+            player.score++; // Increase score
+            updatePlayerList(); // Re-render player list
+        });
+
+        // Append the elements to the list item
+        li.appendChild(minusBtn);
+        li.appendChild(playerText);
+        li.appendChild(plusBtn);
+
+        // Add the player list item to the player container
+        playerList.appendChild(li);
+    });
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     loadQuestions();
@@ -20,6 +111,7 @@ function loadQuestions() {
 function startGame() {
     document.getElementById("start-btn").style.display = "none";
     document.getElementById("question-container").style.display = "flex";
+    document.getElementById("setup-container").style.display = "none";
     nextQuestion();
 }
 

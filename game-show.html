@@ -10,23 +10,32 @@
 
     <h1>Bubblegum Game Show</h1>
 
-    <button id="start-btn" onclick="startGame()">Start Game</button>
+    <div id="game-container">
+        <!-- Question / Player Setup Container -->
+        <div id="question-container">
+            <div id="setup-container">
+                <input type="text" id="player-name" placeholder="Enter player name" maxlength="15">
+                <button id="add-player-btn" onclick="addPlayer()">Add Player</button>
+            </div>
+            <button id="start-btn"  onclick="startGame()">Start Game</button>
 
-    <div id="question-container" style="display: none;">
-        <p id="question-text">Question appears here...</p>
-        
-        <button id="show-answer-btn" onclick="showAnswer()" style="display: none;">Show Answer</button>
+            <div id="question-text"></div>
+            <div id="media-container"></div>
 
-        <!-- Media (Images & Videos) -->
-        <div id="media-container"></div>
+            <div id="progress-container" style="display: none;">
+                <div id="progress-bar"></div>
+            </div>
 
-        <!-- Progress Bar -->
-        <div id="progress-container">
-            <div id="progress-bar"></div>
+
+            <button id="show-answer-btn" style="display: none;" onclick="showAnswer()">Show Answer</button>
+            <button id="next-btn" style="display: none;" onclick="moveToNextQuestion()">Next Question</button>
         </div>
 
-        <!-- Answer & Next Question Buttons (inside question-container) -->
-        <button id="next-btn" onclick="moveToNextQuestion()" style="display: none;">Next Question</button>
+        <!-- Player Scoreboard -->
+        <div id="player-container">
+            <h2>Players</h2>
+            <ul id="player-list"></ul>
+        </div>
     </div>
 
     <script src="scripts/script.js"></script>

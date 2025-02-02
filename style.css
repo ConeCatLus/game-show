@@ -22,27 +22,37 @@ h1 {
     text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Buttons */
-button {
-    font-size: 28px;
-    padding: 15px 40px;
-    margin: 10px;
-    cursor: pointer;
-    border: none;
-    border-radius: 50px;
-    font-weight: bold;
-    transition: all 0.3s ease-in-out;
+/* Game Layout */
+#game-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
 }
 
-#start-btn {
-    background-color: #ff4da6;
-    color: white;
+/* Player Container */
+#player-container {
+    background: rgba(255, 255, 255, 0.2);
+    width: 25vw;
+    height: 65vh;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
 }
 
-#next-btn {
-    background-color: #a66cff;
-    color: white;
-    display: none; /* Hidden until answer is shown */
+#player-list {
+    list-style: none;
+    padding: 0;
+}
+
+#player-list li {
+    font-size: 24px;
+    padding: 10px;
+    margin: 5px 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
 }
 
 /* Fixed-Size Question Box */
@@ -104,9 +114,67 @@ button {
     border-radius: 50px;
 }
 
+/* Buttons */
+button {
+    font-size: 28px;
+    padding: 15px 40px;
+    margin: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+#start-btn {
+    background-color: #ff4da6;
+    color: white;
+}
+
+#next-btn {
+    background-color: #a66cff;
+    color: white;
+    display: none; /* Hidden until answer is shown */
+}
+
+/* Red "-" Button */
+button.minus {
+    background-color: #a66cff;
+    color: white;
+    padding: 10px;
+}
+
+/* Green "+" Button */
+button.plus {
+    background-color: #a66cff;
+    color: white;
+    padding: 10px;
+}
+
 /* Show Answer Button */
 #show-answer-btn {
     background-color: #ff4da6;
     color: white;
     display: none;
+}
+
+#setup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+input[type="text"] {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 80%;
+}
+
+#add-player-btn {
+    background-color: #a66cff;
+    color: white;
 }
