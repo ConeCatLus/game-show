@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubblegum Game Show</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Bubblegum Game Show</h1>
+
+    <button id="start-btn" onclick="startGame()">Start Game</button>
+
+    <div id="question-container" style="display: none;">
+        <p id="question-text">Question appears here...</p>
+        
+        <button id="show-answer-btn" onclick="showAnswer()" style="display: none;">Show Answer</button>
+
+        <!-- Media (Images & Videos) -->
+        <div id="media-container"></div>
+
+        <!-- Progress Bar -->
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+
+        <!-- Answer & Next Question Buttons (inside question-container) -->
+        <button id="next-btn" onclick="moveToNextQuestion()" style="display: none;">Next Question</button>
+    </div>
+
+    <script src="scripts/script.js"></script>
+</body>
+</html>

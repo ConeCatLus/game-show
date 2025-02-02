@@ -1,0 +1,26 @@
+[
+    {
+      "question": "What is the capital of France?",
+      "answer": "Paris",
+      "image": "images/inception.avif",
+      "timer": 5
+    },
+    {
+      "question": "What is the chemical symbol for gold?",
+      "answer": "Au",
+      "timer": 5
+    },
+    {
+      "question": "Identify this landmark.",
+      "answer": "Eiffel Tower",
+      "image": "images/inception.avif",
+      "timer": 0
+    },
+    {
+      "question": "Name the artist of this song.",
+      "answer": "Queen",
+      "video": "https://www.youtube.com/embed/fJ9rUzIMcZQ",
+      "timer": 0
+    }
+  ]
+  

@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #ff85a2, #a66cff);
+    color: white;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Moves everything up */
+    overflow: hidden;
+}
+
+/* Game Title */
+h1 {
+    font-size: 50px;
+    font-weight: 700;
+    margin-top: 10px; /* Reduces space above */
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Buttons */
+button {
+    font-size: 28px;
+    padding: 15px 40px;
+    margin: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+#start-btn {
+    background-color: #ff4da6;
+    color: white;
+}
+
+#next-btn {
+    background-color: #a66cff;
+    color: white;
+    display: none; /* Hidden until answer is shown */
+}
+
+/* Fixed-Size Question Box */
+#question-container {
+    background: rgba(255, 255, 255, 0.2);
+    width: 75vw;
+    height: 65vh; /* Ensures consistent height */
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around; /* Keeps elements spaced properly */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Question Text */
+#question-text {
+    font-size: 36px;
+    font-weight: 600;
+    text-align: center;
+    max-width: 90%;
+    margin: 10px;
+}
+
+/* Media (Images & Videos) */
+#media-container {
+    max-width: 80%;
+    max-height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#media-container img, 
+#media-container iframe {
+    max-width: 100%;
+    max-height: 250px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Progress Bar */
+#progress-container {
+    width: 80%;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    display: block;
+}
+
+#progress-bar {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #ff4da6, #ff85a2);
+    transition: width linear;
+    border-radius: 50px;
+}
+
+/* Show Answer Button */
+#show-answer-btn {
+    background-color: #ff4da6;
+    color: white;
+    display: none;
+}
