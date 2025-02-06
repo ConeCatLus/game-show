@@ -1,3 +1,5 @@
+const socket = io();
+
 let questions = [];
 let currentIndex = 0;
 let timer;
@@ -5,96 +7,69 @@ let timeLeft = 10;
 let timerEnabled = true;
 let players = [];
 
+// Fetch and display QR Code & Game Code
+fetch("/qr")
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("qr-code").src = data.qr;
+    })
+    .catch(error => console.error("QR Code Error:", error));
+
+socket.on("gameCode", (code) => {
+    document.getElementById("game-code").innerText = code;
+});
+
+// Add player and sync with server
 function addPlayer() {
     let playerName = document.getElementById("player-name").value.trim();
     if (playerName) {
-        let newPlayer = { name: playerName, score: 0 };
-        players.push(newPlayer);
-
-        // Update Player List
-        let playerList = document.getElementById("player-list");
-        let li = document.createElement("li");
-
-        let playerText = document.createElement("span");
-        playerText.textContent = `${newPlayer.name}: ${newPlayer.score}`;
-        // Create the "-" button (subtract points)
-        let minusBtn = document.createElement("button");
-        minusBtn.textContent = "-";
-        minusBtn.classList.add ("minus");
-        minusBtn.addEventListener("click", function() {
-            if (newPlayer.score-1 > 0)
-            {
-                console.info(newPlayer.score-1);
-                newPlayer.score--;
-                updatePlayerList();
-            }
-        });
-
-        // Create the "+" button (add points)
-        let plusBtn = document.createElement("button");
-        plusBtn.textContent = "+";
-        plusBtn.classList.add("plus");
-        plusBtn.addEventListener("click", function() {
-            newPlayer.score++;
-            updatePlayerList();
-        });
-
-        // Append the buttons to the list item
-        li.appendChild(minusBtn);
-        li.appendChild(playerText);
-        li.appendChild(plusBtn);
-
-        // Add the player list item to the player container
-        playerList.appendChild(li);
-
-        // Clear input field
+        socket.emit("addPlayer", playerName);
         document.getElementById("player-name").value = ""; 
     }
 }
 
+// Listen for updated player list from the server
+socket.on("updatePlayers", (updatedPlayers) => {
+    players = updatedPlayers;
+    updatePlayerList();
+});
+
 function updatePlayerList() {
-    // Update the player list UI
     let playerList = document.getElementById("player-list");
-    playerList.innerHTML = ""; // Clear existing player list
+    playerList.innerHTML = ""; // Clear list before updating
+
     players.forEach(player => {
         let li = document.createElement("li");
 
-        // Create player name and score span
         let playerText = document.createElement("span");
         playerText.textContent = `${player.name}: ${player.score}`;
 
-        // Create the "-" button (subtract points)
         let minusBtn = document.createElement("button");
         minusBtn.textContent = "-";
-        minusBtn.classList.add("minus"); // Add class for styling
-        minusBtn.addEventListener("click", function() {
-            if (player.score-1 >= 0)
-            {
-                console.info(player.score-1);
+        minusBtn.classList.add("minus");
+        minusBtn.addEventListener("click", () => {
+            if (player.score > 0) {
                 player.score--;
-                updatePlayerList();
+                socket.emit("updateScore", { id: player.id, score: player.score });
             }
         });
 
-        // Create the "+" button (add points)
         let plusBtn = document.createElement("button");
         plusBtn.textContent = "+";
-        plusBtn.classList.add("plus"); // Add class for styling
-        plusBtn.addEventListener("click", function() {
-            player.score++; // Increase score
-            updatePlayerList(); // Re-render player list
+        plusBtn.classList.add("plus");
+        plusBtn.addEventListener("click", () => {
+            player.score++;
+            socket.emit("updateScore", { id: player.id, score: player.score });
         });
 
-        // Append the elements to the list item
         li.appendChild(minusBtn);
         li.appendChild(playerText);
         li.appendChild(plusBtn);
-
-        // Add the player list item to the player container
         playerList.appendChild(li);
     });
 }
 
+// Load questions from JSON
 document.addEventListener("DOMContentLoaded", () => {
     loadQuestions();
 });
@@ -133,7 +108,7 @@ function nextQuestion() {
         document.getElementById("progress-container").style.display = "none";
         document.getElementById("show-answer-btn").style.display = "none";
         document.getElementById("next-btn").style.display = "none";
-        document.getElementById("media-container").style.display = "none"; // Hide media container
+        document.getElementById("media-container").style.display = "none";
         return;
     }
 
@@ -142,9 +117,8 @@ function nextQuestion() {
     document.getElementById("media-container").innerHTML = "";
     document.getElementById("next-btn").style.display = "none";
     document.getElementById("show-answer-btn").style.display = "none";
-    document.getElementById("media-container").style.display = "block"; // Show media container for new question
+    document.getElementById("media-container").style.display = "block";
 
-    // Reset "Show Answer" button text
     let showAnswerBtn = document.getElementById("show-answer-btn");
     showAnswerBtn.innerHTML = "Show Answer";
 
@@ -171,12 +145,12 @@ function nextQuestion() {
     if (timerEnabled) {
         startProgressBar(timeLeft);
         timer = setTimeout(() => {
-            document.getElementById("progress-container").style.display = "none"; // Remove progress bar
-            document.getElementById("show-answer-btn").style.display = "block"; // Show answer button
+            document.getElementById("progress-container").style.display = "none";
+            document.getElementById("show-answer-btn").style.display = "block";
         }, timeLeft * 1000);
     } else {
-        document.getElementById("progress-container").style.display = "none"; 
-        document.getElementById("show-answer-btn").style.display = "block"; // Show answer immediately
+        document.getElementById("progress-container").style.display = "none";
+        document.getElementById("show-answer-btn").style.display = "block";
     }
 }
 
@@ -186,8 +160,8 @@ function showAnswer() {
 
     if (showAnswerBtn.innerHTML === "Show Answer") {
         showAnswerBtn.innerHTML = question.answer;
-        showAnswerBtn.style.background = "#ff4da6"; 
-        document.getElementById("next-btn").style.display = "block"; // Show Next button
+        showAnswerBtn.style.background = "#ff4da6";
+        document.getElementById("next-btn").style.display = "block";
     }
 }
 
