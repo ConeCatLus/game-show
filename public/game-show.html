@@ -14,18 +14,17 @@
         <!-- Question / Player Setup Container -->
         <div id="question-container">
             <div id="setup-container">
-                <input type="text" id="player-name" placeholder="Enter player name" maxlength="15">
-                <button id="add-player-btn" onclick="addPlayer()">Add Player</button>
+                <h2>Game Code: <span id="game-code"></span></h2>
+                <img id="qr-code" src="" alt="Scan to join" />
             </div>
-            <button id="start-btn"  onclick="startGame()">Start Game</button>
-
+            <button id="start-btn" onclick="startGame()">Start Game</button>
+            
             <div id="question-text"></div>
             <div id="media-container"></div>
 
             <div id="progress-container" style="display: none;">
                 <div id="progress-bar"></div>
             </div>
-
 
             <button id="show-answer-btn" style="display: none;" onclick="showAnswer()">Show Answer</button>
             <button id="next-btn" style="display: none;" onclick="moveToNextQuestion()">Next Question</button>
@@ -38,6 +37,7 @@
         </div>
     </div>
 
+    <script src="/socket.io/socket.io.js"></script> <!-- Correct path -->
     <script src="scripts/script.js"></script>
 </body>
 </html>

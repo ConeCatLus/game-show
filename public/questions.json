@@ -2,7 +2,7 @@
     {
       "question": "What is the capital of France?",
       "answer": "Paris",
-      "image": "images/inception.avif",
+      "image": "../images/inception.avif",
       "timer": 5
     },
     {
@@ -22,5 +22,5 @@
       "video": "https://www.youtube.com/embed/fJ9rUzIMcZQ",
       "timer": 0
     }
-  ]
+]
   
