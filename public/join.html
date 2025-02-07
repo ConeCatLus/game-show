@@ -9,13 +9,25 @@
     <script defer src="scripts/join.js"></script>
 </head>
 <body>
-    <h1>Join Bubblegum Game</h1>
-    <p>Game Code: <span id="game-code"></span></p>
+    <h1 id="join-screen-name">Join Bubblegum Game</h1>
 
-    <input type="text" id="player-name" placeholder="Enter your name">
-    <button onclick="joinGame()">Join Game</button>
+    <div id="join-container">
+        <p>Game Code: <span id="game-code"></span></p>
+        <input type="text" id="player-name" placeholder="Enter your name">
+        <button id="join-btn" onclick="joinGame()">Join</button>
+    </div>
 
+    <div id="waiting-message" style="display: none;">
+        <h2 id="display-your-answer"></h2>
+        <h2 id="display-correct-answer" style="display: none;"></h2>
+        <h2 id="display-wait-message"></h2>
+    </div>
+
+    <div id="answer-container" style="display: none;">
+        <p>Game code: <span id="game-code"></span></p>
+        <input type="text" id="client-answer" placeholder="Answer">
+        <button id="submit-answer" onclick="submitAnswer()">Answer!</button>
+    </div>
     <p id="status"></p>
-
 </body>
 </html>

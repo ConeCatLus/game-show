@@ -5,7 +5,6 @@ let currentIndex = 0;
 let timer;
 let timeLeft = 10;
 let timerEnabled = true;
-let players = [];
 
 // Fetch and display QR Code & Game Code
 fetch("/qr")
@@ -19,22 +18,13 @@ socket.on("gameCode", (code) => {
     document.getElementById("game-code").innerText = code;
 });
 
-// Add player and sync with server
-function addPlayer() {
-    let playerName = document.getElementById("player-name").value.trim();
-    if (playerName) {
-        socket.emit("addPlayer", playerName);
-        document.getElementById("player-name").value = ""; 
-    }
-}
-
 // Listen for updated player list from the server
 socket.on("updatePlayers", (updatedPlayers) => {
-    players = updatedPlayers;
-    updatePlayerList();
+    updatedPlayers;
+    updatePlayerList(updatedPlayers);
 });
 
-function updatePlayerList() {
+function updatePlayerList(players) {
     let playerList = document.getElementById("player-list");
     playerList.innerHTML = ""; // Clear list before updating
 
@@ -84,11 +74,16 @@ function loadQuestions() {
 }
 
 function startGame() {
+    socket.emit("startGame");
     document.getElementById("start-btn").style.display = "none";
     document.getElementById("question-container").style.display = "flex";
     document.getElementById("setup-container").style.display = "none";
     nextQuestion();
 }
+
+socket.on("gameStarted", () => {
+    console.log("Game is starting!");
+});
 
 function startProgressBar(duration) {
     let progressBar = document.getElementById("progress-bar");
@@ -163,10 +158,17 @@ function showAnswer() {
         showAnswerBtn.style.background = "#ff4da6";
         document.getElementById("next-btn").style.display = "block";
     }
+
+    socket.emit("sendAnswerToServer", question.answer);
 }
 
 function moveToNextQuestion() {
     clearTimeout(timer);
     currentIndex++;
     nextQuestion();
+    socket.emit("nextQuestion");
 }
+
+socket.on("sendClientAnswerToHost", (player, answer) => {
+    console.info(player.name + " Answered: " + answer);
+});
