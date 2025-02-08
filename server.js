@@ -28,7 +28,6 @@ app.get("/", (req, res) => {
 
 let gameCode = Math.floor(100000 + Math.random() * 900000).toString();
 questionNumber = 1;
-let gameState = GameState.JOIN_SCREEN;
 let players = [];
 
 // Generate QR Code
@@ -49,9 +48,13 @@ app.get("/join", (req, res) => {
 });
 
 // Function to update the game state and notify clients
-function setGameState(state, data = {}) {
-    gameState = state;
-    io.emit("newState", gameState, data); // Send state to all clients
+function setGameState(state, data = {}, clientId = null) {
+    if (clientId) {
+        io.to(clientId).emit("newState", state, data); // Send to specific client
+    }
+    else {
+        io.emit("newState", state, data); // Send state to all clients
+    }
 }
 
 // Handels connected players
@@ -61,14 +64,19 @@ io.on("connection", (socket) => {
     socket.emit("gameCode", gameCode);
     // socket.emit("updatePlayers", players);
 
-    // Send current state to new player
-    socket.emit("newState", gameState);
+    // Send JOIN_SRCEEN when player connect
+    socket.emit("newState", GameState.JOIN_SCREEN);
+
+    socket.on("hostStarted", () => {
+        console.log("setGameState - Host Started");
+        setGameState(GameState.JOIN_SCREEN);
+    });
 
     socket.on("joinGame", (playerName) => {
         const player = { id: socket.id, name: playerName, score: 0 };
         players.push(player);
         io.emit("updatePlayers", players);
-        setGameState(GameState.LIMBO_SCREEN);
+        setGameState(GameState.LIMBO_SCREEN, {}, player.id);
     });
 
     // Update player score on server
@@ -80,18 +88,8 @@ io.on("connection", (socket) => {
         }
     });
 
-    // Host has pressed start game button
-    socket.on("startGame", () => {
-        if (gameState === GameState.LIMBO_SCREEN) {
-            setGameState(GameState.QUESTION_SCREEN); // Tell all clients that game has started
-        }
-        else {
-            console.log("Illegal state transition: " + GameState.LIMBO_SCREEN)
-        }
-    });
-
     socket.on("startQuestion", (question) => {
-        socket.broadcast.emit("startQuestion", question);
+        setGameState(GameState.QUESTION_SCREEN, question);
     });
     
     socket.on("nextQuestion", () => {
@@ -100,14 +98,15 @@ io.on("connection", (socket) => {
     });
 
     socket.on("clientAnswer", (answer) => {
-        let player = players.find(p => p.id === socket.id);
+        const player = players.find(p => p.id === socket.id);
         console.info(player.name + " Answered: " + answer);
         io.emit("sendClientAnswerToHost", player, answer);
+        setGameState(GameState.ANSWER_SCREEN, {}, player.id);
     });
 
     socket.on("sendAnswerToServer", (answer) => {
         console.info(answer);
-        socket.broadcast.emit("broadcastAnswer", answer);
+        socket.broadcast.emit("showAnswer", answer);
     });
 
     socket.on("disconnect", () => {

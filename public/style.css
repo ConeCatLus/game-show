@@ -56,7 +56,7 @@ h1 {
 }
 
 /* Fixed-Size Question Box */
-#question-container {
+#question-container, #join-container, #limbo-container, #answer-container {
     background: rgba(255, 255, 255, 0.2);
     width: 75vw;
     height: 65vh; /* Ensures consistent height */

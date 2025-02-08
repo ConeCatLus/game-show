@@ -17,13 +17,11 @@
         <button id="join-btn" onclick="joinGame()">Join</button>
     </div>
 
-    <div id="waiting-message" style="display: none;">
-        <h2 id="display-your-answer"></h2>
-        <h2 id="display-correct-answer" style="display: none;"></h2>
-        <h2 id="display-wait-message"></h2>
+    <div id="limbo-container" style="display: none;">
+        <h2 id="display-limbo-message"></h2>
     </div>
 
-    <div id="answer-container" style="display: none;">
+    <div id="question-container" style="display: none;">
         <p>Game code: <span id="game-code"></span></p>
         <h2 id="display-question"></h2>
         <input type="text" id="client-answer" placeholder="Answer">
@@ -32,6 +30,14 @@
             <div id="progress-bar"></div>
         </div>
     </div>
+
+    <div id="answer-container" style="display: none;">
+        <h2 id="answer-display-question"></h2>
+        <h2 id="display-your-answer"></h2>
+        <h2 id="display-correct-answer" style="display: none;"></h2>
+        <h2 id="display-wait-message"></h2>
+    </div>
+    
     <p id="status"></p>
 </body>
 </html>
