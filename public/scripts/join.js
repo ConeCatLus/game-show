@@ -1,18 +1,70 @@
 const socket = io();
 const urlParams = new URLSearchParams(window.location.search);
 const gameCode = urlParams.get("code");
-let playerName = "";
-let prevAnswer = "";
 const GameState = Object.freeze({
-    JOIN_SCREEN: "time to join",      // Players are joining, waiting for the host to start
-    LIMBO_SCREEN: "waiting for host to start", // Game is currently running
-    QUESTION_SCREEN: "answer question", // Showing the answer
-    ANSWER_SCREEN: "show answer",      // Game is over
+    JOIN_SCREEN: "time to join",
+    LIMBO_SCREEN: "waiting for host to start",
+    QUESTION_SCREEN: "answer question",
+    ANSWER_SCREEN: "show answer",
     GAME_OVER: "game over"
 });
-let gameState = GameState.JOIN_SCREEN;
+
+let playerName = "";
+let prevAnswer = "";
+let gameState;
 
 document.getElementById("game-code").innerText = gameCode;
+
+socket.on("newState", (state, data) => {
+    console.log(`State changed to: ${state}`, data);
+
+    switch (state) {
+        case GameState.JOIN_SCREEN:
+            gameState = GameState.JOIN_SCREEN;
+            showJoinScreen(); 
+            break;
+
+        case GameState.LIMBO_SCREEN:
+            if (gameState === GameState.JOIN_SCREEN) {
+                gameState = GameState.LIMBO_SCREEN;
+                showLimboScreen(); // Player has joined and is in limbo until game starts
+            }
+            else {
+                console.log("Illegal state transition from " + gameState + " to " + GameState.LIMBO_SCREEN)
+            } 
+            break;
+
+        case GameState.QUESTION_SCREEN:
+            // showQuestionScreen(data); // Data might contain the current question
+            break;
+
+        case GameState.ANSWER_SCREEN:
+            // showAnswerScreen(data); // Data might contain the correct answer
+            break;
+
+        case GameState.GAME_OVER:
+            // showGameOverScreen();
+            break;
+
+        default:
+            console.warn(`Unknown state: ${state}`);
+            break;
+    }
+});
+
+function showJoinScreen() {
+    document.getElementById("join-container").style.display = "block";
+    document.getElementById("waiting-message").style.display = "none";
+    document.getElementById("answer-container").style.display = "none";
+}
+
+function showLimboScreen() {
+    document.getElementById("join-container").style.display = "none";
+    document.getElementById("display-wait-message").innerText = "Waiting for host to start...";
+    document.getElementById("join-screen-name").innerText = "Bubblegum Limbo";
+    document.getElementById("waiting-message").style.display = "block";
+    document.getElementById("answer-container").style.display = "none";
+}
 
 function joinGame() {
     playerName = document.getElementById("player-name").value.trim();
@@ -22,7 +74,6 @@ function joinGame() {
     }
     else {
         socket.emit("joinGame", playerName);
-        gameState = GameState.LIMBO_SCREEN;
     }
 
     document.getElementById("status").innerText = `Joined as ${playerName}!`;
@@ -74,12 +125,12 @@ socket.on("startQuestion", (question) => {
     }
 });
 
-socket.on("playerAdded", () => {
-    document.getElementById("join-container").style.display = "none";
-    document.getElementById("waiting-message").style.display = "block";
-    document.getElementById("display-wait-message").innerText = "Waiting for host to start...";
-    document.getElementById("join-screen-name").innerText = "Bubblegum Limbo";
-});
+// socket.on("playerAdded", () => {
+//     // document.getElementById("join-container").style.display = "none";
+//     // document.getElementById("waiting-message").style.display = "block";
+//     // document.getElementById("display-wait-message").innerText = "Waiting for host to start...";
+//     // document.getElementById("join-screen-name").innerText = "Bubblegum Limbo";
+// });
 
 socket.on("gameStarted", () => {
     if (gameState === GameState.LIMBO_SCREEN)

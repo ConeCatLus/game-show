@@ -10,6 +10,14 @@ const io = socketIo(server);
 
 const PORT = process.env.PORT || 3000;
 
+const GameState = Object.freeze({
+    JOIN_SCREEN: "time to join",
+    LIMBO_SCREEN: "waiting for host to start",
+    QUESTION_SCREEN: "answer question",
+    ANSWER_SCREEN: "show answer",
+    GAME_OVER: "game over"
+});
+
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -20,6 +28,7 @@ app.get("/", (req, res) => {
 
 let gameCode = Math.floor(100000 + Math.random() * 900000).toString();
 questionNumber = 1;
+let gameState = GameState.JOIN_SCREEN;
 let players = [];
 
 // Generate QR Code
@@ -39,18 +48,27 @@ app.get("/join", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "join.html"));
 });
 
+// Function to update the game state and notify clients
+function setGameState(state, data = {}) {
+    gameState = state;
+    io.emit("newState", gameState, data); // Send state to all clients
+}
+
 // Handels connected players
 io.on("connection", (socket) => {
     console.log("A user connected");
 
     socket.emit("gameCode", gameCode);
-    socket.emit("updatePlayers", players);
+    // socket.emit("updatePlayers", players);
+
+    // Send current state to new player
+    socket.emit("newState", gameState);
 
     socket.on("joinGame", (playerName) => {
         const player = { id: socket.id, name: playerName, score: 0 };
         players.push(player);
         io.emit("updatePlayers", players);
-        io.emit("playerAdded");
+        setGameState(GameState.LIMBO_SCREEN);
     });
 
     // Update player score on server
@@ -62,9 +80,14 @@ io.on("connection", (socket) => {
         }
     });
 
+    // Host has pressed start game button
     socket.on("startGame", () => {
-        gameStarted = true;
-        io.emit("gameStarted");
+        if (gameState === GameState.LIMBO_SCREEN) {
+            setGameState(GameState.QUESTION_SCREEN); // Tell all clients that game has started
+        }
+        else {
+            console.log("Illegal state transition: " + GameState.LIMBO_SCREEN)
+        }
     });
 
     socket.on("startQuestion", (question) => {
