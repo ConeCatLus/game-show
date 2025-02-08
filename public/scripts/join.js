@@ -3,6 +3,14 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameCode = urlParams.get("code");
 let playerName = "";
 let prevAnswer = "";
+const GameState = Object.freeze({
+    JOIN_SCREEN: "time to join",      // Players are joining, waiting for the host to start
+    LIMBO_SCREEN: "waiting for host to start", // Game is currently running
+    QUESTION_SCREEN: "answer question", // Showing the answer
+    ANSWER_SCREEN: "show answer",      // Game is over
+    GAME_OVER: "game over"
+});
+let gameState = GameState.JOIN_SCREEN;
 
 document.getElementById("game-code").innerText = gameCode;
 
@@ -14,15 +22,16 @@ function joinGame() {
     }
     else {
         socket.emit("joinGame", playerName);
+        gameState = GameState.LIMBO_SCREEN;
     }
 
     document.getElementById("status").innerText = `Joined as ${playerName}!`;
 }
 
-function submitAnswer()
+function submitAnswer(noAnswer = false)
 {
     prevAnswer = document.getElementById("client-answer").value.trim();
-    if (!prevAnswer) {
+    if (!prevAnswer && !noAnswer) {
         document.getElementById("status").innerText = "Please enter an answer.";
         return;
     }
@@ -37,6 +46,34 @@ function submitAnswer()
     document.getElementById("waiting-message").style.display = "block";
 }
 
+function startProgressBar(duration) {
+    let progressBar = document.getElementById("progress-bar");
+    progressBar.style.transition = "none";
+    progressBar.style.width = "100%";
+    setTimeout(() => {
+        progressBar.style.transition = `width ${duration}s linear`;
+        progressBar.style.width = "0%";
+    }, 100);
+}
+
+socket.on("startQuestion", (question) => {
+    let timer;
+    let timeLeft = question.timer;
+    let timerEnabled = timeLeft > 0;
+    document.getElementById("display-question").innerText = question.question;
+
+    if (timerEnabled) {
+        document.getElementById("progress-container").style.display = "block";
+        startProgressBar(timeLeft);
+        timer = setTimeout(() => {
+            console.info("TIMES UP");
+            submitAnswer(true);
+        }, timeLeft * 1000);
+    } else {
+        document.getElementById("progress-container").style.display = "none";
+    }
+});
+
 socket.on("playerAdded", () => {
     document.getElementById("join-container").style.display = "none";
     document.getElementById("waiting-message").style.display = "block";
@@ -45,9 +82,19 @@ socket.on("playerAdded", () => {
 });
 
 socket.on("gameStarted", () => {
-    document.getElementById("join-screen-name").innerText = "Bubblegum Game - Question 1";
-    document.getElementById("waiting-message").style.display = "none";
-    document.getElementById("answer-container").style.display = "block";
+    if (gameState === GameState.LIMBO_SCREEN)
+    {
+        document.getElementById("join-screen-name").innerText = "Bubblegum Game - Question 1";
+        document.getElementById("waiting-message").style.display = "none";
+        document.getElementById("answer-container").style.display = "block";
+    }
+    else
+    {
+        document.getElementById("join-screen-name").innerText = "Bubblegum Game";
+        document.getElementById("join-container").style.display = "none";
+        document.getElementById("waiting-message").style.display = "block";
+        document.getElementById("display-wait-message").innerText = "Game has already started!";
+    }
 });
 
 socket.on("nextQuestion", (questionNumber) => {

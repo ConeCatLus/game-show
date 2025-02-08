@@ -2,9 +2,6 @@ const socket = io();
 
 let questions = [];
 let currentIndex = 0;
-let timer;
-let timeLeft = 10;
-let timerEnabled = true;
 
 // Fetch and display QR Code & Game Code
 fetch("/qr")
@@ -96,8 +93,6 @@ function startProgressBar(duration) {
 }
 
 function nextQuestion() {
-    clearInterval(timer);
-
     if (currentIndex >= questions.length) {
         document.getElementById("question-text").innerText = "Game Over!";
         document.getElementById("progress-container").style.display = "none";
@@ -134,8 +129,10 @@ function nextQuestion() {
         document.getElementById("media-container").appendChild(iframe);
     }
 
-    timeLeft = question.timer;
-    timerEnabled = timeLeft > 0;
+    socket.emit("startQuestion", question);
+    let timer;
+    let timeLeft = question.timer;
+    let timerEnabled = timeLeft > 0;
 
     if (timerEnabled) {
         startProgressBar(timeLeft);
@@ -163,7 +160,6 @@ function showAnswer() {
 }
 
 function moveToNextQuestion() {
-    clearTimeout(timer);
     currentIndex++;
     nextQuestion();
     socket.emit("nextQuestion");

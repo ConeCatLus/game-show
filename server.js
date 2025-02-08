@@ -67,6 +67,10 @@ io.on("connection", (socket) => {
         io.emit("gameStarted");
     });
 
+    socket.on("startQuestion", (question) => {
+        socket.broadcast.emit("startQuestion", question);
+    });
+    
     socket.on("nextQuestion", () => {
         questionNumber++;
         io.emit("nextQuestion", questionNumber);
