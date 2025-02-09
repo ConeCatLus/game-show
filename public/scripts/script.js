@@ -21,7 +21,6 @@ socket.on("gameCode", (code) => {
 
 // Listen for updated player list from the server
 socket.on("updatePlayers", (updatedPlayers) => {
-    updatedPlayers;
     updatePlayerList(updatedPlayers);
 });
 
@@ -35,27 +34,8 @@ function updatePlayerList(players) {
         let playerText = document.createElement("span");
         playerText.textContent = `${player.name}: ${player.score}`;
 
-        let minusBtn = document.createElement("button");
-        minusBtn.textContent = "-";
-        minusBtn.classList.add("minus");
-        minusBtn.addEventListener("click", () => {
-            if (player.score > 0) {
-                player.score--;
-                socket.emit("updateScore", { id: player.id, score: player.score });
-            }
-        });
-
-        let plusBtn = document.createElement("button");
-        plusBtn.textContent = "+";
-        plusBtn.classList.add("plus");
-        plusBtn.addEventListener("click", () => {
-            player.score++;
-            socket.emit("updateScore", { id: player.id, score: player.score });
-        });
-
-        li.appendChild(minusBtn);
         li.appendChild(playerText);
-        li.appendChild(plusBtn);
+
         playerList.appendChild(li);
     });
 }
@@ -75,10 +55,10 @@ function loadQuestions() {
 }
 
 function startGame() {
-    // socket.emit("startGame");
+    document.getElementById("setup-container").style.display = "none";
+    document.getElementById("answer-container").style.display = "none";
     document.getElementById("start-btn").style.display = "none";
     document.getElementById("question-container").style.display = "flex";
-    document.getElementById("setup-container").style.display = "none";
     nextQuestion();
 }
 
@@ -106,6 +86,10 @@ function nextQuestion() {
         return;
     }
 
+    document.getElementById("setup-container").style.display = "none";
+    document.getElementById("answer-container").style.display = "none";
+    document.getElementById("question-container").style.display = "flex";
+    
     let question = questions[currentIndex];
     document.getElementById("question-text").innerText = question.question;
     
@@ -163,6 +147,50 @@ function showAnswer() {
 
     socket.emit("sendAnswerToServer", question.answer);
 }
+
+socket.on("displayAnswerMatrix", (players) => {
+    document.getElementById("setup-container").style.display = "none";
+    document.getElementById("question-container").style.display = "none";
+    document.getElementById("answer-container").style.display = "block";
+    let answerGrid = document.getElementById("answer-grid");
+    answerGrid.innerHTML = ""; // Clear previous answers
+    currentAnswer = questions[currentIndex].answer;
+
+    players.forEach(({ id, name, score, answer }) => {
+        let answerBox = document.createElement("div");
+        answerBox.classList.add("answer-box");
+        answerBox.innerHTML = `<strong>${name}:</strong> ${answer}`;
+        
+        if (answer.toLowerCase() === currentAnswer.toLowerCase()) {
+            socket.emit("updateScore", { id, score: score + 1 });
+            answerBox.classList.add("clicked");
+            answerBox.style.background = "rgba(76, 175, 80, 0.8)"; // Make it green
+        } 
+
+        // Add a click event to give points
+        answerBox.addEventListener("click", () => {
+        if (answerBox.classList.contains("clicked")) {
+            // If clicked, remove the 'clicked' class, deduct a point, and reset background color
+            socket.emit("updateScore", { id, score: score });
+            answerBox.classList.remove("clicked");
+            answerBox.style.background = "rgba(255, 255, 255, 0.3)"; // Reset to gray
+        } else {
+            // If not clicked, add the 'clicked' class, add a point, and change background color to green
+            socket.emit("updateScore", { id, score: score + 1 });
+            answerBox.classList.add("clicked");
+            answerBox.style.background = "rgba(76, 175, 80, 0.8)"; // Make it green
+        }
+        });
+
+        answerGrid.appendChild(answerBox);
+    });
+});
+
+// Helper function to find player score
+// function findPlayerScore(players, playerId) {
+//     let player = players.find(p => p.id === playerId);
+//     return player ? player.score : 0;
+// }
 
 function moveToNextQuestion() {
     currentIndex++;

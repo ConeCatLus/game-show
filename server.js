@@ -18,6 +18,7 @@ const GameState = Object.freeze({
     GAME_OVER: "game over"
 });
 
+
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -62,18 +63,18 @@ io.on("connection", (socket) => {
     console.log("A user connected");
 
     socket.emit("gameCode", gameCode);
-    // socket.emit("updatePlayers", players);
 
     // Send JOIN_SRCEEN when player connect
     socket.emit("newState", GameState.JOIN_SCREEN);
 
     socket.on("hostStarted", () => {
         console.log("setGameState - Host Started");
+        players = []; // Reset players
         setGameState(GameState.JOIN_SCREEN);
     });
 
     socket.on("joinGame", (playerName) => {
-        const player = { id: socket.id, name: playerName, score: 0 };
+        const player = { id: socket.id, name: playerName, score: 0, answer: "" };
         players.push(player);
         io.emit("updatePlayers", players);
         setGameState(GameState.LIMBO_SCREEN, {}, player.id);
@@ -93,20 +94,27 @@ io.on("connection", (socket) => {
     });
     
     socket.on("nextQuestion", () => {
+        players.forEach(player => {
+            player.answer = "";
+        });
         questionNumber++;
         io.emit("nextQuestion", questionNumber);
     });
 
     socket.on("clientAnswer", (answer) => {
         const player = players.find(p => p.id === socket.id);
-        console.info(player.name + " Answered: " + answer);
-        io.emit("sendClientAnswerToHost", player, answer);
-        setGameState(GameState.ANSWER_SCREEN, {}, player.id);
+        if (player) {
+            console.info(player.name + " Answered: " + answer);
+            player.answer = answer;
+            setGameState(GameState.ANSWER_SCREEN, {}, player.id);
+            io.emit("sendClientAnswerToHost", players); // Send answers to the host
+        }
     });
-
+    
     socket.on("sendAnswerToServer", (answer) => {
-        console.info(answer);
-        socket.broadcast.emit("showAnswer", answer);
+        console.info("Correct Answer: " + answer);
+        io.emit("showAnswer", answer);
+        io.emit("displayAnswerMatrix", players); // Send the answers to the host screen
     });
 
     socket.on("disconnect", () => {

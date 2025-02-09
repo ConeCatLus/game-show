@@ -22,6 +22,15 @@ h1 {
     text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+#main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+}
 /* Game Layout */
 #game-container {
     display: flex;
@@ -32,7 +41,7 @@ h1 {
 }
 
 /* Player Container */
-#player-container {
+#players-container {
     background: rgba(255, 255, 255, 0.2);
     width: 25vw;
     height: 65vh;
@@ -41,7 +50,6 @@ h1 {
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
     text-align: center;
 }
-
 #player-list {
     list-style: none;
     padding: 0;
@@ -56,7 +64,7 @@ h1 {
 }
 
 /* Fixed-Size Question Box */
-#question-container, #join-container, #limbo-container, #answer-container {
+#setup-container, #question-container, #join-container, #limbo-container, #answer-container {
     background: rgba(255, 255, 255, 0.2);
     width: 75vw;
     height: 65vh; /* Ensures consistent height */
@@ -144,22 +152,6 @@ button {
     display: block; /* Makes button appear below input */
 }
 
-/* Red "-" Button */
-button.minus {
-    background-color: #a66cff;
-    color: white;
-    padding: 10px;
-    margin: 10px;
-}
-
-/* Green "+" Button */
-button.plus {
-    background-color: #a66cff;
-    color: white;
-    padding: 10px;
-    margin: 10px;
-}
-
 /* Show Answer Button */
 #show-answer-btn {
     background-color: #ff4da6;
@@ -186,3 +178,28 @@ input[type="text"] {
     margin: 10px auto; /* Centers input */
 }
 
+.answer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.answer-box {
+    font-size: 24px;
+    padding: 10px;
+    margin: 5px 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    
+    /* background: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s; */
+}
+
+.answer-box:hover {
+    background: #ddd;
+}
