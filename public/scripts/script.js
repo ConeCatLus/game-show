@@ -24,19 +24,31 @@ socket.on("updatePlayers", (updatedPlayers) => {
     updatePlayerList(updatedPlayers);
 });
 
+socket.on("updatePlayers", (updatedPlayers) => {
+    updatePlayerList(updatedPlayers);
+});
+
 function updatePlayerList(players) {
-    let playerList = document.getElementById("player-list");
-    playerList.innerHTML = ""; // Clear list before updating
+    players.sort((a, b) => {
+        if (b.score === a.score) {
+            return a.name.localeCompare(b.name);
+        }
+        return b.score - a.score;
+    });
 
-    players.forEach(player => {
-        let li = document.createElement("li");
+    // Code to update the player list in the UI
+    const playerListElement = document.getElementById("player-list");
+    playerListElement.innerHTML = ""; // Clear the existing list
 
-        let playerText = document.createElement("span");
-        playerText.textContent = `${player.name}: ${player.score}`;
+    const highestScore = players[0]?.score || 0;
 
-        li.appendChild(playerText);
-
-        playerList.appendChild(li);
+    players.forEach((player) => {
+        const playerItem = document.createElement("li");
+        playerItem.textContent = `${player.name}: ${player.score}`;
+        if (player.score === highestScore) {
+            playerItem.textContent = `👑 ${playerItem.textContent}`; // Add crown emoji to players with the highest score
+        }
+        playerListElement.appendChild(playerItem);
     });
 }
 
@@ -147,11 +159,18 @@ function showAnswer() {
 
     socket.emit("sendAnswerToServer", question.answer);
 }
+// Function to handle sending the answer to the server
+function sendAnswerToServer(question) {
+    socket.emit("sendAnswerToServer", question.answer);
+}
 
+// Event listener for displaying the answer matrix
 socket.on("displayAnswerMatrix", (players) => {
+    // Hide other containers and show the answer container
     document.getElementById("setup-container").style.display = "none";
     document.getElementById("question-container").style.display = "none";
     document.getElementById("answer-container").style.display = "block";
+
     let answerGrid = document.getElementById("answer-grid");
     answerGrid.innerHTML = ""; // Clear previous answers
     currentAnswer = questions[currentIndex].answer;
@@ -169,35 +188,31 @@ socket.on("displayAnswerMatrix", (players) => {
 
         // Add a click event to give points
         answerBox.addEventListener("click", () => {
-        if (answerBox.classList.contains("clicked")) {
-            // If clicked, remove the 'clicked' class, deduct a point, and reset background color
-            socket.emit("updateScore", { id, score: score });
-            answerBox.classList.remove("clicked");
-            answerBox.style.background = "rgba(255, 255, 255, 0.3)"; // Reset to gray
-        } else {
-            // If not clicked, add the 'clicked' class, add a point, and change background color to green
-            socket.emit("updateScore", { id, score: score + 1 });
-            answerBox.classList.add("clicked");
-            answerBox.style.background = "rgba(76, 175, 80, 0.8)"; // Make it green
-        }
+            if (answerBox.classList.contains("clicked")) {
+                // If clicked, remove the 'clicked' class, deduct a point, and reset background color
+                socket.emit("updateScore", { id, score: score });
+                answerBox.classList.remove("clicked");
+                answerBox.style.background = ""; // Reset background color
+            } else {
+                // If not clicked, add the 'clicked' class, add a point, and change background color to green
+                socket.emit("updateScore", { id, score: score + 1 });
+                answerBox.classList.add("clicked");
+                answerBox.style.background = "rgba(76, 175, 80, 0.8)"; // Make it green
+            }
         });
 
         answerGrid.appendChild(answerBox);
     });
 });
 
-// Helper function to find player score
-// function findPlayerScore(players, playerId) {
-//     let player = players.find(p => p.id === playerId);
-//     return player ? player.score : 0;
-// }
-
+// Function to move to the next question
 function moveToNextQuestion() {
     currentIndex++;
     nextQuestion();
     socket.emit("nextQuestion");
 }
 
+// Event listener for receiving client answers
 socket.on("sendClientAnswerToHost", (player, answer) => {
-    console.info(player.name + " Answered: " + answer);
+    console.info(`${player.name} Answered: ${answer}`);
 });
