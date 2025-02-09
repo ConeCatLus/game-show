@@ -174,11 +174,11 @@ function nextQuestion() {
         startProgressBar(timeLeft);
         timer = setTimeout(() => {
             document.getElementById("progress-container").style.display = "none";
-            document.getElementById("show-answer-btn").style.display = "block";
+            document.getElementById("show-answer-btn").style.display = "inline-block";
         }, timeLeft * 1000);
     } else {
         document.getElementById("progress-container").style.display = "none";
-        document.getElementById("show-answer-btn").style.display = "block";
+        document.getElementById("show-answer-btn").style.display = "inline-block";
     }
 }
 
@@ -187,9 +187,9 @@ function showAnswer() {
     let showAnswerBtn = document.getElementById("show-answer-btn");
 
     if (showAnswerBtn.innerHTML === "Show Answer") {
-        document.getElementById("next-btn").style.display = "block";
+        document.getElementById("next-btn").style.display = "inline-block";
     }
-    
+
     document.getElementById("question-answer").textContent = question.answer;
 
     socket.emit("sendAnswerToServer", question.answer);
@@ -201,7 +201,7 @@ function showGameOverScreen() {
     document.getElementById("answer-container").style.display = "none";
     
     // Show the game-over container
-    document.getElementById("game-over-container").style.display = "block";
+    document.getElementById("game-over-container").style.display = "flex";
     
     // Update the top players list
     updateTopPlayersList(players); // Assuming players is available in this scope
@@ -212,7 +212,7 @@ socket.on("displayAnswerMatrix", (players) => {
     // Hide other containers and show the answer container
     document.getElementById("setup-container").style.display = "none";
     document.getElementById("question-container").style.display = "none";
-    document.getElementById("answer-container").style.display = "block";
+    document.getElementById("answer-container").style.display = "flex";
     
     const nextBtn = document.getElementById("next-btn");
     if (currentIndex === questions.length - 2) {

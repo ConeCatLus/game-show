@@ -62,11 +62,13 @@ h1 {
 #players-container {
     background: rgba(255, 255, 255, 0.2);
     width: 30vw;
-    height: 65vh;
+    height: 70vh;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
     text-align: center;
+    margin-right: 20px;
+
 }
 #player-list {
     list-style: none;
@@ -91,14 +93,16 @@ h1 {
 #game-over-container {
     background: rgba(255, 255, 255, 0.2);
     width: 70vw;
-    height: 65vh; /* Ensures consistent height */
+    height: 75vh;    /* Ensures consistent height */
     padding: 20px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Keeps elements spaced properly */
+    justify-content: flex-start; /* Keeps elements spaced properly */
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 /* Question Text */
@@ -126,7 +130,9 @@ h1 {
     border-radius: 10px;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
 }
-
+ .qr {
+    height: 30vh;
+ }
 /* Progress Bar */
 #progress-container {
     width: 80%;
@@ -147,9 +153,10 @@ h1 {
 
 /* Buttons */
 button {
+    margin-top: auto;
     font-size: 28px;
     padding: 15px 40px;
-    margin: 10px auto; /* Centers button */
+    /* margin: 10px auto; Centers button */
     cursor: pointer;
     border: none;
     border-radius: 50px;
@@ -161,7 +168,7 @@ button {
 #start-btn, #join-btn {
     background-color: #ff4da6;
     color: white;
-    display: block; /* Makes button appear below input */
+    display: inline-block; /* Makes button appear below input */
 }
 
 #next-btn {
@@ -173,16 +180,14 @@ button {
 #add-player-btn, #submit-answer {
     background-color: #a66cff;
     color: white;
-    display: block; /* Makes button appear below input */
+    display: inline-block; /* Makes button appear below input */
 }
 
 /* Show Answer Button */
 #show-answer-btn {
     background-color: #ff4da6;
     color: white;
-    display: none;
-    display: block; /* Makes button appear below input */
-
+    display: inline-block; /* Makes button appear below input */
 }
 
 #setup-container {

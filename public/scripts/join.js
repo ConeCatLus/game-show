@@ -157,7 +157,7 @@ function showAnswerScreen()
     document.getElementById("display-your-answer").innerText = "Your answer: " + playerAnswer;
     document.getElementById("display-wait-message").innerText = "Correct answer will show soon!";   
     document.getElementById("display-correct-answer").style.display = "none"; // Hide answer until we get it
-    document.getElementById("answer-container").style.display = "block";
+    document.getElementById("answer-container").style.display = "flex";
 
     document.getElementById("status").innerText = ""; // Reset status text
 }
