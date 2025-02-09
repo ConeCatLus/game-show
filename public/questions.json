@@ -1,19 +1,19 @@
 [
     {
-      "question": "What is the capital of France?",
-      "answer": "Paris",
+      "question": "From what move is this?",
+      "answer": "Inception",
       "image": "../images/inception.avif",
-      "timer": 5
+      "timer": 0
     },
     {
       "question": "What is the chemical symbol for gold?",
       "answer": "Au",
-      "timer": 5
+      "timer": 0
     },
     {
-      "question": "Identify this landmark.",
-      "answer": "Eiffel Tower",
-      "image": "images/inception.avif",
+      "question": "Who is this American president?",
+      "answer": "George Washington",
+      "image": "images/george-washington.webp",
       "timer": 0
     },
     {

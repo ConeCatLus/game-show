@@ -12,6 +12,7 @@ const GameState = Object.freeze({
 let playerName = "";
 let playerAnswer = "";
 let gameState;
+let progressTimeout;
 
 document.getElementById("game-code").innerText = gameCode;
 
@@ -46,6 +47,7 @@ socket.on("newState", (state, data) => {
             break;
 
         case GameState.ANSWER_SCREEN:
+            console.info("DO I EVEN GET HERE?")
             if (gameState == GameState.QUESTION_SCREEN) {
                 gameState = state;
                 showAnswerScreen(data); // Data might contain the correct answer
@@ -128,12 +130,8 @@ function showQuestionScreen(question) {
     if (timeLeft > 0) {
         document.getElementById("progress-container").style.display = "inline-block";
         startProgressBar(timeLeft);
-        setTimeout(() => {
-            if (gameState === GameState.QUESTION_SCREEN)
-            {
-                submitAnswer(true);
-            }
-        }, timeLeft * 1000);
+        clearTimeout(progressTimeout);
+        progressTimeout = setTimeout(() => {}, timeLeft * 1000);
     } else {
         document.getElementById("progress-container").style.display = "none";
     }

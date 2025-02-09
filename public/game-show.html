@@ -9,29 +9,33 @@
 <body>
 
     <h1>Bubblegum Game Show</h1>
-
-    <div id="game-container">
-        <!-- Question / Player Setup Container -->
-        <div id="question-container">
+    <div id="main-container">
+        <div id="game-container">
+            <!-- Question / Player Setup Container -->
             <div id="setup-container">
                 <h2>Game Code: <span id="game-code"></span></h2>
                 <img id="qr-code" src="" alt="Scan to join" />
+                <button id="start-btn" onclick="startGame()">Start Game</button>
             </div>
-            <button id="start-btn" onclick="startGame()">Start Game</button>
             
-            <div id="question-text"></div>
-            <div id="media-container"></div>
+            <div id="question-container" style="display: none;">
+                <div id="question-text"></div>
+                <div id="media-container"></div>
 
-            <div id="progress-container" style="display: none;">
-                <div id="progress-bar"></div>
+                <div id="progress-container" style="display: none;">
+                    <div id="progress-bar"></div>
+                </div>
+                <button id="show-answer-btn" style="display: none;" onclick="showAnswer()">Show Answer</button>
             </div>
 
-            <button id="show-answer-btn" style="display: none;" onclick="showAnswer()">Show Answer</button>
-            <button id="next-btn" style="display: none;" onclick="moveToNextQuestion()">Next Question</button>
+            <div id="answer-container" style="display: none;">
+                <div id="answer-grid" class="answer-container"></div>
+                <button id="next-btn" style="display: none;" onclick="moveToNextQuestion()">Next Question</button>
+            </div>
         </div>
 
         <!-- Player Scoreboard -->
-        <div id="player-container">
+        <div id="players-container">
             <h2>Players</h2>
             <ul id="player-list"></ul>
         </div>
