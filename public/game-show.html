@@ -29,14 +29,22 @@
             </div>
 
             <div id="answer-container" style="display: none;">
+                <h2>Answer: <span id="question-answer"></span></h2>
                 <div id="answer-grid" class="answer-container"></div>
                 <button id="next-btn" style="display: none;" onclick="moveToNextQuestion()">Next Question</button>
+            </div>
+
+            <div id="game-over-container" style="display: none;">
+                <h2>Game Over</h2>
+                <p>Thank you for playing!</p>
+                <h3>Top Players</h3>
+                <ul id="top-players-list"></ul>
             </div>
         </div>
 
         <!-- Player Scoreboard -->
         <div id="players-container">
-            <h2>Players</h2>
+            <h2>Scoreboard</h2>
             <ul id="player-list"></ul>
         </div>
     </div>
