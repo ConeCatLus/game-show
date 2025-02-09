@@ -10,6 +10,14 @@ const io = socketIo(server);
 
 const PORT = process.env.PORT || 3000;
 
+const GameState = Object.freeze({
+    JOIN_SCREEN: "time to join",
+    LIMBO_SCREEN: "waiting for host to start",
+    QUESTION_SCREEN: "answer question",
+    ANSWER_SCREEN: "show answer",
+    GAME_OVER: "game over"
+});
+
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -39,18 +47,36 @@ app.get("/join", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "join.html"));
 });
 
+// Function to update the game state and notify clients
+function setGameState(state, data = {}, clientId = null) {
+    if (clientId) {
+        io.to(clientId).emit("newState", state, data); // Send to specific client
+    }
+    else {
+        io.emit("newState", state, data); // Send state to all clients
+    }
+}
+
 // Handels connected players
 io.on("connection", (socket) => {
     console.log("A user connected");
 
     socket.emit("gameCode", gameCode);
-    socket.emit("updatePlayers", players);
+    // socket.emit("updatePlayers", players);
+
+    // Send JOIN_SRCEEN when player connect
+    socket.emit("newState", GameState.JOIN_SCREEN);
+
+    socket.on("hostStarted", () => {
+        console.log("setGameState - Host Started");
+        setGameState(GameState.JOIN_SCREEN);
+    });
 
     socket.on("joinGame", (playerName) => {
         const player = { id: socket.id, name: playerName, score: 0 };
         players.push(player);
         io.emit("updatePlayers", players);
-        io.emit("playerAdded");
+        setGameState(GameState.LIMBO_SCREEN, {}, player.id);
     });
 
     // Update player score on server
@@ -62,13 +88,8 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("startGame", () => {
-        gameStarted = true;
-        io.emit("gameStarted");
-    });
-
     socket.on("startQuestion", (question) => {
-        socket.broadcast.emit("startQuestion", question);
+        setGameState(GameState.QUESTION_SCREEN, question);
     });
     
     socket.on("nextQuestion", () => {
@@ -77,14 +98,15 @@ io.on("connection", (socket) => {
     });
 
     socket.on("clientAnswer", (answer) => {
-        let player = players.find(p => p.id === socket.id);
+        const player = players.find(p => p.id === socket.id);
         console.info(player.name + " Answered: " + answer);
         io.emit("sendClientAnswerToHost", player, answer);
+        setGameState(GameState.ANSWER_SCREEN, {}, player.id);
     });
 
     socket.on("sendAnswerToServer", (answer) => {
         console.info(answer);
-        socket.broadcast.emit("broadcastAnswer", answer);
+        socket.broadcast.emit("showAnswer", answer);
     });
 
     socket.on("disconnect", () => {

@@ -3,6 +3,10 @@ const socket = io();
 let questions = [];
 let currentIndex = 0;
 
+// Send to server that host has restarted so clients also restart
+console.log("Host Started");
+socket.emit("hostStarted");
+
 // Fetch and display QR Code & Game Code
 fetch("/qr")
     .then(res => res.json())
@@ -71,7 +75,7 @@ function loadQuestions() {
 }
 
 function startGame() {
-    socket.emit("startGame");
+    // socket.emit("startGame");
     document.getElementById("start-btn").style.display = "none";
     document.getElementById("question-container").style.display = "flex";
     document.getElementById("setup-container").style.display = "none";
@@ -104,6 +108,7 @@ function nextQuestion() {
 
     let question = questions[currentIndex];
     document.getElementById("question-text").innerText = question.question;
+    
     document.getElementById("media-container").innerHTML = "";
     document.getElementById("next-btn").style.display = "none";
     document.getElementById("show-answer-btn").style.display = "none";
