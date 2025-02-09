@@ -44,11 +44,46 @@ function updatePlayerList(players) {
 
     players.forEach((player) => {
         const playerItem = document.createElement("li");
-        playerItem.textContent = `${player.name}: ${player.score}`;
-        if (player.score === highestScore) {
+        playerItem.textContent = `${player.name}: ${player.score}pts`;
+        if (player.score === highestScore && player.score > 0) {
             playerItem.textContent = `👑 ${playerItem.textContent}`; // Add crown emoji to players with the highest score
         }
         playerListElement.appendChild(playerItem);
+    });
+
+    // Update the top players list in the game-over-container
+    updateTopPlayersList(players);
+}
+
+function updateTopPlayersList() {
+    const playerListElement = document.getElementById("player-list");
+    const playerItems = Array.from(playerListElement.getElementsByTagName("li"));
+
+    // Extract player data from the list items
+    const players = playerItems.map(item => {
+        const [name, score] = item.textContent.split(": ");
+        return { name, score: parseInt(score) };
+    });
+
+    // Sort players by score in descending order
+    players.sort((a, b) => b.score - a.score);
+
+    const topPlayersListElement = document.getElementById("top-players-list");
+    topPlayersListElement.innerHTML = ""; // Clear the existing list
+
+    const medals = ["🥇", "🥈", "🥉"];
+    let currentMedalIndex = 0;
+    let previousScore = null;
+
+    players.slice(0, 3).forEach((player, index) => {
+        if (previousScore !== null && player.score !== previousScore) {
+            currentMedalIndex++;
+        }
+        const medal = medals[currentMedalIndex] || "";
+        const playerItem = document.createElement("li");
+        playerItem.textContent = `${medal} ${player.name}: ${player.score} points`;
+        topPlayersListElement.appendChild(playerItem);
+        previousScore = player.score;
     });
 }
 
@@ -152,16 +187,24 @@ function showAnswer() {
     let showAnswerBtn = document.getElementById("show-answer-btn");
 
     if (showAnswerBtn.innerHTML === "Show Answer") {
-        showAnswerBtn.innerHTML = question.answer;
-        showAnswerBtn.style.background = "#ff4da6";
         document.getElementById("next-btn").style.display = "block";
     }
+    
+    document.getElementById("question-answer").textContent = question.answer;
 
     socket.emit("sendAnswerToServer", question.answer);
 }
-// Function to handle sending the answer to the server
-function sendAnswerToServer(question) {
-    socket.emit("sendAnswerToServer", question.answer);
+
+function showGameOverScreen() {
+    // Hide the question and answer containers
+    document.getElementById("question-container").style.display = "none";
+    document.getElementById("answer-container").style.display = "none";
+    
+    // Show the game-over container
+    document.getElementById("game-over-container").style.display = "block";
+    
+    // Update the top players list
+    updateTopPlayersList(players); // Assuming players is available in this scope
 }
 
 // Event listener for displaying the answer matrix
@@ -170,6 +213,14 @@ socket.on("displayAnswerMatrix", (players) => {
     document.getElementById("setup-container").style.display = "none";
     document.getElementById("question-container").style.display = "none";
     document.getElementById("answer-container").style.display = "block";
+    
+    const nextBtn = document.getElementById("next-btn");
+    if (currentIndex === questions.length - 2) {
+        nextBtn.innerText = "Last question";
+    }
+    if (currentIndex === questions.length - 1) {
+        nextBtn.innerText = "Finish the game";
+    }
 
     let answerGrid = document.getElementById("answer-grid");
     answerGrid.innerHTML = ""; // Clear previous answers
@@ -208,8 +259,13 @@ socket.on("displayAnswerMatrix", (players) => {
 // Function to move to the next question
 function moveToNextQuestion() {
     currentIndex++;
-    nextQuestion();
-    socket.emit("nextQuestion");
+    if (currentIndex >= questions.length) {
+        showGameOverScreen();
+    }
+    else {
+        nextQuestion();
+        socket.emit("nextQuestion");
+    }
 }
 
 // Event listener for receiving client answers

@@ -1,22 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: auto; /* Ensure scrolling is enabled */
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     text-align: center;
     background: linear-gradient(135deg, #ff85a2, #a66cff);
     color: white;
     padding: 0;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start; /* Moves everything up */
     overflow: hidden;
 }
-
+.separator {
+    border: none;
+    border-top: 2px solid rgba(255, 255, 255, 0.2); /* Light, discrete line */
+    margin: 20px auto; /* Center the separator horizontally */
+    width: 80%; /* Adjust width as needed */
+}
 /* Game Title */
 h1 {
     font-size: 50px;
+    font-weight: 700;
+    margin-top: 10px; /* Reduces space above */
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+.join {
+    font-size: 30px;
     font-weight: 700;
     margin-top: 10px; /* Reduces space above */
     text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
@@ -43,7 +61,7 @@ h1 {
 /* Player Container */
 #players-container {
     background: rgba(255, 255, 255, 0.2);
-    width: 25vw;
+    width: 30vw;
     height: 65vh;
     padding: 20px;
     border-radius: 20px;
@@ -55,7 +73,8 @@ h1 {
     padding: 0;
 }
 
-#player-list li {
+#player-list, #top-players-list li {
+    list-style-type: none;
     font-size: 24px;
     padding: 10px;
     margin: 5px 0;
@@ -64,16 +83,21 @@ h1 {
 }
 
 /* Fixed-Size Question Box */
-#setup-container, #question-container, #join-container, #limbo-container, #answer-container {
+#setup-container, 
+#question-container, 
+#join-container, 
+#limbo-container, 
+#answer-container, 
+#game-over-container {
     background: rgba(255, 255, 255, 0.2);
-    width: 75vw;
+    width: 70vw;
     height: 65vh; /* Ensures consistent height */
     padding: 20px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around; /* Keeps elements spaced properly */
+    justify-content: center; /* Keeps elements spaced properly */
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -191,13 +215,6 @@ input[type="text"] {
     margin: 5px 0;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
-    
-    /* background: #f1f1f1;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.3s; */
 }
 
 .answer-box:hover {
