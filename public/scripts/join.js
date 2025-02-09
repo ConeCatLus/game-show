@@ -126,8 +126,7 @@ function showQuestionScreen(question) {
     let timeLeft = question.timer;
 
     if (timeLeft > 0) {
-        startProgressBar(question.timer);
-        document.getElementById("progress-container").style.display = "block";
+        document.getElementById("progress-container").style.display = "inline-block";
         startProgressBar(timeLeft);
         setTimeout(() => {
             if (gameState === GameState.QUESTION_SCREEN)
