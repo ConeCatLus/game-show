@@ -6,7 +6,8 @@ const GameState = Object.freeze({
     LIMBO_SCREEN: "waiting for host to start",
     QUESTION_SCREEN: "answer question",
     ANSWER_SCREEN: "show answer",
-    GAME_OVER: "game over"
+    GAME_OVER: "game over",
+    CHANGE_THEME: "change theme"
 });
 
 let playerName = "";
@@ -59,6 +60,10 @@ socket.on("newState", (state, data) => {
 
         case GameState.GAME_OVER:
             // showGameOverScreen();
+            break;
+
+        case GameState.CHANGE_THEME:
+            document.body.className = data;
             break;
 
         default:

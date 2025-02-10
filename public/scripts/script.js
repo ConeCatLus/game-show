@@ -2,10 +2,12 @@ const socket = io();
 
 let questions = [];
 let currentIndex = 0;
+let currentTheme = document.getElementById("theme").value;
 
 // Send to server that host has restarted so clients also restart
 console.log("Host Started");
 socket.emit("hostStarted");
+socket.emit("changeTheme", currentTheme);
 
 // Fetch and display QR Code & Game Code
 fetch("/qr")
@@ -26,6 +28,23 @@ socket.on("updatePlayers", (updatedPlayers) => {
 
 socket.on("updatePlayers", (updatedPlayers) => {
     updatePlayerList(updatedPlayers);
+});
+
+function changeTheme(theme = null) {
+    if (theme) {
+        document.getElementById("theme").value = theme;
+        currentTheme = theme;
+    }
+    else {
+        currentTheme = document.getElementById("theme").value;
+    }
+    document.body.className = currentTheme;
+    socket.emit("changeTheme", currentTheme);
+}
+
+// Example usage
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("theme").addEventListener("change", changeTheme);
 });
 
 function updatePlayerList(players) {
@@ -135,7 +154,6 @@ function nextQuestion() {
 
     document.getElementById("setup-container").style.display = "none";
     document.getElementById("answer-container").style.display = "none";
-    document.getElementById("question-container").style.display = "flex";
     
     let question = questions[currentIndex];
     document.getElementById("question-text").innerText = question.question;
@@ -165,11 +183,17 @@ function nextQuestion() {
         document.getElementById("media-container").appendChild(iframe);
     }
 
-    socket.emit("startQuestion", question);
+    if (question.theme) {
+        changeTheme(question.theme); // Emit the theme change event to the server
+    }
+    document.getElementById("question-container").style.display = "flex";
+    
     let timer;
     let timeLeft = question.timer;
     let timerEnabled = timeLeft > 0;
 
+    socket.emit("startQuestion", question);
+    
     if (timerEnabled) {
         startProgressBar(timeLeft);
         timer = setTimeout(() => {

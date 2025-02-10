@@ -3,12 +3,14 @@
       "question": "From what move is this?",
       "answer": "Inception",
       "image": "../images/inception.avif",
-      "timer": 0
+      "timer": 0,
+      "theme": "movie-theme"
     },
     {
       "question": "What is the chemical symbol for gold?",
       "answer": "Au",
-      "timer": 0
+      "timer": 0,
+      "theme": "bubblegum-theme"
     },
     {
       "question": "Who is this American president?",
@@ -20,7 +22,8 @@
       "question": "Name the artist of this song.",
       "answer": "Queen",
       "video": "https://www.youtube.com/embed/fJ9rUzIMcZQ",
-      "timer": 0
+      "timer": 0,
+      "theme": "music-theme"
     }
 ]
   

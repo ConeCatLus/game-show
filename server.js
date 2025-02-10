@@ -9,13 +9,15 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 const PORT = process.env.PORT || 3000;
+let currentTheme = "default";
 
 const GameState = Object.freeze({
     JOIN_SCREEN: "time to join",
     LIMBO_SCREEN: "waiting for host to start",
     QUESTION_SCREEN: "answer question",
     ANSWER_SCREEN: "show answer",
-    GAME_OVER: "game over"
+    GAME_OVER: "game over",
+    CHANGE_THEME: "change theme"
 });
 
 
@@ -66,6 +68,12 @@ io.on("connection", (socket) => {
 
     // Send JOIN_SRCEEN when player connect
     socket.emit("newState", GameState.JOIN_SCREEN);
+    setGameState(GameState.CHANGE_THEME, currentTheme);
+
+    socket.on("changeTheme", (theme) => {
+        currentTheme = theme;
+        setGameState(GameState.CHANGE_THEME, theme);
+    });
 
     socket.on("hostStarted", () => {
         console.log("setGameState - Host Started");

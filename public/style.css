@@ -1,10 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
+/* Bubblegum Theme */
+.bubblegum-theme {
+    background: linear-gradient(135deg, #ff85a2, #a66cff);
+    color: white;
+}
+.bubblegum-theme select {
+    background: linear-gradient(135deg, #ff85a2, #a66cff);
+}
+
+/* Sports Theme */
+.sports-theme {
+    background: linear-gradient(135deg, #4caf50, #1e88e5);
+    color: white;
+}
+.sports-theme select {
+    background: linear-gradient(135deg, #4caf50, #1e88e5);}
+
+/* Movie Theme */
+.movie-theme {
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+    color: white;
+}
+.movie-theme select {
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+}
+
+/* Music Theme */
+.music-theme {
+    background: linear-gradient(135deg, #9c27b0, #e91e63);
+    color: white;
+}
+.music-theme select{
+    background: linear-gradient(135deg, #9c27b0, #e91e63);
+}
+
 html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: auto; /* Ensure scrolling is enabled */
+    color: white;
+    border: none;
+    border-radius: 50px; /* Make it round */
+    padding: 10px 20px; /* Make it bigger */
+    font-size: 18px; /* Increase font size */
 }
 
 body {
@@ -26,6 +62,36 @@ body {
     margin: 20px auto; /* Center the separator horizontally */
     width: 80%; /* Adjust width as needed */
 }
+
+#theme-selector {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: none;
+    border: 2px solid white; /* Add a border */
+    font-size: 25px; /* Increase font size */
+    cursor: pointer;
+    padding: 10px 20px; /* Make it bigger */
+    border-radius: 50px; /* Make it round */
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+select:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.8); /* Change border color on focus */
+}
+
+select option {
+    background-color: white;
+    color: black;
+}
+
 /* Game Title */
 h1 {
     font-size: 50px;
