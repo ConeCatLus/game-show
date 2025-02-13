@@ -3,13 +3,13 @@
       "question": "From what move is this?",
       "answer": "Inception",
       "image": "../images/inception.avif",
-      "timer": 0,
+      "timer": 5,
       "theme": "movie-theme"
     },
     {
       "question": "What is the chemical symbol for gold?",
       "answer": "Au",
-      "timer": 0,
+      "timer": 5,
       "theme": "bubblegum-theme"
     },
     {

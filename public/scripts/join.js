@@ -147,7 +147,9 @@ function showQuestionScreen(question) {
         document.getElementById("progress-container").style.display = "inline-block";
         startProgressBar(timeLeft);
         clearTimeout(progressTimeout);
-        progressTimeout = setTimeout(() => {}, timeLeft * 1000);
+        progressTimeout = setTimeout(() => {
+            submitAnswer(true);
+        }, timeLeft * 1000);
     } else {
         document.getElementById("progress-container").style.display = "none";
     }

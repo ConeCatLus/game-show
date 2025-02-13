@@ -3,12 +3,12 @@ const socket = io();
 let questions = [];
 let topPlayers = [];
 let currentIndex = 0;
-let currentTheme = document.getElementById("theme").value;
+let currentTheme = null;
 
 // Send to server that host has restarted so clients also restart
 console.log("Host Started");
 socket.emit("hostStarted");
-socket.emit("changeTheme", currentTheme);
+changeTheme();
 
 // Fetch and display QR Code & Game Code
 fetch("/qr")
@@ -42,10 +42,6 @@ function changeTheme(theme = null) {
     document.body.className = currentTheme;
     socket.emit("changeTheme", currentTheme);
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("theme").addEventListener("change", changeTheme);
-});
 
 function updatePlayerList(players) {
     players.sort((a, b) => {

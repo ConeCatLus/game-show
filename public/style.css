@@ -5,8 +5,15 @@
     background: linear-gradient(135deg, #ff85a2, #a66cff);
     color: white;
 }
-.bubblegum-theme select {
+.bubblegum-theme select, #progress-bar {
     background: linear-gradient(135deg, #ff85a2, #a66cff);
+}
+.bubblegum-theme button {
+    background-color: #ff4da6;
+    color: white;
+}
+.bubblegum-theme button:hover {
+    background-color: #fb238f; /* Adjust hover color */
 }
 
 /* Sports Theme */
@@ -17,6 +24,16 @@
 .sports-theme select {
     background: linear-gradient(135deg, #4caf50, #1e88e5);
 }
+.sports-theme #progress-bar {
+    background: linear-gradient(135deg, #4caf50, #1e88e5);
+}
+.sports-theme button {
+    background-color: #4caf50;
+    color: white;
+}
+.sports-theme button:hover {
+    background-color: #388e3c; /* Adjust hover color */
+}
 
 /* Movie Theme */
 .movie-theme {
@@ -25,6 +42,16 @@
 }
 .movie-theme select {
     background: linear-gradient(135deg, #ff9800, #ff5722);
+}
+.movie-theme #progress-bar {
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+}
+.movie-theme button {
+    background-color: #ff9800;
+    color: white;
+}
+.movie-theme button:hover {
+    background-color: #f38427; /* Adjust hover color */
 }
 
 /* Music Theme */
@@ -35,10 +62,21 @@
 .music-theme select {
     background: linear-gradient(135deg, #9c27b0, #e91e63);
 }
+.music-theme #progress-bar {
+    background: linear-gradient(135deg, #9c27b0, #e91e63);
+}
+.music-theme button {
+    background-color: #9c27b0;
+    color: white;
+}
+.music-theme button:hover {
+    background-color: #8818a7; /* Adjust hover color */
+}
 
 html, body {
     color: white;
     border: none;
+    height: 100%;
     border-radius: 50px; /* Make it round */
     padding: 10px 20px; /* Make it bigger */
     font-size: 2vh; /* Adjust font size using vh */
@@ -184,6 +222,7 @@ h1 {
     width: 70vw;
     height: 75vh;    /* Ensures consistent height */
     padding: 2vh; /* Adjust padding using vh */
+    padding-bottom: 6vh;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -193,6 +232,11 @@ h1 {
     margin: 0 auto;
     box-sizing: border-box;
     overflow-y: auto; /* Allow vertical scrolling */
+}
+
+/* Remove border-radius for join.html containers */
+.no-radius {
+    border-radius: 0;
 }
 
 /* Question Text */
@@ -227,9 +271,11 @@ h1 {
 
 /* Progress Bar */
 #progress-container {
+    margin-top: auto;
     width: 80%;
     height: 2vh; /* Adjust height using vh */
     background-color: rgba(255, 255, 255, 0.3);
+    border: 2px solid white;
     border-radius: 50px;
     overflow: hidden;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
@@ -238,7 +284,7 @@ h1 {
 #progress-bar {
     height: 100%;
     width: 100%;
-    background: linear-gradient(90deg, #ff4da6, #ff85a2);
+    /* background: linear-gradient(90deg, #ff4da6, #ff85a2); */
     transition: width linear;
     border-radius: 50px;
 }
@@ -254,31 +300,6 @@ button {
     font-weight: bold;
     transition: all 0.3s ease-in-out;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-#start-btn, #join-btn {
-    background-color: #ff4da6;
-    color: white;
-    display: inline-block; /* Makes button appear below input */
-}
-
-#next-btn {
-    background-color: #a66cff;
-    color: white;
-    display: none; /* Hidden until answer is shown */
-}
-
-#add-player-btn, #submit-answer {
-    background-color: #a66cff;
-    color: white;
-    display: inline-block; /* Makes button appear below input */
-}
-
-/* Show Answer Button */
-#show-answer-btn {
-    background-color: #ff4da6;
-    color: white;
-    display: inline-block; /* Makes button appear below input */
 }
 
 #setup-container {
@@ -364,6 +385,17 @@ p, button, select {
     }
 
     p, button, select {
-        font-size: 1.6vh; /* Adjust font size for smaller screens */
+        font-size: 2.5vh; /* Adjust font size for smaller screens */
+    }
+
+    #setup-container, 
+    #question-container, 
+    #join-container, 
+    #limbo-container, 
+    #answer-container, 
+    #game-over-container {
+        width: 90vw; /* Adjust width for smaller screens */
+        height: 75vh; /* Allow height to adjust based on content */
+        padding: 2vh; /* Adjust padding using vh */
     }
 }
