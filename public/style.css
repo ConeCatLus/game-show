@@ -15,7 +15,8 @@
     color: white;
 }
 .sports-theme select {
-    background: linear-gradient(135deg, #4caf50, #1e88e5);}
+    background: linear-gradient(135deg, #4caf50, #1e88e5);
+}
 
 /* Movie Theme */
 .movie-theme {
@@ -31,7 +32,7 @@
     background: linear-gradient(135deg, #9c27b0, #e91e63);
     color: white;
 }
-.music-theme select{
+.music-theme select {
     background: linear-gradient(135deg, #9c27b0, #e91e63);
 }
 
@@ -40,7 +41,7 @@ html, body {
     border: none;
     border-radius: 50px; /* Make it round */
     padding: 10px 20px; /* Make it bigger */
-    font-size: 18px; /* Increase font size */
+    font-size: 2vh; /* Adjust font size using vh */
 }
 
 body {
@@ -56,6 +57,7 @@ body {
     justify-content: flex-start; /* Moves everything up */
     overflow: hidden;
 }
+
 .separator {
     border: none;
     border-top: 2px solid rgba(255, 255, 255, 0.2); /* Light, discrete line */
@@ -75,9 +77,9 @@ select {
     -moz-appearance: none;
     background: none;
     border: 2px solid white; /* Add a border */
-    font-size: 25px; /* Increase font size */
+    font-size: 2vh; /* Adjust font size using vh */
     cursor: pointer;
-    padding: 10px 20px; /* Make it bigger */
+    padding: 1vh 2vh; /* Adjust padding using vh */
     border-radius: 50px; /* Make it round */
     transition: background-color 0.3s, border-color 0.3s;
 }
@@ -94,15 +96,16 @@ select option {
 
 /* Game Title */
 h1 {
-    font-size: 50px;
+    font-size: 5vh; /* Adjust font size using vh */
     font-weight: 700;
-    margin-top: 10px; /* Reduces space above */
+    margin-top: 1vh; /* Adjust margin using vh */
     text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
 }
+
 .join {
-    font-size: 30px;
+    font-size: 4vh; /* Adjust font size using vh */
     font-weight: 700;
-    margin-top: 10px; /* Reduces space above */
+    margin-top: 1vh; /* Adjust margin using vh */
     text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -110,17 +113,18 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 20px;
+    gap: 2vh; /* Adjust gap using vh */
     width: 100%;
     height: 100vh;
-    padding: 20px;
+    padding: 2vh; /* Adjust padding using vh */
 }
+
 /* Game Layout */
 #game-container {
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    gap: 20px;
+    gap: 2vh; /* Adjust gap using vh */
     width: 100%;
 }
 
@@ -129,25 +133,44 @@ h1 {
     background: rgba(255, 255, 255, 0.2);
     width: 30vw;
     height: 70vh;
-    padding: 20px;
+    padding: 2.5vh; /* Adjust padding using vh */
     border-radius: 20px;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
     text-align: center;
-    margin-right: 20px;
-
+    margin-right: 2vh; /* Adjust margin using vh */
 }
+
 #player-list {
     list-style: none;
     padding: 0;
 }
 
-#player-list, #top-players-list li {
-    list-style-type: none;
-    font-size: 24px;
-    padding: 10px;
-    margin: 5px 0;
+#player-list li {
     background: rgba(255, 255, 255, 0.3);
+    padding: 1vh 2vh; /* Adjust padding using vh */
+    margin: 0.5vh 0; /* Adjust margin using vh */
     border-radius: 10px;
+    width: 80%;
+    text-align: center;
+}
+
+#top-players-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the list items horizontally */
+    justify-content: center; /* Center the list items vertically */
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+#top-players-list li {
+    background-color: rgba(255, 255, 255, 0.3); /* Add a background color for better visibility */
+    padding: 1vh 2vh; /* Adjust padding using vh */
+    margin: 0.5vh 0; /* Adjust margin using vh */
+    border-radius: 10px;
+    width: 100%; /* Adjust width as needed */
+    text-align: center; /* Center the text */
 }
 
 /* Fixed-Size Question Box */
@@ -160,7 +183,7 @@ h1 {
     background: rgba(255, 255, 255, 0.2);
     width: 70vw;
     height: 75vh;    /* Ensures consistent height */
-    padding: 20px;
+    padding: 2vh; /* Adjust padding using vh */
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -169,15 +192,16 @@ h1 {
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
     margin: 0 auto;
     box-sizing: border-box;
+    overflow-y: auto; /* Allow vertical scrolling */
 }
 
 /* Question Text */
 #question-text {
-    font-size: 36px;
+    font-size: 3.6vh; /* Adjust font size using vh */
     font-weight: 600;
     text-align: center;
     max-width: 90%;
-    margin: 10px;
+    margin: 1vh; /* Adjust margin using vh */
 }
 
 /* Media (Images & Videos) */
@@ -192,17 +216,19 @@ h1 {
 #media-container img, 
 #media-container iframe {
     max-width: 100%;
-    max-height: 250px;
+    max-height: 25vh; /* Adjust max height using vh */
     border-radius: 10px;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
 }
- .qr {
+
+.qr {
     height: 30vh;
- }
+}
+
 /* Progress Bar */
 #progress-container {
     width: 80%;
-    height: 20px;
+    height: 2vh; /* Adjust height using vh */
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 50px;
     overflow: hidden;
@@ -220,9 +246,8 @@ h1 {
 /* Buttons */
 button {
     margin-top: auto;
-    font-size: 28px;
-    padding: 15px 40px;
-    /* margin: 10px auto; Centers button */
+    font-size: 2.8vh; /* Adjust font size using vh */
+    padding: 2.5vh 4vh; /* Adjust padding using vh */
     cursor: pointer;
     border: none;
     border-radius: 50px;
@@ -260,34 +285,85 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 1vh; /* Adjust gap using vh */
 }
 
 input[type="text"] {
-    font-size: 18px;
-    padding: 10px;
+    font-size: 2.3vh;
+    padding: 1.3vh;
     border-radius: 10px;
     border: none;
     width: 80%;
     display: block; /* Ensures input takes full width */
-    margin: 10px auto; /* Centers input */
+    margin: 1vh auto; /* Adjust margin using vh */
 }
 
 .answer-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-    margin-top: 20px;
+    gap: 1vh; /* Adjust gap using vh */
+    margin-top: 2vh; /* Adjust margin using vh */
 }
 
 .answer-box {
-    font-size: 24px;
-    padding: 10px;
-    margin: 5px 0;
+    font-size: 2.4vh; /* Adjust font size using vh */
+    padding: 1vh; /* Adjust padding using vh */
+    margin: 0.5vh 0; /* Adjust margin using vh */
     background: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
 }
 
 .answer-box:hover {
     background: #ddd;
+}
+
+/* Responsive font sizes */
+body {
+    font-size: 2vh; /* Base font size using vh */
+}
+
+h1 {
+    font-size: 5vh; /* Responsive font size using vh */
+}
+
+h2 {
+    font-size: 4vh; /* Responsive font size using vh */
+}
+
+#answer-container h2 {
+    font-size: 3vh; /* Smaller font size for h2 in answer-container */
+}
+
+p, button, select {
+    font-size: 3vh; /* Responsive font size using vh */
+}
+
+.status {
+    font-size: 2vh; /* Adjust font size using vh */
+    color: white;
+    margin: 1vh 0; /* Adjust margin using vh */
+    text-align: center;
+}
+
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+    body {
+        font-size: 1.8vh; /* Adjust base font size for smaller screens */
+    }
+
+    h1 {
+        font-size: 4vh; /* Adjust font size for smaller screens */
+    }
+
+    h2 {
+        font-size: 3vh; /* Adjust font size for smaller screens */
+    }
+
+    #answer-container h2 {
+        font-size: 2.5vh; /* Smaller font size for h2 in answer-container on smaller screens */
+    }
+
+    p, button, select {
+        font-size: 1.6vh; /* Adjust font size for smaller screens */
+    }
 }

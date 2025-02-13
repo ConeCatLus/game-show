@@ -1,6 +1,7 @@
 const socket = io();
 
 let questions = [];
+let topPlayers = [];
 let currentIndex = 0;
 let currentTheme = document.getElementById("theme").value;
 
@@ -42,7 +43,6 @@ function changeTheme(theme = null) {
     socket.emit("changeTheme", currentTheme);
 }
 
-// Example usage
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("theme").addEventListener("change", changeTheme);
 });
@@ -74,7 +74,7 @@ function updatePlayerList(players) {
     updateTopPlayersList(players);
 }
 
-function updateTopPlayersList() {
+function getTopPlayers() {
     const playerListElement = document.getElementById("player-list");
     const playerItems = Array.from(playerListElement.getElementsByTagName("li"));
 
@@ -87,22 +87,24 @@ function updateTopPlayersList() {
     // Sort players by score in descending order
     players.sort((a, b) => b.score - a.score);
 
+    const topPlayers = players.slice(0, 3).map((player, index) => {
+        const medals = ["🥇", "🥈", "🥉"];
+        const medal = medals[index] || "";
+        return { ...player, medal };
+    });
+
+    return topPlayers;
+}
+
+function updateTopPlayersList() {
+    topPlayers = getTopPlayers();
     const topPlayersListElement = document.getElementById("top-players-list");
     topPlayersListElement.innerHTML = ""; // Clear the existing list
 
-    const medals = ["🥇", "🥈", "🥉"];
-    let currentMedalIndex = 0;
-    let previousScore = null;
-
-    players.slice(0, 3).forEach((player, index) => {
-        if (previousScore !== null && player.score !== previousScore) {
-            currentMedalIndex++;
-        }
-        const medal = medals[currentMedalIndex] || "";
+    topPlayers.forEach(player => {
         const playerItem = document.createElement("li");
-        playerItem.textContent = `${medal} ${player.name}: ${player.score} points`;
+        playerItem.textContent = `${player.medal} ${player.name}: ${player.score} points`;
         topPlayersListElement.appendChild(playerItem);
-        previousScore = player.score;
     });
 }
 
@@ -227,8 +229,7 @@ function showGameOverScreen() {
     // Show the game-over container
     document.getElementById("game-over-container").style.display = "flex";
     
-    // Update the top players list
-    updateTopPlayersList(players); // Assuming players is available in this scope
+    socket.emit("gameOver", topPlayers);
 }
 
 // Event listener for displaying the answer matrix

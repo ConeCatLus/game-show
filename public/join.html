@@ -15,6 +15,7 @@
         <h2>Game Code: <span id="game-code"></span></h2>
         <input type="text" id="player-name" placeholder="Enter your name">
         <button id="join-btn" onclick="joinGame()">Join</button>
+        <p class="status"></p>
     </div>
 
     <div id="limbo-container" style="display: none;">
@@ -29,6 +30,7 @@
         <div id="progress-container" style="display: none;">
             <div id="progress-bar"></div>
         </div>
+        <p class="status"></p>
     </div>
 
     <div id="answer-container" style="display: none;">
@@ -40,6 +42,11 @@
         <h2 id="display-wait-message"></h2>
     </div>
 
-    <p id="status"></p>
+    <div id="game-over-container" style="display: none;">
+        <h2>Game Over</h2>
+        <p>Thank you for playing!</p>
+        <h3>Top Players</h3>
+        <ul id="top-players-list"></ul>
+    </div>
 </body>
 </html>

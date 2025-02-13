@@ -125,6 +125,9 @@ io.on("connection", (socket) => {
         io.emit("displayAnswerMatrix", players); // Send the answers to the host screen
     });
 
+    socket.on("gameOver", (topPlayers) => {
+        setGameState(GameState.GAME_OVER, topPlayers);
+    });
     socket.on("disconnect", () => {
         players = players.filter(player => player.id !== socket.id);
         io.emit("updatePlayers", players);
