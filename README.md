@@ -15,11 +15,14 @@ Update the 'questions.json' file.
 Initialize a node.js project:
 $ npm init -y
 
-install required packages:
+Install required packages:
 $ npm install express socket.io qrcode ip uuid
+
+Generate new certs:
+openssl req -nodes -new -x509 -keyout key.pem -out cert.pem
 
 ## Start server:
 $ node server.js
 
-Open http://localhost:3000 in a browser (for the host).
-Players scan the QR code or go to http://localhost:3000/join to enter the game.
+Open https://localhost:4000 in a browser (for the host).
+Players scan the QR code or go to http://localhost:4000/join to enter the game.

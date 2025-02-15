@@ -77,7 +77,6 @@ html, body {
     color: white;
     border: none;
     height: 100%;
-    border-radius: 50px; /* Make it round */
     padding: 10px 20px; /* Make it bigger */
     font-size: 2vh; /* Adjust font size using vh */
 }
@@ -204,7 +203,7 @@ h1 {
 
 #top-players-list li {
     background-color: rgba(255, 255, 255, 0.3); /* Add a background color for better visibility */
-    padding: 1vh 2vh; /* Adjust padding using vh */
+    padding: 1vh 7vh; /* Adjust padding using vh */
     margin: 0.5vh 0; /* Adjust margin using vh */
     border-radius: 10px;
     width: 100%; /* Adjust width as needed */
@@ -220,8 +219,8 @@ h1 {
 #game-over-container {
     background: rgba(255, 255, 255, 0.2);
     width: 70vw;
-    height: 75vh;    /* Ensures consistent height */
-    padding: 2vh; /* Adjust padding using vh */
+    height: 75vh;
+    padding: 2vh;
     padding-bottom: 6vh;
     border-radius: 20px;
     display: flex;
@@ -388,6 +387,10 @@ p, button, select {
         font-size: 2.5vh; /* Adjust font size for smaller screens */
     }
 
+    #top-players-list li {
+        padding: 1vh 2vh;
+    }
+
     #setup-container, 
     #question-container, 
     #join-container, 
@@ -396,6 +399,6 @@ p, button, select {
     #game-over-container {
         width: 90vw; /* Adjust width for smaller screens */
         height: 75vh; /* Allow height to adjust based on content */
-        padding: 2vh; /* Adjust padding using vh */
+        padding: 5vh; /* Adjust padding using vh */
     }
 }

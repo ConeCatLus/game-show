@@ -1,5 +1,12 @@
 [
     {
+      "question": "Name the artist of this song.",
+      "answer": "The Beatles",
+      "audio": "https://open.spotify.com/track/3ehCOa89sOvJicgLLUTgNe?si=4f5c42ed03154e13",
+      "timer": 0,
+      "theme": "music-theme"
+    },
+    {
       "question": "From what move is this?",
       "answer": "Inception",
       "image": "../images/inception.avif",

@@ -58,7 +58,7 @@ socket.on("newState", (state, data) => {
             break;
 
         case GameState.GAME_OVER:
-            if (gameState == GameState.QUESTION_SCREEN) {
+            if (gameState == GameState.ANSWER_SCREEN) {
                 gameState = state;
                 showGameOverScreen(data); // Data might contain the correct answer
             }

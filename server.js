@@ -1,14 +1,21 @@
 const express = require("express");
-const http = require("http");
+const https = require("https");
+const fs = require("fs");
 const socketIo = require("socket.io");
 const QRCode = require("qrcode");
 const path = require("path");
 
+// Load SSL certificates
+const options = {
+    key: fs.readFileSync("certs/key.pem"),
+    cert: fs.readFileSync("certs/cert.pem")
+};
+
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(options, app); // Use HTTPS
 const io = socketIo(server);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 let currentTheme = "default";
 
 const GameState = Object.freeze({
@@ -20,7 +27,6 @@ const GameState = Object.freeze({
     CHANGE_THEME: "change theme"
 });
 
-
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -30,14 +36,14 @@ app.get("/", (req, res) => {
 });
 
 let gameCode = Math.floor(100000 + Math.random() * 900000).toString();
-questionNumber = 1;
+let questionNumber = 1;
 let players = [];
 
 // Generate QR Code
 app.get("/qr", async (req, res) => {
     try {
         const ip = require("ip").address(); // Get local IP address
-        const qrData = `http://${ip}:3000/join?code=${gameCode}`;
+        const qrData = `https://${ip}:4000/join?code=${gameCode}`;
         const qrImage = await QRCode.toDataURL(qrData);
         res.json({ qr: qrImage });
     } catch (error) {
@@ -54,19 +60,18 @@ app.get("/join", (req, res) => {
 function setGameState(state, data = {}, clientId = null) {
     if (clientId) {
         io.to(clientId).emit("newState", state, data); // Send to specific client
-    }
-    else {
+    } else {
         io.emit("newState", state, data); // Send state to all clients
     }
 }
 
-// Handels connected players
+// Handle connected players
 io.on("connection", (socket) => {
     console.log("A user connected");
 
     socket.emit("gameCode", gameCode);
 
-    // Send JOIN_SRCEEN when player connect
+    // Send JOIN_SCREEN when player connects
     socket.emit("newState", GameState.JOIN_SCREEN);
     setGameState(GameState.CHANGE_THEME, currentTheme);
 
@@ -112,7 +117,7 @@ io.on("connection", (socket) => {
     socket.on("clientAnswer", (answer) => {
         const player = players.find(p => p.id === socket.id);
         if (player) {
-            console.info(player.name + " Answered: " + answer);
+            console.info(`${player.name} Answered: ${answer}`);
             player.answer = answer;
             setGameState(GameState.ANSWER_SCREEN, {}, player.id);
             io.emit("sendClientAnswerToHost", players); // Send answers to the host
@@ -120,7 +125,7 @@ io.on("connection", (socket) => {
     });
     
     socket.on("sendAnswerToServer", (answer) => {
-        console.info("Correct Answer: " + answer);
+        console.info("Correct Answer:", answer);
         io.emit("showAnswer", answer);
         io.emit("displayAnswerMatrix", players); // Send the answers to the host screen
     });
@@ -128,12 +133,14 @@ io.on("connection", (socket) => {
     socket.on("gameOver", (topPlayers) => {
         setGameState(GameState.GAME_OVER, topPlayers);
     });
+
     socket.on("disconnect", () => {
         players = players.filter(player => player.id !== socket.id);
         io.emit("updatePlayers", players);
     });
 });
 
+// Start HTTPS server
 server.listen(PORT, () => {
-    console.log(`Server running at http://${require("ip").address()}:${PORT}/`)
+    console.log(`🚀 Server running at https://${require("ip").address()}:${PORT}/`);
 });

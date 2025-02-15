@@ -16,7 +16,8 @@ fetch("/qr")
     .then(data => {
         document.getElementById("qr-code").src = data.qr;
     })
-    .catch(error => console.error("QR Code Error:", error));
+    .catch(error => console.error("QR Code Error:", error)
+);
 
 socket.on("gameCode", (code) => {
     document.getElementById("game-code").innerText = code;
@@ -179,6 +180,28 @@ function nextQuestion() {
         iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
         document.getElementById("media-container").appendChild(iframe);
+    }
+    
+    if (question.audio) {
+        // Create Play Button
+        let playBtn = document.createElement("button");
+        playBtn.innerText = "▶ Play";
+        let playing = false;
+        playBtn.onclick = () => {
+            if (playing) {
+                playing = false;
+                playBtn.innerText = "▶ Play";
+                stopSong();
+            }
+            else if (!playing) {
+                playing = true;
+                playBtn.innerText = "⏹ Stop";
+                playSong(question.audio);
+            }
+        };
+    
+        // Append elements
+        document.getElementById("media-container").appendChild(playBtn);
     }
 
     if (question.theme) {
