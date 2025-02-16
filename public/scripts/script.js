@@ -153,71 +153,76 @@ function nextQuestion() {
 
     document.getElementById("setup-container").style.display = "none";
     document.getElementById("answer-container").style.display = "none";
-    
+
     let question = questions[currentIndex];
     document.getElementById("question-text").innerText = question.question;
-    
-    document.getElementById("media-container").innerHTML = "";
+
+    let mediaContainer = document.getElementById("media-container");
+    mediaContainer.innerHTML = "";
+    mediaContainer.style.display = "block";
+
     document.getElementById("next-btn").style.display = "none";
     document.getElementById("show-answer-btn").style.display = "none";
-    document.getElementById("media-container").style.display = "block";
+    document.getElementById("progress-container").style.display = "block";
 
     let showAnswerBtn = document.getElementById("show-answer-btn");
     showAnswerBtn.innerHTML = "Show Answer";
 
-    document.getElementById("progress-container").style.display = "block";
+    // 🎨 Handle theme change
+    if (question.theme) {
+        changeTheme(question.theme);
+    }
 
+    // 🖼️ Handle Image
     if (question.image) {
         let img = document.createElement("img");
         img.src = question.image;
         img.alt = "Question Image";
-        document.getElementById("media-container").appendChild(img);
+        mediaContainer.appendChild(img);
     }
 
+    // 📺 Handle Video
     if (question.video) {
         let iframe = document.createElement("iframe");
         iframe.src = question.video;
         iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
-        document.getElementById("media-container").appendChild(iframe);
-    }
-    
-    if (question.audio) {
-        // Create Play Button
-        let playBtn = document.createElement("button");
-        playBtn.innerText = "▶ Play";
-        let playing = false;
-        playBtn.onclick = () => {
-            if (playing) {
-                playing = false;
-                playBtn.innerText = "▶ Play";
-                stopSong();
-            }
-            else if (!playing) {
-                playing = true;
-                playBtn.innerText = "⏹ Stop";
-                playSong(question.audio);
-            }
-        };
-    
-        // Append elements
-        document.getElementById("media-container").appendChild(playBtn);
+        mediaContainer.appendChild(iframe);
     }
 
-    if (question.theme) {
-        changeTheme(question.theme); // Emit the theme change event to the server
+    // 🎵 Handle Audio (Multiple Tracks)
+    if (question.audio) {
+        let audioContainer = document.createElement("div");
+        let playingIndex = -1; // Track which song is playing
+
+        question.audio.forEach((audioUrl, index) => {
+            let playBtn = document.createElement("button");
+            playBtn.innerText = `▶ Play Track ${index + 1}`;
+            playBtn.onclick = () => {
+                if (playingIndex === index) {
+                    playingIndex = -1;
+                    playBtn.innerText = `▶ Play Track ${index + 1}`;
+                    stopSong();
+                } else {
+                    playingIndex = index;
+                    playBtn.innerText = `⏹ Stop`;
+                    playSong(audioUrl);
+                }
+            };
+            audioContainer.appendChild(playBtn);
+        });
+
+        mediaContainer.appendChild(audioContainer);
     }
-    document.getElementById("question-container").style.display = "flex";
-    
-    let timer;
+
+    // ⏳ Timer Logic
     let timeLeft = question.timer;
     let timerEnabled = timeLeft > 0;
-
     socket.emit("startQuestion", question);
-    
+
     if (timerEnabled) {
         startProgressBar(timeLeft);
-        timer = setTimeout(() => {
+        setTimeout(() => {
             document.getElementById("progress-container").style.display = "none";
             document.getElementById("show-answer-btn").style.display = "inline-block";
         }, timeLeft * 1000);
@@ -225,6 +230,8 @@ function nextQuestion() {
         document.getElementById("progress-container").style.display = "none";
         document.getElementById("show-answer-btn").style.display = "inline-block";
     }
+
+    document.getElementById("question-container").style.display = "flex";
 }
 
 function showAnswer() {
@@ -235,8 +242,25 @@ function showAnswer() {
         document.getElementById("next-btn").style.display = "inline-block";
     }
 
-    document.getElementById("question-answer").textContent = question.answer;
+    let answerContainer = document.getElementById("question-answer");
+    
+    // Clear previous answer
+    answerContainer.innerHTML = ""; 
 
+    // 🎵 If the answer is an object (Artist + Title), format it
+    if (typeof question.answer === "object") {
+        let answerText = "";
+        for (let key in question.answer) {
+            answerText += `<strong>${key}:</strong> ${question.answer[key]}<br>`;
+        }
+        answerContainer.innerHTML = answerText;
+    } 
+    // 📋 If it's a normal text answer, display as is
+    else if (typeof question.answer === "string") {
+        answerContainer.textContent = question.answer;
+    }
+
+    // 🔄 Send answer to server
     socket.emit("sendAnswerToServer", question.answer);
 }
 
@@ -251,7 +275,27 @@ function showGameOverScreen() {
     socket.emit("gameOver", topPlayers);
 }
 
-// Event listener for displaying the answer matrix
+// Helper function to check if the player's answer matches the correct answer
+function checkAnswer(playerAnswer, correctAnswer) {
+    let score = 0;
+
+    // If answer is an object, we compare key-value pairs
+    if (typeof correctAnswer === 'object' && !Array.isArray(correctAnswer)) {
+        for (let key in correctAnswer) {
+            if (playerAnswer[key] && playerAnswer[key].toLowerCase() === correctAnswer[key].toLowerCase()) {
+                score++;
+            }
+        }
+    } else {
+        // If answer is a single value (string), we compare directly
+        if (playerAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+            score = 1;
+        }
+    }
+    return score;
+}
+
+// Event listener to handle the display of answers and updating the score
 socket.on("displayAnswerMatrix", (players) => {
     // Hide other containers and show the answer container
     document.getElementById("setup-container").style.display = "none";
@@ -273,23 +317,27 @@ socket.on("displayAnswerMatrix", (players) => {
     players.forEach(({ id, name, score, answer }) => {
         let answerBox = document.createElement("div");
         answerBox.classList.add("answer-box");
-        answerBox.innerHTML = `<strong>${name}:</strong> ${answer}`;
-        
-        if (answer.toLowerCase() === currentAnswer.toLowerCase()) {
-            socket.emit("updateScore", { id, score: score + 1 });
-            answerBox.classList.add("clicked");
-            answerBox.style.background = "rgba(76, 175, 80, 0.8)"; // Make it green
-        } 
+        answerBox.innerHTML = `<strong>${name}:</strong> ${JSON.stringify(answer)}`;
 
-        // Add a click event to give points
+        // Check if the player's answer is correct
+        let answerScore = checkAnswer(answer, currentAnswer);
+
+        // Update the player's score based on correctness
+        if (answerScore > 0) {
+            socket.emit("updateScore", { id, score: score + answerScore }); // Award points for the answer
+            answerBox.classList.add("clicked");
+            answerBox.style.background = "rgba(76, 175, 80, 0.8)"; // Make it green if correct
+        }
+
+        // Add a click event to toggle points (in case you want to allow re-clicking)
         answerBox.addEventListener("click", () => {
             if (answerBox.classList.contains("clicked")) {
-                // If clicked, remove the 'clicked' class, deduct a point, and reset background color
+                // If clicked, remove the 'clicked' class, deduct points, and reset background color
                 socket.emit("updateScore", { id, score: score });
                 answerBox.classList.remove("clicked");
                 answerBox.style.background = ""; // Reset background color
             } else {
-                // If not clicked, add the 'clicked' class, add a point, and change background color to green
+                // If not clicked, add points and change background color to green
                 socket.emit("updateScore", { id, score: score + 1 });
                 answerBox.classList.add("clicked");
                 answerBox.style.background = "rgba(76, 175, 80, 0.8)"; // Make it green
@@ -311,8 +359,3 @@ function moveToNextQuestion() {
         socket.emit("nextQuestion");
     }
 }
-
-// Event listener for receiving client answers
-socket.on("sendClientAnswerToHost", (player, answer) => {
-    console.info(`${player.name} Answered: ${answer}`);
-});

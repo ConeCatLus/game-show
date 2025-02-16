@@ -117,14 +117,25 @@ io.on("connection", (socket) => {
     socket.on("clientAnswer", (answer) => {
         const player = players.find(p => p.id === socket.id);
         if (player) {
-            console.info(`${player.name} Answered: ${answer}`);
+            let playerAnswerDisplay = "";
+            if (typeof answer === "object") {
+                playerAnswerDisplay += Object.entries(answer).map(([key, value]) => `${key}: ${value}`).join(", ");
+            } else {
+                playerAnswerDisplay += answer;
+            }
+            console.info(`${player.name} Answered: ${playerAnswerDisplay}`);
             player.answer = answer;
             setGameState(GameState.ANSWER_SCREEN, {}, player.id);
-            io.emit("sendClientAnswerToHost", players); // Send answers to the host
         }
     });
     
     socket.on("sendAnswerToServer", (answer) => {
+        let playerAnswerDisplay = "";
+        if (typeof answer === "object") {
+            playerAnswerDisplay += Object.entries(answer).map(([key, value]) => `${key}: ${value}`).join(", ");
+        } else {
+            playerAnswerDisplay += answer;
+        }
         console.info("Correct Answer:", answer);
         io.emit("showAnswer", answer);
         io.emit("displayAnswerMatrix", players); // Send the answers to the host screen

@@ -11,7 +11,7 @@ const GameState = Object.freeze({
 });
 
 let playerName = "";
-let playerAnswer = "";
+let playerAnswer = {};
 let gameState;
 let progressTimeout;
 
@@ -130,19 +130,44 @@ function startProgressBar(duration) {
 // Set screen -> QUESTION_SCREEN 
 function showQuestionScreen(question) {
     updateStatus("");
+    playerAnswer = {};
     document.getElementById("join-container").style.display = "none";
     document.getElementById("limbo-container").style.display = "none";
     document.getElementById("answer-container").style.display = "none";
     document.getElementById("game-over-container").style.display = "none";
-    document.getElementById("question-container").style.display = "block";
     document.getElementById("display-question").innerText = question.question;
     document.getElementById("answer-display-question").innerText = question.question; // For showAnswerScreen
-    document.getElementById("client-answer").value = "";
     document.getElementById("join-screen-name").innerText = "Bubblegum Game - Question "; //+ questionNumber;
-    playerAnswer = "";
-
+    
     let timeLeft = question.timer;
 
+    // Clear any previous inputs or elements
+    let answerContainer = document.getElementById("answers");
+    answerContainer.innerHTML = ""; // Clear previous answer inputs
+
+    // 📝 If the answer is an object (multi-part answer), create multiple inputs
+    if (typeof question.answer === "object") {
+        for (let key in question.answer) {
+            let input = document.createElement("input");
+            input.type = "text";
+            input.placeholder = key;   
+            input.classList.add("client-answer-input");
+            input.setAttribute("data-key", key);
+            answerContainer.appendChild(input);
+            answerContainer.appendChild(document.createElement("br"));
+        }
+    } else {
+        // Otherwise, just create a single input
+        let input = document.createElement("input");
+        input.type = "text";
+        input.id = "client-answer";
+        input.placeholder = "Enter your answer";
+        answerContainer.appendChild(input);
+    }
+
+    document.getElementById("question-container").style.display = "block";
+    
+    // 🕒 Handle timer
     if (timeLeft > 0) {
         document.getElementById("progress-container").style.display = "inline-block";
         startProgressBar(timeLeft);
@@ -154,47 +179,81 @@ function showQuestionScreen(question) {
         document.getElementById("progress-container").style.display = "none";
     }
 }
+
 // Submit answer to server
-function submitAnswer(noAnswer = false)
-{
-    playerAnswer = document.getElementById("client-answer").value.trim();
-    if (!playerAnswer && !noAnswer) {
+function submitAnswer(noAnswer = false) {
+    // Get the values of all the dynamically created inputs
+    const answerInputs = document.querySelectorAll(".client-answer-input");
+    if (answerInputs.length > 0) {
+        answerInputs.forEach(input => {
+            const key = input.getAttribute("data-key");
+            const value = input.value.trim();
+            if (value) {
+                playerAnswer[key] = value;
+            }
+        });
+    } else {
+        // If it's just one input (e.g., a single string answer), handle it normally
+        playerAnswer = document.getElementById("client-answer").value.trim();
+    }
+
+    // Check if the player answered the question
+    if (Object.keys(playerAnswer).length === 0 && !noAnswer) {
         updateStatus("Please enter an answer");
         return;
-    }
-    else {
+    } else {
         socket.emit("clientAnswer", playerAnswer);
     }
 }
+
 // Set screen -> SHOW_SCREEN 
-function showAnswerScreen()
-{    
+function showAnswerScreen() {
     updateStatus("");
     document.getElementById("join-container").style.display = "none";
     document.getElementById("limbo-container").style.display = "none";
     document.getElementById("question-container").style.display = "none";
     document.getElementById("game-over-container").style.display = "none";
-    document.getElementById("display-your-answer").innerText = "Your answer: " + playerAnswer;
+
+    // Display the player's answer (could be an object with multiple fields)
+    let playerAnswerDisplay = "Your answer: ";
+    if (typeof playerAnswer === "object") {
+        playerAnswerDisplay += Object.entries(playerAnswer).map(([key, value]) => `${key}: ${value}`).join(", ");
+    } else {
+        playerAnswerDisplay += playerAnswer;
+    }
+    
+    document.getElementById("display-your-answer").innerText = playerAnswerDisplay;
+
     document.getElementById("display-wait-message").innerText = "Correct answer will show soon!";   
     document.getElementById("display-correct-answer").style.display = "none"; // Hide answer until we get it
     document.getElementById("answer-container").style.display = "flex";
 }
+
 // Server broadcast answer to all clients
 socket.on("showAnswer", (questionAnswer) => {
-    // If a question don't have a timer this will trigger the show answer screen.
+    // If a question doesn't have a timer this will trigger the show answer screen
     if (gameState === GameState.QUESTION_SCREEN) {
         gameState = GameState.ANSWER_SCREEN; 
         showAnswerScreen();
     }
+
     if (gameState === GameState.ANSWER_SCREEN) {
-        document.getElementById("display-correct-answer").innerText = "Correct answer: " + questionAnswer;
+        // If the correct answer is an object, format it similarly to the player's answer
+        let correctAnswerDisplay = "Correct answer: ";
+        if (typeof questionAnswer === "object") {
+            correctAnswerDisplay += Object.entries(questionAnswer).map(([key, value]) => `${key}: ${value}`).join(", ");
+        } else {
+            correctAnswerDisplay += questionAnswer;
+        }
+
+        document.getElementById("display-correct-answer").innerText = correctAnswerDisplay;
         document.getElementById("display-wait-message").innerText = "The next question will show soon!";  
         document.getElementById("display-correct-answer").style.display = "block";
-    }
-    else {
-        console.info("Illeagal action in state: " + gameState);
+    } else {
+        console.info("Illegal action in state: " + gameState);
     }
 });
+
 
 function updateTopPlayersList(topPlayers) {
     const topPlayersListElement = document.getElementById("top-players-list");

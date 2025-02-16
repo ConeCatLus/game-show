@@ -1,36 +1,52 @@
 [
-    {
-      "question": "Name the artist of this song.",
-      "answer": "The Beatles",
-      "audio": "https://open.spotify.com/track/3ehCOa89sOvJicgLLUTgNe?si=4f5c42ed03154e13",
-      "timer": 0,
-      "theme": "music-theme"
-    },
-    {
-      "question": "From what move is this?",
-      "answer": "Inception",
-      "image": "../images/inception.avif",
-      "timer": 5,
-      "theme": "movie-theme"
-    },
-    {
-      "question": "What is the chemical symbol for gold?",
-      "answer": "Au",
-      "timer": 5,
-      "theme": "bubblegum-theme"
-    },
-    {
-      "question": "Who is this American president?",
-      "answer": "George Washington",
-      "image": "images/george-washington.webp",
-      "timer": 0
-    },
-    {
-      "question": "Name the artist of this song.",
-      "answer": "Queen",
-      "video": "https://www.youtube.com/embed/fJ9rUzIMcZQ",
-      "timer": 0,
-      "theme": "music-theme"
-    }
+  {
+    "question": "Name the artist and song title.",
+    "answer": { "Artist": "Queen", "Title": "Bohemian Rhapsody" },
+    "audio": ["https://open.spotify.com/track/3z8h0TU7ReDPLIbEnYhWZb?si=b829b7cc4c5b4f41"],
+    "timer": 0,
+    "theme": "music-theme"
+  },
+  {
+    "question": "Which two austronauts was the first to walk on the moon?",
+    "answer": { "Austronaut 1": "Bruce", "Austronaut 2": "Niel" },
+    "timer": 0,
+    "theme": "bubblegum-theme"
+  },
+  {
+    "question": "What do these songs have in common?",
+    "answer": "90s hits",
+    "audio": [
+        "https://open.spotify.com/track/0d28khcov6AiegSCpG5TuT",
+        "https://open.spotify.com/track/3Li5GeTTjjfRyoSwo7cWz1",
+        "https://open.spotify.com/track/5ChkMS8OtdzJeqyybCc9R5"
+    ],
+    "timer": 0,
+    "theme": "music-theme"
+  },
+  {
+    "question": "From what movie is this?",
+    "answer": "Inception",
+    "image": "../images/inception.avif",
+    "timer": 5,
+    "theme": "movie-theme"
+  },
+  {
+    "question": "What is the chemical symbol for gold?",
+    "answer": "Au",
+    "timer": 5,
+    "theme": "bubblegum-theme"
+  },
+  {
+    "question": "Who is this American president?",
+    "answer": "George Washington",
+    "image": "images/george-washington.webp",
+    "timer": 0
+  },
+  {
+    "question": "What is the name of this song?",
+    "answer": "Bohemian Rhapsody",
+    "video": "https://www.youtube.com/embed/fJ9rUzIMcZQ",
+    "timer": 0,
+    "theme": "music-theme"
+  }
 ]
-  
