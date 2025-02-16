@@ -1,5 +1,8 @@
+const IP = "192.168.1.66";
+const PORT = "4000";
+
 const clientId = '21dcef6970a446dba03fa04599fa7510'; // Your Spotify App Client ID
-const redirectUri = 'https://192.168.1.170:4000/'; // Must match Spotify Developer Dashboard settings
+const redirectUri = `https://${IP}:${PORT}/`; // Must match Spotify Developer Dashboard settings
 
 const scopes = [
     'streaming', // Required for playback
@@ -11,6 +14,7 @@ const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&re
 
 let player;
 let deviceId;
+let isPlayerInitialized = false; // 🔄 Prevent duplicate player initialization
 
 // ✅ Get the Spotify Access Token
 function getAccessToken() {
@@ -43,10 +47,14 @@ function requestNewToken() {
 
 // ✅ Check & Refresh Token on Page Load
 function checkAndRefreshToken() {
-    if (!localStorage.getItem("spotify_access_token") || isTokenExpired()) {
+    const token = localStorage.getItem("spotify_access_token");
+
+    if (!token || isTokenExpired()) {
+        console.warn("🔄 Token is missing or expired. Requesting a new one...");
         requestNewToken();
     } else {
         console.log("✅ Token is valid.");
+        initializePlayer(); // Ensure player starts only once
     }
 }
 
@@ -57,9 +65,49 @@ function logoutSpotify() {
     requestNewToken();
 }
 
+// ✅ Ensure SDK Function is Defined Globally
+window.onSpotifyWebPlaybackSDKReady = function () {
+    initializePlayer();
+};
+
+function initializePlayer() {
+    if (isPlayerInitialized) return; // ✅ Prevent duplicate initialization
+    isPlayerInitialized = true;
+
+    console.log("🛠️ Initializing Spotify Player...");
+
+    const token = localStorage.getItem("spotify_access_token");
+    if (!token) {
+        console.error("❌ No valid token! Cannot initialize Spotify player.");
+        return;
+    }
+
+    player = new Spotify.Player({
+        name: 'Quiz Player',
+        getOAuthToken: cb => { cb(token); },
+        volume: 0.5
+    });
+
+    player.addListener('ready', ({ device_id }) => {
+        console.log('✅ Player is ready!', device_id);
+        deviceId = device_id;
+    });
+
+    player.addListener('authentication_error', ({ message }) => {
+        console.error('❌ Authentication error: ', message);
+        logoutSpotify();
+    });
+
+    player.addListener('not_ready', ({ device_id }) => {
+        console.warn('⚠️ Player is offline', device_id);
+    });
+
+    player.connect();
+}
+
 // ✅ Wait Until Device ID is Ready
 async function waitForDeviceId() {
-    let retries = 15; // Try for 15 seconds
+    let retries = 15;
     while (!deviceId && retries > 0) {
         console.warn("⏳ Waiting for device ID...");
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -99,40 +147,6 @@ async function transferPlaybackToWebPlayer() {
     }).catch(err => console.error("❌ Network error transferring playback:", err));
 }
 
-// ✅ Initialize Spotify Web Playback SDK
-window.onSpotifyWebPlaybackSDKReady = () => {
-    console.log("🎵 Spotify SDK is loaded!");
-
-    const token = localStorage.getItem("spotify_access_token");
-    if (!token) {
-        console.error("❌ No valid token! Cannot initialize Spotify player.");
-        return;
-    }
-
-    console.log("🛠️ Connecting Spotify Web Player...");
-
-    player = new Spotify.Player({
-        name: 'Quiz Player',
-        getOAuthToken: cb => { cb(token); },
-        volume: 0.5
-    });
-
-    player.addListener('ready', ({ device_id }) => {
-        console.log('✅ Player is ready!', device_id);
-        deviceId = device_id;
-    });
-
-    player.addListener('authentication_error', ({ message }) => {
-        console.error('❌ Authentication error:', message);
-        logoutSpotify();
-    });
-
-    player.addListener('not_ready', ({ device_id }) => {
-        console.warn('⚠️ Player is offline', device_id);
-    });
-
-    player.connect();
-};
 
 // ✅ Function to Play a Song
 async function playSong(trackUrl) {
@@ -149,10 +163,8 @@ async function playSong(trackUrl) {
         return;
     }
 
-    // Check if input is a full URL and extract URI
-    let trackUri = `spotify:track:${trackUrl.split('/track/')[1]}`; // Convert to Spotify URI
+    let trackUri = `spotify:track:${trackUrl.split('/track/')[1].split('?')[0]}`; // Clean up URI
 
-    // 🔄 Transfer playback to our Web Playback SDK device
     console.log("🔄 Transferring playback to Web Player...");
     await fetch("https://api.spotify.com/v1/me/player", {
         method: "PUT",
@@ -167,7 +179,6 @@ async function playSong(trackUrl) {
         }
     });
 
-    // 🎵 Now, try to play the song
     console.log(`🎵 Playing track: ${trackUri}`);
     fetch("https://api.spotify.com/v1/me/player/play", {
         method: "PUT",
@@ -177,16 +188,8 @@ async function playSong(trackUrl) {
         },
         body: JSON.stringify({ uris: [trackUri] }) 
     }).then(response => {
-        if (response.status === 404) {
-            console.error("❌ No active Spotify device found! Try clicking 'Start Player' first.");
-        } else if (response.status === 401) {
-            console.error("❌ Unauthorized! Logging out...");
-            logoutSpotify();
-        } else if (response.ok) {
-            console.log("✅ Song is playing!");
-        } else {
-            response.json().then(err => console.error("❌ Failed to play song:", err));
-        }
+        if (!response.ok) throw new Error(`Spotify API error: ${response.status}`);
+        console.log("✅ Song is playing!");
     }).catch(err => console.error("❌ Error playing song:", err));
 }
 

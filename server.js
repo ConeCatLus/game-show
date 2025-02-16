@@ -4,6 +4,8 @@ const fs = require("fs");
 const socketIo = require("socket.io");
 const QRCode = require("qrcode");
 const path = require("path");
+const IP = require("ip").address();
+const PORT = process.env.PORT || 4000;
 
 // Load SSL certificates
 const options = {
@@ -15,7 +17,6 @@ const app = express();
 const server = https.createServer(options, app); // Use HTTPS
 const io = socketIo(server);
 
-const PORT = process.env.PORT || 4000;
 let currentTheme = "default";
 
 const GameState = Object.freeze({
@@ -42,8 +43,7 @@ let players = [];
 // Generate QR Code
 app.get("/qr", async (req, res) => {
     try {
-        const ip = require("ip").address(); // Get local IP address
-        const qrData = `https://${ip}:4000/join?code=${gameCode}`;
+        const qrData = `https://${IP}:${PORT}/join?code=${gameCode}`;
         const qrImage = await QRCode.toDataURL(qrData);
         res.json({ qr: qrImage });
     } catch (error) {
@@ -142,5 +142,5 @@ io.on("connection", (socket) => {
 
 // Start HTTPS server
 server.listen(PORT, () => {
-    console.log(`🚀 Server running at https://${require("ip").address()}:${PORT}/`);
+    console.log(`🚀 Server running at https://${IP}:${PORT}/`);
 });
