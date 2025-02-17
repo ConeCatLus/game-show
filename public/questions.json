@@ -2,6 +2,7 @@
   {
     "question": "Name the artist and song title.",
     "answer": { "Artist": "Queen", "Title": "Bohemian Rhapsody" },
+    "image": "../images/inception.avif",
     "audio": ["https://open.spotify.com/track/3z8h0TU7ReDPLIbEnYhWZb?si=b829b7cc4c5b4f41"],
     "timer": 0,
     "theme": "music-theme"

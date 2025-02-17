@@ -194,23 +194,35 @@ function nextQuestion() {
     if (question.audio) {
         let audioContainer = document.createElement("div");
         let playingIndex = -1; // Track which song is playing
+        let currentPlayingBtn = null;
 
         question.audio.forEach((audioUrl, index) => {
             let playBtn = document.createElement("button");
             playBtn.innerText = `▶ Play Track ${index + 1}`;
+            
             playBtn.onclick = () => {
                 if (playingIndex === index) {
+                    // Stop current track
                     playingIndex = -1;
                     playBtn.innerText = `▶ Play Track ${index + 1}`;
                     stopSong();
+                    currentPlayingBtn = null;
                 } else {
+                    // Stop any currently playing track first
+                    if (currentPlayingBtn) {
+                        currentPlayingBtn.innerText = `▶ Play Track ${playingIndex + 1}`;
+                    }
+
+                    // Start new track
                     playingIndex = index;
                     playBtn.innerText = `⏹ Stop`;
                     playSong(audioUrl);
+                    currentPlayingBtn = playBtn;
                 }
             };
             audioContainer.appendChild(playBtn);
         });
+
 
         mediaContainer.appendChild(audioContainer);
     }
@@ -239,6 +251,9 @@ function showAnswer() {
     let showAnswerBtn = document.getElementById("show-answer-btn");
 
     if (showAnswerBtn.innerHTML === "Show Answer") {
+        if (question.audio) {
+            stopSong(); // If song -> Stop it before showing answer
+        }
         document.getElementById("next-btn").style.display = "inline-block";
     }
 
@@ -275,25 +290,61 @@ function showGameOverScreen() {
     socket.emit("gameOver", topPlayers);
 }
 
+function isCloseMatch(input, correct) {
+    let distance = levenshteinDistance(input, correct);
+    let threshold = Math.ceil(correct.length * 0.3); // Allow 30% of the length as errors
+    return distance <= threshold;
+}
+
+// Levenshtein Distance Algorithm
+function levenshteinDistance(a, b) {
+    let tmp;
+    if (a.length === 0) return b.length;
+    if (b.length === 0) return a.length;
+    if (a.length > b.length) {
+        tmp = a;
+        a = b;
+        b = tmp;
+    }
+
+    let row = Array(a.length + 1).fill(0).map((_, i) => i);
+    
+    for (let i = 1; i <= b.length; i++) {
+        let prev = i;
+        for (let j = 1; j <= a.length; j++) {
+            let val = b[i - 1] === a[j - 1] ? row[j - 1] : Math.min(row[j - 1] + 1, prev + 1, row[j] + 1);
+            row[j - 1] = prev;
+            prev = val;
+        }
+        row[a.length] = prev;
+    }
+    return row[a.length];
+}
+
+
 // Helper function to check if the player's answer matches the correct answer
 function checkAnswer(playerAnswer, correctAnswer) {
     let score = 0;
 
-    // If answer is an object, we compare key-value pairs
+    // If correctAnswer is an object (e.g., multiple fields)
     if (typeof correctAnswer === 'object' && !Array.isArray(correctAnswer)) {
         for (let key in correctAnswer) {
-            if (playerAnswer[key] && playerAnswer[key].toLowerCase() === correctAnswer[key].toLowerCase()) {
-                score++;
+            if (playerAnswer[key]) {
+                if (isCloseMatch(playerAnswer[key], correctAnswer[key])) {
+                    score++;
+                }
             }
         }
     } else {
-        // If answer is a single value (string), we compare directly
-        if (playerAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+        // If correctAnswer is a single string
+        if (isCloseMatch(playerAnswer, correctAnswer)) {
             score = 1;
         }
     }
+
     return score;
 }
+
 
 // Event listener to handle the display of answers and updating the score
 socket.on("displayAnswerMatrix", (players) => {
@@ -317,7 +368,16 @@ socket.on("displayAnswerMatrix", (players) => {
     players.forEach(({ id, name, score, answer }) => {
         let answerBox = document.createElement("div");
         answerBox.classList.add("answer-box");
-        answerBox.innerHTML = `<strong>${name}:</strong> ${JSON.stringify(answer)}`;
+        let answerText = "";
+        if (typeof answer === 'object') {
+            Object.entries(answer).forEach(([key, value]) => {
+                answerText += `<strong>${key}:</strong> ${value}<br>`;
+            });
+        }
+        else {
+            answerText = answer;
+        }
+        answerBox.innerHTML = `<strong>${name}:</strong> ${answerText}`;
 
         // Check if the player's answer is correct
         let answerScore = checkAnswer(answer, currentAnswer);

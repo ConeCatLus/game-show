@@ -1,7 +1,7 @@
 const IP = "192.168.1.66";
 const PORT = "4000";
-
 const clientId = '21dcef6970a446dba03fa04599fa7510'; // Your Spotify App Client ID
+
 const redirectUri = `https://${IP}:${PORT}/`; // Must match Spotify Developer Dashboard settings
 
 const scopes = [
@@ -186,7 +186,7 @@ async function playSong(trackUrl) {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ uris: [trackUri] }) 
+        body: JSON.stringify({ uris: [trackUri], position_ms: 0  }) 
     }).then(response => {
         if (!response.ok) throw new Error(`Spotify API error: ${response.status}`);
         console.log("✅ Song is playing!");
