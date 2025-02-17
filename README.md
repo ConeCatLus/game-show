@@ -1,23 +1,7 @@
 # Game show
 Java, HTML, CSS based game show. 
 
-## Add questions
-Update the 'questions.json' file.
-
-### Supported questions
-* Multiple questions with multiple answers
-* Add images
-* Add Spotify links for music quiz
-* Youtube clips
-* Timer based questions
-
-### Themes that can be used
-* bubblegum-theme (purple/pink)
-* sports-theme (green/blue)
-* movie-theme (orage/red)
-* music-theme (purple/red)
-
-# Get started!
+# Getting started!
 ## First time using node.js
 ### Initialize a node.js project:
 ```sh
@@ -38,6 +22,48 @@ $ openssl req -nodes -new -x509 -keyout certs/key.pem -out certs/cert.pem
 3. Copy "Client ID" from Spotify dashboard to [soptifyAuth.js](public/scripts/soptifyAuth.js)
 4. Add "Redirect URIs" same style as redirectUri in [soptifyAuth.js](public/scripts/soptifyAuth.js) but with the actual IP and PORT.
 5. Select "APIs used" to be "Web Playback SDK".
+
+## Add questions
+Update the [questions.json](public/questions.json) file.
+
+### Supported questions
+* Multiple questions with multiple answers
+* Add images
+* Add Spotify links for music quiz
+* Youtube clips
+* Timer based questions
+
+### Themes that can be used
+| Theme Name        | Colors        |
+|-------------------|--------------|
+| bubblegum-theme  | Purple/Pink  |
+| sports-theme     | Green/Blue   |
+| movie-theme      | Orange/Red   |
+| music-theme      | Purple/Red   |
+
+
+### JSON Example
+[
+    {
+        "question": "Name the artist and song title.",
+        "question-info": "Required - The prompt for the question to be asked.",
+        "answer": { 
+            "Artist": "Queen", 
+            "Title": "Bohemian Rhapsody" 
+        },
+        "answer-info": "Required - An answer object. Each key represents an input field placeholder.",
+        "image": "../images/inception.avif",
+        "image-info": "Optional - Displays an image.",
+        "audio": [
+            "https://open.spotify.com/track/3z8h0TU7ReDPLIbEnYhWZb?si=b829b7cc4c5b4f41"
+        ],
+        "audio-info": "Optional - An array of Spotify links. Each entry generates its own play button.",
+        "timer": 0,
+        "timer-info": "Optional - Set to 0 for no timer, or a positive number for a countdown in seconds.",
+        "theme": "music-theme",
+        "theme-info": "Optional - Sets a theme for the question. Available themes: 'bubblegum-theme' (purple/pink), 'sports-theme' (green/blue), 'movie-theme' (orange/red), 'music-theme' (purple/red)."
+    }
+]
 
 ## Start server:
 ```sh

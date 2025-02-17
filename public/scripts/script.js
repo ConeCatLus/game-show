@@ -321,7 +321,6 @@ function levenshteinDistance(a, b) {
     return row[a.length];
 }
 
-
 // Helper function to check if the player's answer matches the correct answer
 function checkAnswer(playerAnswer, correctAnswer) {
     let score = 0;
