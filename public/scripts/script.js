@@ -327,13 +327,17 @@ function checkAnswer(playerAnswer, correctAnswer) {
 
     // If correctAnswer is an object (e.g., multiple fields)
     if (typeof correctAnswer === 'object' && !Array.isArray(correctAnswer)) {
-        for (let key in correctAnswer) {
-            if (playerAnswer[key]) {
-                if (isCloseMatch(playerAnswer[key], correctAnswer[key])) {
-                    score++;
-                }
+        let correctValues = Object.values(correctAnswer); // Keep original case for `isCloseMatch`
+        let playerValues = Object.values(playerAnswer); 
+
+        // Check if each player's answer exists in the correct answer set (ignoring order)
+        playerValues.forEach(playerVal => {
+            let matchIndex = correctValues.findIndex(correctVal => isCloseMatch(playerVal, correctVal));
+            if (matchIndex !== -1) {
+                score++;
+                correctValues.splice(matchIndex, 1); // Remove matched value to prevent duplicate scoring
             }
-        }
+        });
     } else {
         // If correctAnswer is a single string
         if (isCloseMatch(playerAnswer, correctAnswer)) {
@@ -343,6 +347,7 @@ function checkAnswer(playerAnswer, correctAnswer) {
 
     return score;
 }
+
 
 
 // Event listener to handle the display of answers and updating the score

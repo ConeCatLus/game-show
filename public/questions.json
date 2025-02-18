@@ -9,7 +9,7 @@
   },
   {
     "question": "Which two austronauts was the first to walk on the moon?",
-    "answer": { "Austronaut 1": "Bruce", "Austronaut 2": "Niel" },
+    "answer": { "Austronaut 1": "Buzz", "Austronaut 2": "Niel" },
     "timer": 0,
     "theme": "bubblegum-theme"
   },

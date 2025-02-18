@@ -41,8 +41,6 @@ Update the [questions.json](public/questions.json) file.
 | movie-theme      | Orange/Red   |
 | music-theme      | Purple/Red   |
 
-
-### JSON Example
 ### JSON Example
 ```json
 [
