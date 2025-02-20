@@ -12,8 +12,9 @@ $ npm init -y
 $ npm install express socket.io qrcode ip uuid
 ```
 ## Generate certs:
+Mac/Windows/Linux - install mkcert to generate secure certs
 ```sh
-$ openssl req -nodes -new -x509 -keyout certs/key.pem -out certs/cert.pem
+$ mkcert -key-file certs/key.pem -cert-file certs/cert.pem 192.168.1.209 localhost
 ```
 
 ## Spotify API
