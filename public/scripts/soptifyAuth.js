@@ -1,4 +1,4 @@
-const IP = "192.168.1.66";
+const IP = "192.168.1.209";
 const PORT = "4000";
 const clientId = '21dcef6970a446dba03fa04599fa7510'; // Your Spotify App Client ID
 
@@ -14,7 +14,6 @@ const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&re
 
 let player;
 let deviceId;
-let isPlayerInitialized = false; // 🔄 Prevent duplicate player initialization
 
 // ✅ Get the Spotify Access Token
 function getAccessToken() {
@@ -54,8 +53,9 @@ function checkAndRefreshToken() {
         requestNewToken();
     } else {
         console.log("✅ Token is valid.");
-        initializePlayer(); // Ensure player starts only once
+        // Ensure player starts only once
     }
+    initializePlayer(); 
 }
 
 // ✅ Logout & Clear Token
@@ -67,13 +67,10 @@ function logoutSpotify() {
 
 // ✅ Ensure SDK Function is Defined Globally
 window.onSpotifyWebPlaybackSDKReady = function () {
-    initializePlayer();
+    console.log(`✅ Spotify Web Playback SDK Ready`);
 };
 
 function initializePlayer() {
-    if (isPlayerInitialized) return; // ✅ Prevent duplicate initialization
-    isPlayerInitialized = true;
-
     console.log("🛠️ Initializing Spotify Player...");
 
     const token = localStorage.getItem("spotify_access_token");
@@ -186,7 +183,7 @@ async function playSong(trackUrl) {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ uris: [trackUri], position_ms: 0  }) 
+        body: JSON.stringify({ uri: trackUri, position_ms: 0  }) 
     }).then(response => {
         if (!response.ok) throw new Error(`Spotify API error: ${response.status}`);
         console.log("✅ Song is playing!");
