@@ -17,12 +17,14 @@ Mac/Windows/Linux - install mkcert to generate secure certs
 $ mkcert -key-file certs/key.pem -cert-file certs/cert.pem F.209 localhost
 ```
 
-## Spotify API
-1. In [soptifyAuth.js](public/scripts/soptifyAuth.js) change IP and PORT to match the host.
-2. Go to: https://developer.spotify.com/dashboard/ sign in and "Create app". 
-3. Copy "Client ID" from Spotify dashboard to [soptifyAuth.js](public/scripts/soptifyAuth.js)
-4. Add "Redirect URIs" same style as redirectUri in [soptifyAuth.js](public/scripts/soptifyAuth.js) but with the actual IP and PORT.
-5. Select "APIs used" to be "Web Playback SDK".
+## Setup - Spotify API and Server details
+1. Go to: https://developer.spotify.com/dashboard/ sign in and click "Create app".
+2. Navigate to settings -> Basic information
+3. Add "https://<ip-address>:<port>/" under "Redirect URIs"
+5. Select "APIs used" to be "Web Playback SDK"
+6. Copy "Client ID" from Spotify dashboard
+7. In an editor open [config.js](config.js)
+8. Add your port and IP and PORT then add the CLIENT_ID (from spotify dashboard)
 
 ## Add questions
 Update the [questions.json](public/questions.json) file.
@@ -74,5 +76,5 @@ You can have several 'optional' question items like image + audio + timer it's n
 $ node server.js
 ```
 
-Open the webb adress displayed in the terminal and start your quiz! in a browser (for the host).
+Open the web address displayed in the terminal and start your quiz!
 Players scan the QR code to join.
