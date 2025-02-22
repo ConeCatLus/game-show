@@ -1,19 +1,30 @@
-const IP = "192.168.1.209";
-const PORT = "4000";
-const clientId = '21dcef6970a446dba03fa04599fa7510'; // Your Spotify App Client ID
+// Is set from the server on page load
+let IP;
+let PORT;
+let CLIENT_ID;
 
-const redirectUri = `https://${IP}:${PORT}/`; // Must match Spotify Developer Dashboard settings
+// Is set on page load
+let redirectUri; // Must match Spotify Developer Dashboard settings
+let authUrl;
 
-const scopes = [
-    'streaming', // Required for playback
-    'user-read-private', 'user-read-email', 
-    'user-modify-playback-state', 'user-read-playback-state'
-].join('%20');
-
-const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes}`;
-
+// Spotify Player SDK global variables
 let player;
 let deviceId;
+
+// Fetch the Server IP,  Port and Client ID
+async function fetchServerIP() {
+    try {
+        const response = await fetch("/api/ip");
+        const data = await response.json();
+        IP = data.ip;
+        PORT = data.port;
+        CLIENT_ID = data.clientId;
+        
+        console.log(`🎵 Using Spotify Client ID: ${CLIENT_ID} at ${IP}:${PORT}`);
+    } catch (error) {
+        console.error("❌ Failed to fetch server IP:", error);
+    }
+}
 
 // ✅ Get the Spotify Access Token
 function getAccessToken() {
@@ -183,7 +194,7 @@ async function playSong(trackUrl) {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ uri: trackUri, position_ms: 0  }) 
+        body: JSON.stringify({ uris: [trackUri], position_ms: 0  }) 
     }).then(response => {
         if (!response.ok) throw new Error(`Spotify API error: ${response.status}`);
         console.log("✅ Song is playing!");
@@ -219,7 +230,20 @@ function stopSong() {
 }
 
 // ✅ Ensure Token is Valid on Page Load
-window.onload = () => {
+window.onload = async () => {
+    const scopes = [
+        'streaming', // Required for playback
+        'user-read-private', 'user-read-email', 
+        'user-modify-playback-state', 'user-read-playback-state'
+    ].join('%20');
+
+    // Wait for IP and PORT to be fetched before continuing
+    await fetchServerIP();
+
+    redirectUri = `https://${IP}:${PORT}/`;
+    authUrl = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes}`;
+
     getAccessToken();
     checkAndRefreshToken();
 };
+

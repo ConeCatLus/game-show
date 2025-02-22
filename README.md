@@ -14,7 +14,7 @@ $ npm install express socket.io qrcode ip uuid
 ## Generate certs:
 Mac/Windows/Linux - install mkcert to generate secure certs
 ```sh
-$ mkcert -key-file certs/key.pem -cert-file certs/cert.pem 192.168.1.209 localhost
+$ mkcert -key-file certs/key.pem -cert-file certs/cert.pem F.209 localhost
 ```
 
 ## Spotify API
@@ -43,6 +43,8 @@ Update the [questions.json](public/questions.json) file.
 | music-theme      | Purple/Red   |
 
 ### JSON Example
+You can have several 'optional' question items like image + audio + timer it's not limited
+
 ```json
 [
   {
