@@ -14,6 +14,16 @@ let playerName = "";
 let playerAnswer = {};
 let gameState;
 let progressTimeout;
+let playerId = localStorage.getItem("playerId");
+
+if (!playerId) {
+    playerId = crypto.randomUUID(); // Generate a new unique ID
+    localStorage.setItem("playerId", playerId);
+    console.log("Generated new player ID:", playerId);
+}
+
+// Send playerId to the server
+socket.emit("reconnectPlayer", playerId);
 
 document.getElementById("game-code").innerText = gameCode;
 
@@ -93,7 +103,7 @@ function joinGame() {
         return;
     }
     else {
-        socket.emit("joinGame", playerName);
+        socket.emit("joinGame", {playerId, playerName});
     }   
 }
 // Set screen -> JOIN_SCREEN
@@ -151,7 +161,7 @@ function showQuestionScreen(question) {
             let input = document.createElement("input");
             input.type = "text";
             input.placeholder = key;   
-            input.classList.add("client-answer-input");
+            input.classList.add("join-answer-input");
             input.setAttribute("data-key", key);
             answerContainer.appendChild(input);
             answerContainer.appendChild(document.createElement("br"));
@@ -160,7 +170,7 @@ function showQuestionScreen(question) {
         // Otherwise, just create a single input
         let input = document.createElement("input");
         input.type = "text";
-        input.id = "client-answer";
+        input.id = "join-answer";
         input.placeholder = "Enter your answer";
         answerContainer.appendChild(input);
     }
@@ -183,7 +193,7 @@ function showQuestionScreen(question) {
 // Submit answer to server
 function submitAnswer(noAnswer = false) {
     // Get the values of all the dynamically created inputs
-    const answerInputs = document.querySelectorAll(".client-answer-input");
+    const answerInputs = document.querySelectorAll(".join-answer-input");
     if (answerInputs.length > 0) {
         answerInputs.forEach(input => {
             const key = input.getAttribute("data-key");
@@ -194,7 +204,7 @@ function submitAnswer(noAnswer = false) {
         });
     } else {
         // If it's just one input (e.g., a single string answer), handle it normally
-        playerAnswer = document.getElementById("client-answer").value.trim();
+        playerAnswer = document.getElementById("join-answer").value.trim();
     }
 
     // Check if the player answered the question
@@ -202,7 +212,8 @@ function submitAnswer(noAnswer = false) {
         updateStatus("Please enter an answer");
         return;
     } else {
-        socket.emit("clientAnswer", playerAnswer);
+        console.log("Player answer:", playerAnswer);
+        socket.emit("clientAnswer", {playerId, playerAnswer});
     }
 }
 

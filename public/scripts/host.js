@@ -28,10 +28,6 @@ socket.on("updatePlayers", (updatedPlayers) => {
     updatePlayerList(updatedPlayers);
 });
 
-socket.on("updatePlayers", (updatedPlayers) => {
-    updatePlayerList(updatedPlayers);
-});
-
 function changeTheme(theme = null) {
     if (theme) {
         document.getElementById("theme").value = theme;
