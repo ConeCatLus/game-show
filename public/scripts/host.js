@@ -19,10 +19,6 @@ fetch("/qr")
     .catch(error => console.error("QR Code Error:", error)
 );
 
-socket.on("gameCode", (code) => {
-    document.getElementById("game-code").innerText = code;
-});
-
 // Listen for updated player list from the server
 socket.on("updatePlayers", (updatedPlayers) => {
     updatePlayerList(updatedPlayers);

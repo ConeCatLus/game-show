@@ -1,6 +1,5 @@
 const socket = io();
 const urlParams = new URLSearchParams(window.location.search);
-const gameCode = urlParams.get("code");
 const GameState = Object.freeze({
     JOIN_SCREEN: "time to join",
     LIMBO_SCREEN: "waiting for host to start",
@@ -20,15 +19,19 @@ if (!playerId) {
     playerId = crypto.randomUUID(); // Generate a new unique ID
     localStorage.setItem("playerId", playerId);
     console.log("Generated new player ID:", playerId);
+    socket.emit("connectedPlayer");
+}
+else {
+    // Send playerId to the server
+    console.log("Player reconnected", playerId);
+    socket.emit("reconnectPlayer", playerId);
 }
 
-// Send playerId to the server
-socket.emit("reconnectPlayer", playerId);
-
-document.getElementById("game-code").innerText = gameCode;
-
-socket.on("newState", (state, data) => {
+socket.on("newState", (state, data, force) => {
     console.log(`State changed to: ${state}`, data);
+    if (force) {
+        console.log("Force state change on reconnected player");
+    }
 
     switch (state) {
         case GameState.JOIN_SCREEN:
@@ -37,7 +40,9 @@ socket.on("newState", (state, data) => {
             break;
 
         case GameState.LIMBO_SCREEN:
-            if (gameState === GameState.JOIN_SCREEN) {
+            if (gameState === GameState.JOIN_SCREEN ||
+                force) 
+            {
                 gameState = state;
                 showLimboScreen(); // Player has joined and is in limbo until game starts
             }
@@ -47,8 +52,10 @@ socket.on("newState", (state, data) => {
             break;
 
         case GameState.QUESTION_SCREEN:
-            if (gameState == GameState.LIMBO_SCREEN ||
-                gameState == GameState.ANSWER_SCREEN) {
+            if ((gameState == GameState.LIMBO_SCREEN ||
+                gameState == GameState.ANSWER_SCREEN)  ||
+                force) 
+            {
                 gameState = state;
                 showQuestionScreen(data); // Data might contain the current question
             }
@@ -58,7 +65,9 @@ socket.on("newState", (state, data) => {
             break;
 
         case GameState.ANSWER_SCREEN:
-            if (gameState == GameState.QUESTION_SCREEN) {
+            if (gameState == GameState.QUESTION_SCREEN  ||
+                force) 
+            {
                 gameState = state;
                 showAnswerScreen(data); // Data might contain the correct answer
             }
@@ -68,7 +77,9 @@ socket.on("newState", (state, data) => {
             break;
 
         case GameState.GAME_OVER:
-            if (gameState == GameState.ANSWER_SCREEN) {
+            if (gameState == GameState.ANSWER_SCREEN  ||
+                force) 
+            {
                 gameState = state;
                 showGameOverScreen(data); // Data might contain the correct answer
             }
