@@ -268,7 +268,7 @@ function showAnswer() {
     }
 
     // 🔄 Send answer to server
-    socket.emit("sendAnswerToServer", question.answer);
+    socket.emit("sendAnswerToServer", question);
 }
 
 function showGameOverScreen() {

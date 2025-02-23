@@ -44,7 +44,6 @@ app.get("/", (req, res) => {
 
 let questionNumber = 1;
 let players = {}; // Store players as an object (dictionary)
-let mostRecentState = {state: GameState.JOIN_SCREEN, data: {}};
 let currentTheme = "default";
 
 // Generate QR Code
@@ -69,10 +68,6 @@ function setGameState(state, data = {}, CLIENT_ID = null, force = false) {
         io.to(CLIENT_ID).emit("newState", state, data, force); // Send to specific client
     } else {
         // Move save state to disconnect.
-        if (state !== GameState.CHANGE_THEME) {
-            mostRecentState = {state: state, data: data};
-            console.log("mostRecentState", mostRecentState);
-        }
         io.emit("newState", state, data, force); // Send state to all clients
     }
 }
@@ -83,21 +78,19 @@ io.on("connection", (socket) => {
         console.log("A player connected:", socket.id);
         setGameState(GameState.JOIN_SCREEN);
         setGameState(GameState.CHANGE_THEME, currentTheme);
-        mostRecentState.state = GameState.JOIN_SCREEN;
-        mostRecentState.data = {};
     });
 
     socket.on("reconnectPlayer", (playerId) => {
         console.log("A player re-connected:", socket.id);
         if (players[playerId]) {
             players[playerId].id = socket.id; // Update the socket ID
-            socket.emit("playerReconnected", players[playerId]); // Restore player state
+            setGameState(GameState.CHANGE_THEME, currentTheme, socket.id);
+            setGameState(players[playerId].state, players[playerId].data, socket.id, true); // Overrite client state machine
             console.log(`✅ Player ${players[playerId].name} reconnected!`);
             io.emit("updatePlayers", Object.values(players));
-            setGameState(GameState.CHANGE_THEME, currentTheme, socket.id);
-            setGameState(mostRecentState.state, mostRecentState.data, socket.id, true);
         }
         else {
+            // A player how refreshed in the join screen
             console.log("A player connected:", socket.id);
             setGameState(GameState.JOIN_SCREEN);
             setGameState(GameState.CHANGE_THEME, currentTheme);
@@ -123,6 +116,8 @@ io.on("connection", (socket) => {
             players[playerId].id = socket.id; // Update socket ID for reconnecting players
         }
         io.emit("updatePlayers", Object.values(players));
+        players[playerId].state = GameState.LIMBO_SCREEN;
+        players[playerId].data = {};
         setGameState(GameState.LIMBO_SCREEN, {}, socket.id);
     });
 
@@ -140,7 +135,11 @@ io.on("connection", (socket) => {
     });
 
     socket.on("startQuestion", (question) => {
-        setGameState(GameState.QUESTION_SCREEN, question);
+        Object.values(players).forEach(player => {
+            player.state = GameState.QUESTION_SCREEN;
+            player.data = {question: question};
+        });
+        setGameState(GameState.QUESTION_SCREEN, {question: question});
     });
     
     socket.on("nextQuestion", () => {
@@ -161,33 +160,36 @@ io.on("connection", (socket) => {
             }
             console.info(`${players[playerId].name} Answered: ${playerAnswerDisplay}`);
             players[playerId].answer = playerAnswer;
-            setGameState(GameState.ANSWER_SCREEN, {}, players[playerId].id);
+            players[playerId].state = GameState.ANSWER_SCREEN;
+            players[playerId].data.playerAnswer = playerAnswer; // Append player answer to data
+            setGameState(GameState.ANSWER_SCREEN, players[playerId].data, players[playerId].id);
         }
         else {
             console.error("Player not found:", playerId);
         }
     });
 
-    socket.on("sendAnswerToServer", (answer) => {
-        let playerAnswerDisplay = "";
-        if (typeof answer === "object") {
-            playerAnswerDisplay += Object.entries(answer).map(([key, value]) => `${key}: ${value}`).join(", ");
-        } else {
-            playerAnswerDisplay += answer;
-        }
-        console.info("Correct Answer:", answer);
-        io.emit("showAnswer", answer);
-        console.log(Object.values(players));  
+    socket.on("sendAnswerToServer", (question) => { 
+        Object.values(players).forEach(player => {
+            player.state = GameState.ANSWER_SCREEN;
+            player.data.showAnswer = true;
+        });       
+        console.info("Correct Answer:", question.answer);
+        io.emit("showAnswer", question); 
         io.emit("displayAnswerMatrix", Object.values(players)); // Send the answers to the host screen
     });
 
     socket.on("gameOver", (topPlayers) => {
+        Object.values(players).forEach(player => {
+            player.state = GameState.GAME_OVER;
+            player.data = topPlayers;
+        });
         setGameState(GameState.GAME_OVER, topPlayers);
     });
 
     socket.on("disconnect", () => {
         let disconnectedPlayerId = null;
-
+        
         // Find the player by socket ID
         Object.keys(players).forEach((playerId) => {
             if (players[playerId].id === socket.id) {

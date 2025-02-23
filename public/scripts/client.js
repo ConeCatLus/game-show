@@ -150,29 +150,29 @@ function startProgressBar(duration) {
 }
 // Set screen -> QUESTION_SCREEN 
 function showQuestionScreen(question) {
+    q = question.question;
     updateStatus("");
     playerAnswer = {};
     document.getElementById("join-container").style.display = "none";
     document.getElementById("limbo-container").style.display = "none";
     document.getElementById("answer-container").style.display = "none";
     document.getElementById("game-over-container").style.display = "none";
-    document.getElementById("display-question").innerText = question.question;
-    document.getElementById("answer-display-question").innerText = question.question; // For showAnswerScreen
+    document.getElementById("display-question").innerText = q.question;
     document.getElementById("join-screen-name").innerText = "Bubblegum Game - Question "; //+ questionNumber;
     
-    let timeLeft = question.timer;
+    let timeLeft = q.timer;
 
     // Clear any previous inputs or elements
     let answerContainer = document.getElementById("answers");
     answerContainer.innerHTML = ""; // Clear previous answer inputs
 
     // 📝 If the answer is an object (multi-part answer), create multiple inputs
-    if (typeof question.answer === "object") {
-        for (let key in question.answer) {
+    if (typeof q.answer === "object") {
+        for (let key in q.answer) {
             let input = document.createElement("input");
             input.type = "text";
             input.placeholder = key;   
-            input.classList.add("join-answer-input");
+            input.classList.add("client-answer-input");
             input.setAttribute("data-key", key);
             answerContainer.appendChild(input);
             answerContainer.appendChild(document.createElement("br"));
@@ -181,7 +181,7 @@ function showQuestionScreen(question) {
         // Otherwise, just create a single input
         let input = document.createElement("input");
         input.type = "text";
-        input.id = "join-answer";
+        input.id = "client-answer";
         input.placeholder = "Enter your answer";
         answerContainer.appendChild(input);
     }
@@ -204,7 +204,7 @@ function showQuestionScreen(question) {
 // Submit answer to server
 function submitAnswer(noAnswer = false) {
     // Get the values of all the dynamically created inputs
-    const answerInputs = document.querySelectorAll(".join-answer-input");
+    const answerInputs = document.querySelectorAll(".client-answer-input");
     if (answerInputs.length > 0) {
         answerInputs.forEach(input => {
             const key = input.getAttribute("data-key");
@@ -215,7 +215,7 @@ function submitAnswer(noAnswer = false) {
         });
     } else {
         // If it's just one input (e.g., a single string answer), handle it normally
-        playerAnswer = document.getElementById("join-answer").value.trim();
+        playerAnswer = document.getElementById("client-answer").value.trim();
     }
 
     // Check if the player answered the question
@@ -229,48 +229,59 @@ function submitAnswer(noAnswer = false) {
 }
 
 // Set screen -> SHOW_SCREEN 
-function showAnswerScreen() {
+function showAnswerScreen(data) {
     updateStatus("");
     document.getElementById("join-container").style.display = "none";
     document.getElementById("limbo-container").style.display = "none";
     document.getElementById("question-container").style.display = "none";
     document.getElementById("game-over-container").style.display = "none";
 
+    document.getElementById("answer-display-question").innerText = data.question.question;
+
     // Display the player's answer (could be an object with multiple fields)
     let playerAnswerDisplay = "Your answer: ";
+    // Virgin is a flag to check if the player have not answerd a question since last connect
+    if (data.playerAnswer) {
+        playerAnswer = data.playerAnswer;
+    }
     if (typeof playerAnswer === "object") {
         playerAnswerDisplay += Object.entries(playerAnswer).map(([key, value]) => `${key}: ${value}`).join(", ");
     } else {
         playerAnswerDisplay += playerAnswer;
     }
-    
-    document.getElementById("display-your-answer").innerText = playerAnswerDisplay;
-
-    document.getElementById("display-wait-message").innerText = "Correct answer will show soon!";   
-    document.getElementById("display-correct-answer").style.display = "none"; // Hide answer until we get it
+    if (data.showAnswer) {
+        displayQuestionAnswer(data.question.answer);
+    }
+    else {
+        document.getElementById("display-wait-message").innerText = "Correct answer will show soon!"; 
+        document.getElementById("display-correct-answer").style.display = "none"; // Hide answer until we get it
+    } 
+    document.getElementById("display-your-answer").innerText = playerAnswerDisplay; 
     document.getElementById("answer-container").style.display = "flex";
 }
 
+function displayQuestionAnswer(answer) {
+    let answerDisplay = "Correct answer: ";
+    if (typeof answer === "object") {
+        answerDisplay += Object.entries(answer).map(([key, value]) => `${key}: ${value}`).join(", ");
+    } else {
+        answerDisplay += answer;
+    }
+    document.getElementById("display-correct-answer").innerText = answerDisplay;
+    document.getElementById("display-wait-message").innerText = "The next question will show soon!";  
+    document.getElementById("display-correct-answer").style.display = "block";
+}
+
 // Server broadcast answer to all clients
-socket.on("showAnswer", (questionAnswer) => {
+socket.on("showAnswer", (question) => {
     // If a question doesn't have a timer this will trigger the show answer screen
     if (gameState === GameState.QUESTION_SCREEN) {
         gameState = GameState.ANSWER_SCREEN; 
-        showAnswerScreen();
+        showAnswerScreen({question: question});
     }
 
     if (gameState === GameState.ANSWER_SCREEN) {
-        // If the correct answer is an object, format it similarly to the player's answer
-        let correctAnswerDisplay = "Correct answer: ";
-        if (typeof questionAnswer === "object") {
-            correctAnswerDisplay += Object.entries(questionAnswer).map(([key, value]) => `${key}: ${value}`).join(", ");
-        } else {
-            correctAnswerDisplay += questionAnswer;
-        }
-
-        document.getElementById("display-correct-answer").innerText = correctAnswerDisplay;
-        document.getElementById("display-wait-message").innerText = "The next question will show soon!";  
-        document.getElementById("display-correct-answer").style.display = "block";
+        displayQuestionAnswer(question.answer);
     } else {
         console.info("Illegal action in state: " + gameState);
     }
