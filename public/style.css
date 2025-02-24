@@ -248,7 +248,7 @@ h1 {
 }
 
 /* Media (Images & Videos) */
-#media-container {
+#media-container, #answer-media-container {
     max-width: 80%;
     max-height: 50%;
     display: flex;
@@ -257,7 +257,9 @@ h1 {
 }
 
 #media-container img, 
-#media-container iframe {
+#media-container iframe,
+#answer-media-container img,
+#answer-media-container iframe {
     max-width: 100%;
     max-height: 25vh; /* Adjust max height using vh */
     border-radius: 10px;

@@ -15,6 +15,21 @@ app.get("/api/ip", (req, res) => {
     res.json({ ip: config.IP, port: config.PORT, clientId: config.CLIENT_ID });
 });
 
+// API to get available quizzes
+app.get("/api/quizes", (req, res) => {
+    const quizDir = path.join(__dirname, "public", "quizes");
+
+    fs.readdir(quizDir, (err, files) => {
+        if (err) {
+            return res.status(500).json({ error: "Unable to fetch quizzes" });
+        }
+
+        // Return only .json files
+        const quizFiles = files.filter(file => file.endsWith(".json"));
+        res.json(quizFiles);
+    });
+});
+
 // Load SSL certificates
 const options = {
     key: fs.readFileSync("certs/key.pem"),

@@ -1,0 +1,35 @@
+{
+  "quizName": "Vad hände 2025?",
+  "quizTheme": "bubblegum-theme",
+  "questions": [
+    {
+      "question": "Elon Musk gjorde så här på ett Trump Rally 21 januari, vad påstår han vara betydelsen av gesten?",
+      "answer": "Romersk salute",
+      "answerImage": "quizes/images/romersk-hälsning.jpg",
+      "image": "quizes/images/musk-heil.webp",
+      "timer": 0,
+      "theme": "bubblegum-theme"
+    },
+    {
+      "question": "Årets Melodifestival vanns av Måns Zelmerlöw men vad heter låten och i vilket land gick Eurovision i år?",
+      "answer": { "Låt": "Revolution", "Land": "Schweiz" },
+      "answerImage": "quizes/images/måns-revolution.jpg",
+      "audio": ["https://open.spotify.com/track/1xYhFfJInHS8hsGfrJW4lI?si=db213efe66364b23"],
+      "image": "quizes/images/måns-revolution.jpg",
+      "timer": 0,
+      "theme": "music-theme"
+    },
+    {
+      "question": "Vad har de här artisterna haft gemensamt under sommaren 2025?",
+      "answer": "Spelat på Ullevi",
+      "answerImage": "quizes/images/ullevi.webp",
+      "audio": [
+          "https://open.spotify.com/track/2zYzyRzz6pRmhPzyfMEC8s?si=4bb145f80f564c3b",
+          "https://open.spotify.com/track/3SjXx3rbNGk8nCho8YEoz5?si=b4b51db8b4654e1a",
+          "https://open.spotify.com/track/2nZMFrdnV0AxKlRvXbsDYX?si=3f0cb7d6db144c82"
+      ],
+      "timer": 0,
+      "theme": "music-theme"
+    }
+  ]
+}

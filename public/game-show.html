@@ -25,6 +25,10 @@
             <div id="setup-container">
                 <h2>Scan QR-code to join the game!</h2>
                 <img id="qr-code" class="qr" src="" alt="Scan to join" />
+                <select id="quizDropdown" onchange="selectQuiz()">
+                    <option value="">Select a quiz</option>
+                </select>
+                <p id="status" class="status"></p>
                 <button id="start-btn" onclick="startGame()">Start Game</button>
             </div>
             
@@ -41,6 +45,7 @@
             <div id="answer-container" style="display: none;">
                 <h2>Answer: <span id="question-answer"></span></h2>
                 <div id="answer-grid" class="answer-container"></div>
+                <div id="answer-media-container"></div>
                 <button id="next-btn" style="display: none;" onclick="moveToNextQuestion()">Next Question</button>
             </div>
 

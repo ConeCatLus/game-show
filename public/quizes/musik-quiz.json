@@ -1,0 +1,20 @@
+{
+  "quizName": "Musik Quiz - 90-talet", 
+  "quizTheme": "music-theme",
+  "questions": [
+    {
+      "question": "Låt och artist",
+      "answer": {"Artist": "Whitney Houston", "Låt": "I will always love you"},
+      "audio": ["https://open.spotify.com/track/4eHbdreAnSOrDDsFfc4Fpm?si=8e4bb813b2e644cb"],
+      "timer": 0,
+      "theme": "music-theme"
+    },
+    {
+      "question": "Vilket band och vilken Svensk teknikföretag har gjort en cover på den här låten?",
+      "answer": {"Artist": "Backstreet boys", "Butik": "NetonNet"},
+      "audio": ["https://open.spotify.com/track/6sbXGUn9V9ZaLwLdOfpKRE?si=98d827f759b54c27"],
+      "timer": 0,
+      "theme": "music-theme"
+    }
+  ]
+}

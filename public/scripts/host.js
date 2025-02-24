@@ -99,23 +99,66 @@ function updateTopPlayersList() {
 
 // Load questions from JSON
 document.addEventListener("DOMContentLoaded", () => {
-    loadQuestions();
+    fetch("/api/quizes")
+        .then(response => response.json())
+        .then(quizzes => {
+            const dropdown = document.getElementById("quizDropdown");
+            
+            quizzes.forEach(quizFile => {
+                fetch(`quizes/${quizFile}`)
+                    .then(response => response.json())
+                    .then(quizData => {
+                        const option = document.createElement("option");
+                        option.value = `quizes/${quizFile}`;
+                        option.textContent = quizData.quizName || quizFile.replace(".json", ""); // Use quizName if available
+                        dropdown.appendChild(option);
+                    })
+                    .catch(error => console.error("Error fetching quiz details:", error));
+            });
+        })
+        .catch(error => console.error("Error fetching quizzes:", error));
 });
 
-function loadQuestions() {
-    fetch("questions.json")
+function selectQuiz() {
+    const dropdown = document.getElementById("quizDropdown");
+    const selectedQuiz = dropdown.value;
+
+    if (!selectedQuiz) {
+        return;
+    }
+
+    fetch(selectedQuiz)
         .then(response => response.json())
         .then(data => {
-            questions = data;
+            if (data.questions) {
+                questions = data.questions; // Extract questions array
+                console.log("Loaded Quiz:", questions);
+                changeTheme(data.quizTheme);
+            } else {
+                console.error("Invalid quiz format: No 'questions' array found.");
+            }
         })
-        .catch(error => console.error("Error loading questions:", error));
+        .catch(error => console.error("Error loading selected quiz:", error));
 }
 
 function startGame() {
+    const dropdown = document.getElementById("quizDropdown");
+    const status = document.getElementById("status");
+    if (!dropdown.value) {
+        status.textContent = "Please select a quiz before starting!";
+        return;
+    }
+
+    if (!questions || questions.length === 0) {
+        status.textContent = "The selected quiz has no questions. Please choose another one.";
+        return;
+    }
+
     document.getElementById("setup-container").style.display = "none";
     document.getElementById("answer-container").style.display = "none";
     document.getElementById("start-btn").style.display = "none";
     document.getElementById("question-container").style.display = "flex";
+    status.textContent = "";
     nextQuestion();
 }
 
@@ -241,7 +284,10 @@ function nextQuestion() {
 function showAnswer() {
     let question = questions[currentIndex];
     let showAnswerBtn = document.getElementById("show-answer-btn");
-
+    let mediaContainer = document.getElementById("answer-media-container");
+    mediaContainer.innerHTML = "";
+    mediaContainer.style.display = "block";
+    
     if (showAnswerBtn.innerHTML === "Show Answer") {
         if (question.audio) {
             stopSong(); // If song -> Stop it before showing answer
@@ -265,6 +311,14 @@ function showAnswer() {
     // 📋 If it's a normal text answer, display as is
     else if (typeof question.answer === "string") {
         answerContainer.textContent = question.answer;
+    }
+
+    // 🖼️ Handle Image
+    if (question.answerImage) {
+        let img = document.createElement("img");
+        img.src = question.answerImage;
+        img.alt = "Answer Image";
+        mediaContainer.appendChild(img);
     }
 
     // 🔄 Send answer to server

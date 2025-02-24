@@ -48,27 +48,33 @@ Update the [questions.json](public/questions.json) file.
 You can have several 'optional' question items like image + audio + timer it's not limited
 
 ```json
-[
-  {
-    "question": "Name the artist and song title.",
-    "question-info": "Required - The prompt for the question to be asked.",
-    "answer": {
-      "Artist": "Queen",
-      "Title": "Bohemian Rhapsody"
-    },
-    "answer-info": "Required - An answer object. Each key represents an input field placeholder.",
-    "image": "../images/inception.avif",
-    "image-info": "Optional - Displays an image.",
-    "audio": [
-      "https://open.spotify.com/track/3z8h0TU7ReDPLIbEnYhWZb?si=b829b7cc4c5b4f41"
-    ],
-    "audio-info": "Optional - An array of Spotify links. Each entry generates its own play button.",
-    "timer": 0,
-    "timer-info": "Optional - Set to 0 for no timer, or a positive number for a countdown in seconds.",
-    "theme": "music-theme",
-    "theme-info": "Optional - Sets a theme for the question. Available themes: 'bubblegum-theme' (purple/pink), 'sports-theme' (green/blue), 'movie-theme' (orange/red), 'music-theme' (purple/red)."
-  }
-]
+{
+  "quizName": "Give your quiz a name",
+  "quizName-info": "Add a name to be shown in the dropdown list",
+  "quizTheme": "bubblegum-theme",
+  "quizeTheme-info": "Add a quiz theme to be shown in the start screen",
+  [
+    {
+      "question": "Name the artist and song title.",
+      "question-info": "Required - The prompt for the question to be asked.",
+      "answer": {
+        "Artist": "Queen",
+        "Title": "Bohemian Rhapsody"
+      },
+      "answer-info": "Required - An answer object. Each key represents an input field placeholder.",
+      "image": "../images/inception.avif",
+      "image-info": "Optional - Displays an image.",
+      "audio": [
+        "https://open.spotify.com/track/3z8h0TU7ReDPLIbEnYhWZb?si=b829b7cc4c5b4f41"
+      ],
+      "audio-info": "Optional - An array of Spotify links. Each entry generates its own play button.",
+      "timer": 0,
+      "timer-info": "Optional - Set to 0 for no timer, or a positive number for a countdown in seconds.",
+      "theme": "music-theme",
+      "theme-info": "Optional - Sets a theme for the question. Available themes: 'bubblegum-theme' (purple/pink), 'sports-theme' (green/blue), 'movie-theme' (orange/red), 'music-theme' (purple/red)."
+    }
+  ]
+}
 ```
 
 ## Start server:
