@@ -20,7 +20,7 @@ $ mkcert -key-file certs/key.pem -cert-file certs/cert.pem F.209 <ip-address>
 ## Setup - Spotify API and Server details
 1. Go to: https://developer.spotify.com/dashboard/ sign in and click "Create app".
 2. Navigate to settings -> Basic information
-3. Add "https://<ip-address>:<port>/" under "Redirect URIs"
+3. Add "https://ip-address:port/" under "Redirect URIs"
 5. Select "APIs used" to be "Web Playback SDK"
 6. Copy "Client ID" from Spotify dashboard
 7. In an editor open [config.js](config.js)
