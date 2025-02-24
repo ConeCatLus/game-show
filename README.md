@@ -27,7 +27,7 @@ $ mkcert -key-file certs/key.pem -cert-file certs/cert.pem F.209 <ip-address>
 8. Add your port and IP and PORT then add the CLIENT_ID (from spotify dashboard)
 
 ## Add questions
-Update the [questions.json](public/quizes/questions.json) file.
+Add a .json file here [questions](public/quizes/)
 
 ### Supported questions
 * Multiple questions with multiple answers
