@@ -62,6 +62,8 @@ You can have several 'optional' question items like image + audio + timer it's n
         "Title": "Bohemian Rhapsody"
       },
       "answer-info": "Required - An answer object. Each key represents an input field placeholder.",
+      "answerImage": "../images/answerImg.png",
+      "answerImage-info": "Add an image to be shown with the answer",
       "image": "../images/inception.avif",
       "image-info": "Optional - Displays an image.",
       "audio": [
