@@ -115,6 +115,7 @@ select {
     background: none;
     border: 2px solid white; /* Add a border */
     font-size: 2vh; /* Adjust font size using vh */
+    color: white;
     cursor: pointer;
     padding: 1vh 2vh; /* Adjust padding using vh */
     border-radius: 50px; /* Make it round */
@@ -167,14 +168,7 @@ h1 {
 
 /* Player Container */
 #players-container {
-    background: rgba(255, 255, 255, 0.2);
     width: 30vw;
-    height: 70vh;
-    padding: 2.5vh; /* Adjust padding using vh */
-    border-radius: 20px;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    margin-right: 2vh; /* Adjust margin using vh */
 }
 
 #player-list {
@@ -216,12 +210,12 @@ h1 {
 #join-container, 
 #limbo-container, 
 #answer-container, 
-#game-over-container {
+#game-over-container,
+#players-container {
     background: rgba(255, 255, 255, 0.2);
     width: 70vw;
     height: 75vh;
     padding: 2vh;
-    padding-bottom: 6vh;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -231,6 +225,7 @@ h1 {
     margin: 0 auto;
     box-sizing: border-box;
     overflow-y: auto; /* Allow vertical scrolling */
+    position: relative;
 }
 
 /* Remove border-radius for join.html containers */
@@ -259,9 +254,11 @@ h1 {
 #media-container img, 
 #media-container iframe,
 #answer-media-container img,
-#answer-media-container iframe {
+#answer-media-container iframe,
+img {
     max-width: 100%;
-    max-height: 25vh; /* Adjust max height using vh */
+    max-height: 30vh; /* Adjust max height using vh */
+    margin: 2vh;
     border-radius: 10px;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
 }
@@ -350,6 +347,7 @@ h1 {
 
 h2 {
     font-size: 4vh; /* Responsive font size using vh */
+    margin: 2vh;
 }
 
 #answer-container h2 {
@@ -360,7 +358,11 @@ p, button, select {
     font-size: 3vh; /* Responsive font size using vh */
 }
 
-.status {
+p {
+    margin: 1px;
+}
+
+.status { 
     font-size: 2vh; /* Adjust font size using vh */
     color: white;
     margin: 1vh 0; /* Adjust margin using vh */

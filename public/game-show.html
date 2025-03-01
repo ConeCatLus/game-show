@@ -24,6 +24,12 @@
             <!-- Question / Player Setup Container -->
             <div id="setup-container">
                 <h2>Scan QR-code to join the game!</h2>
+                <p>
+                    <strong>📶 </strong>
+                    <span id="ssid">Loading...</span>
+                    <strong> 🔑 </strong>
+                    <span id="password">Loading...</span>
+                </p>
                 <img id="qr-code" class="qr" src="" alt="Scan to join" />
                 <select id="quizDropdown" onchange="selectQuiz()">
                     <option value="">Select a quiz</option>
@@ -33,7 +39,7 @@
             </div>
             
             <div id="question-container" style="display: none;">
-                <div id="question-text"></div>
+                <h2 id="question-text"></h2>
                 <div id="media-container"></div>
 
                 <div id="progress-container" style="display: none;">

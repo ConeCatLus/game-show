@@ -5,10 +5,16 @@ const socketIo = require("socket.io");
 const QRCode = require("qrcode");
 const path = require("path");
 const config = require("./config");
+const ssid = process.argv[2] || "No network";
+const password = process.argv[3] || "No password";
 
 const app = express();
 
 app.use(express.static("public/scripts")); // Serve scripts
+
+app.get("/api/network", (req, res) => {
+    res.json({ ssid: ssid, password: password });
+});
 
 // API route to get the server IP dynamically
 app.get("/api/ip", (req, res) => {

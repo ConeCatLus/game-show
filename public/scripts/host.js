@@ -5,20 +5,6 @@ let topPlayers = [];
 let currentIndex = 0;
 let currentTheme = null;
 
-// Send to server that host has restarted so clients also restart
-console.log("Host Started");
-socket.emit("hostStarted");
-changeTheme();
-
-// Fetch and display QR Code & Game Code
-fetch("/qr")
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById("qr-code").src = data.qr;
-    })
-    .catch(error => console.error("QR Code Error:", error)
-);
-
 // Listen for updated player list from the server
 socket.on("updatePlayers", (updatedPlayers) => {
     updatePlayerList(updatedPlayers);
@@ -99,6 +85,27 @@ function updateTopPlayersList() {
 
 // Load questions from JSON
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("Host Started");
+    socket.emit("hostStarted"); // Send to server that host has restarted so clients also restart
+
+    changeTheme();
+
+    fetch("/api/network")
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("ssid").innerHTML = data.ssid;
+            document.getElementById("password").innerHTML = data.password;
+        })
+        .catch(error => console.error("Network Error:", error));    
+
+    // Fetch and display QR Code & Game Code
+    fetch("/qr")
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("qr-code").src = data.qr;
+        })
+        .catch(error => console.error("QR Code Error:", error));
+
     fetch("/api/quizes")
         .then(response => response.json())
         .then(quizzes => {
@@ -257,7 +264,6 @@ function nextQuestion() {
             };
             audioContainer.appendChild(playBtn);
         });
-
 
         mediaContainer.appendChild(audioContainer);
     }

@@ -80,8 +80,9 @@ You can have several 'optional' question items like image + audio + timer it's n
 ```
 
 ## Start server:
+To show the server network name and password, add two string inputs when starting the server.
 ```sh
-$ node server.js
+$ node server.js "network-name" "password"
 ```
 
 Open the web address displayed in the terminal and start your quiz!
