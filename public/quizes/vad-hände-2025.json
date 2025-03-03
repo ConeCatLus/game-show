@@ -11,7 +11,7 @@
       "theme": "bubblegum-theme"
     },
     {
-      "question": "Årets Melodifestival vanns av Måns Zelmerlöw men vad heter låten och i vilket land gick Eurovision i år?",
+      "question": "Årets Melodifestival vanns av Måns Zelmerlöw men vad heter låten och i vilket land hölls Eurovision i år?",
       "answer": { "Låt": "Revolution", "Land": "Schweiz" },
       "answerImage": "quizes/images/måns-revolution.jpg",
       "audio": ["https://open.spotify.com/track/1xYhFfJInHS8hsGfrJW4lI?si=db213efe66364b23"],

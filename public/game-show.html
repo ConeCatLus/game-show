@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bubblegum Game Show</title>
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
-    <script src="scripts/spotifyAuth.js"></script>
+    <script defer src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script defer src="scripts/misc/spotifyAuth.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,11 +18,11 @@
         </select>
     </div>
     
-    <h1>Bubblegum Game Show</h1>
+    <h1 id="quiz-title">Bubblegum Quiz</h1>
     <div id="main-container">
         <div id="game-container">
             <!-- Question / Player Setup Container -->
-            <div id="setup-container">
+            <div id="setup-container"  style="display: none;">
                 <h2>Scan QR-code to join the game!</h2>
                 <p>
                     <strong>📶 </strong>
@@ -64,13 +64,19 @@
         </div>
 
         <!-- Player Scoreboard -->
-        <div id="players-container">
+        <div id="players-container" style="display: none;">
             <h2>Scoreboard</h2>
             <ul id="player-list"></ul>
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script> <!-- Correct path -->
-    <script src="scripts/host.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="scripts/host_screens/showStartScreen.js"></script>
+    <script src="scripts/host_screens/showQuestionScreen.js"></script>
+    <script src="scripts/host_screens/showAnswerScreen.js"></script>
+    <script src="scripts/host_screens/showGameOverScreen.js"></script>
+    
+    <script src="scripts/misc/theme.js"></script>
+    <script src="scripts/misc/playerList.js"></script>
 </body>
 </html>

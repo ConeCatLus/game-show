@@ -8,7 +8,7 @@
       "question": "Låt och artist",
       "answer": {"Artist": "Whitney Houston", "Låt": "I will always love you"},
       "audio": ["https://open.spotify.com/track/4eHbdreAnSOrDDsFfc4Fpm?si=8e4bb813b2e644cb"],
-      "timer": 0,
+      "timer": 5,
       "theme": "music-theme"
     },
     {

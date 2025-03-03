@@ -6,7 +6,7 @@
     <title>Join Bubblegum Game</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="/socket.io/socket.io.js"></script>
-    <script defer src="scripts/client.js"></script>
+    <script defer src="scripts/client/stateHandler.js"></script>
 </head>
 <body>
     <h1 id="join-screen-name" class="join">Join Bubblegum Game</h1>
@@ -20,6 +20,7 @@
 
     <div id="limbo-container" style="display: none;">
         <h2 id="display-limbo-message"></h2>
+        <p class="status"></p>
     </div>
 
     <div id="question-container" style="display: none;">
@@ -47,5 +48,11 @@
         <h3>Top Players</h3>
         <ul id="top-players-list"></ul>
     </div>
+
+    <script defer src="scripts/client/showJoinScreen.js"></script>
+    <script defer src="scripts/client/showLimboScreen.js"></script>
+    <script defer src="scripts/client/showQuestionScreen.js"></script>
+    <script defer src="scripts/client/showAnswerScreen.js"></script>
+    <script defer src="scripts/client/showGameOverScreen.js"></script>
 </body>
 </html>
