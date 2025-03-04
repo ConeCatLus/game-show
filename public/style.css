@@ -174,33 +174,34 @@ h1 {
 #player-list {
     list-style: none;
     padding: 0;
+    width: 100%;
 }
 
 #player-list li {
     background: rgba(255, 255, 255, 0.3);
     padding: 1vh 2vh; /* Adjust padding using vh */
-    margin: 0.5vh 0; /* Adjust margin using vh */
+    margin-bottom: 0.5vh; /* Adjust margin using vh */
     border-radius: 10px;
-    width: 80%;
     text-align: center;
 }
 
 #top-players-list {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stack items vertically */
     align-items: center; /* Center the list items horizontally */
-    justify-content: center; /* Center the list items vertically */
+    justify-content: center;
     list-style-type: none; /* Remove default list styling */
     padding: 0; /* Remove default padding */
     margin: 0; /* Remove default margin */
+    width: 100%; /* Adjust width as needed */
 }
 
 #top-players-list li {
     background-color: rgba(255, 255, 255, 0.3); /* Add a background color for better visibility */
-    padding: 1vh 7vh; /* Adjust padding using vh */
+    padding: 1vh; /* Adjust padding using vh */
     margin: 0.5vh 0; /* Adjust margin using vh */
     border-radius: 10px;
-    width: 100%; /* Adjust width as needed */
+    width: 80%; /* Adjust width as needed */
     text-align: center; /* Center the text */
 }
 
