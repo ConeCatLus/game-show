@@ -17,21 +17,21 @@
 }
 
 /* Sports Theme */
-.sports-theme {
+.sport-theme {
     background: linear-gradient(135deg, #4caf50, #1e88e5);
     color: white;
 }
-.sports-theme select {
+.sport-theme select {
     background: linear-gradient(135deg, #4caf50, #1e88e5);
 }
-.sports-theme #progress-bar {
+.sport-theme #progress-bar {
     background: linear-gradient(135deg, #4caf50, #1e88e5);
 }
-.sports-theme button {
+.sport-theme button {
     background-color: #4caf50;
     color: white;
 }
-.sports-theme button:hover {
+.sport-theme button:hover {
     background-color: #388e3c; /* Adjust hover color */
 }
 
@@ -185,7 +185,7 @@ h1 {
     text-align: center;
 }
 
-#top-players-list {
+#top-players-list, #sortable-list {
     display: flex;
     flex-direction: column; /* Stack items vertically */
     align-items: center; /* Center the list items horizontally */
@@ -196,13 +196,14 @@ h1 {
     width: 100%; /* Adjust width as needed */
 }
 
-#top-players-list li {
+#top-players-list li, .sortable-item {
     background-color: rgba(255, 255, 255, 0.3); /* Add a background color for better visibility */
     padding: 1vh; /* Adjust padding using vh */
-    margin: 0.5vh 0; /* Adjust margin using vh */
+    margin: 1vh 0; /* Adjust margin using vh */
     border-radius: 10px;
     width: 80%; /* Adjust width as needed */
     text-align: center; /* Center the text */
+    font-size: 3vh;
 }
 
 /* Fixed-Size Question Box */
@@ -223,7 +224,7 @@ h1 {
     align-items: center;
     justify-content: flex-start; /* Keeps elements spaced properly */
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
-    margin: 0 auto;
+    margin: 0 0;
     box-sizing: border-box;
     overflow-y: auto; /* Allow vertical scrolling */
     position: relative;
@@ -245,7 +246,7 @@ h1 {
 
 /* Media (Images & Videos) */
 #media-container, #answer-media-container {
-    max-width: 80%;
+    min-width: 80%;
     max-height: 50%;
     display: flex;
     justify-content: center;
@@ -291,6 +292,7 @@ img {
 /* Buttons */
 button {
     margin-top: auto;
+    margin-bottom: 2vh;
     font-size: 2.8vh; /* Adjust font size using vh */
     padding: 2.5vh 4vh; /* Adjust padding using vh */
     cursor: pointer;
@@ -315,7 +317,7 @@ input[type="text"] {
     border: none;
     width: 80%;
     display: block; /* Ensures input takes full width */
-    margin: 1vh auto; /* Adjust margin using vh */
+    margin: 2vh auto; /* Adjust margin using vh */
 }
 
 .answer-container {

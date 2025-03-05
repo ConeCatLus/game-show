@@ -15,8 +15,24 @@ function showQuestionScreen(question) {
     let answerContainer = document.getElementById("answers");
     answerContainer.innerHTML = ""; // Clear previous answer inputs
 
+    if (q.order) {
+        let list = document.createElement("ul");
+        list.id = "sortable-list"; // Use the new styled ID
+    
+        q.order.forEach((option, index) => {
+            let item = document.createElement("li");
+            item.innerText = option;
+            item.classList.add("sortable-item");
+            item.setAttribute("data-index", index);
+            list.appendChild(item);
+        });
+        answerContainer.appendChild(list);
+        initializeDragDrop();
+        updatePlayerAnswer();
+    }
+
     // 📝 If the answer is an object (multi-part answer), create multiple inputs
-    if (typeof q.answer === "object") {
+    else if (typeof q.answer === "object") {
         for (let key in q.answer) {
             let input = document.createElement("input");
             input.type = "text";
@@ -75,7 +91,9 @@ function submitAnswer(noAnswer = false) {
         });
     } else {
         // If it's just one input (e.g., a single string answer), handle it normally
-        playerAnswer = document.getElementById("client-answer").value.trim();
+        if (!Array.isArray(playerAnswer)) {
+            playerAnswer = document.getElementById("client-answer").value.trim();
+        }
     }
 
     // Check if the player answered the question

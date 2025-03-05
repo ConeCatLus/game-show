@@ -1,0 +1,49 @@
+{
+  "quizName": "Test quiz",
+  "quizTheme": "bubblegum-theme",
+  "questions": [
+    {
+        "question": "You can have the player sort stuff",
+        "order": ["World War 1", "Invention of Car", "Moon Landing"],
+        "answer": ["Invention of Car", "World War 1", "Moon Landing"],
+        "timer": 0
+    },
+    {
+      "question": "Show image - no timer",
+      "answer": "Display image in answer",
+      "answerImage": "quizes/images/romersk-hälsning.jpg",
+      "image": "quizes/images/musk-heil.webp",
+      "timer": 0,
+      "theme": "bubblegum-theme"
+    },
+    {
+      "question": "You can have multiple media objects (music + image) and several questions",
+      "answer": { "First": "Answer", "Second": "Next answer" },
+      "answerImage": "quizes/images/måns-revolution.jpg",
+      "audio": ["https://open.spotify.com/track/1xYhFfJInHS8hsGfrJW4lI?si=db213efe66364b23"],
+      "image": "quizes/images/måns-revolution.jpg",
+      "timer": 0,
+      "theme": "movie-theme"
+    },
+    {
+      "question": "You can have multiple spotify links for a \"what do these artists have in common\" question",
+      "answer": "Image + answer",
+      "answerImage": "quizes/images/ullevi.webp",
+      "audio": [
+          "https://open.spotify.com/track/2zYzyRzz6pRmhPzyfMEC8s?si=4bb145f80f564c3b",
+          "https://open.spotify.com/track/3SjXx3rbNGk8nCho8YEoz5?si=b4b51db8b4654e1a",
+          "https://open.spotify.com/track/2nZMFrdnV0AxKlRvXbsDYX?si=3f0cb7d6db144c82"
+      ],
+      "timer": 0,
+      "theme": "music-theme"
+    },
+    {
+      "question": "Set a timed question to stress the player",
+      "answer": "Answer...",
+      "image": "quizes/images/ullevi.webp",
+      "audio": ["https://open.spotify.com/track/1xYhFfJInHS8hsGfrJW4lI?si=db213efe66364b23"],
+      "timer": 5,
+      "theme": "sport-theme"
+    }
+  ]
+}

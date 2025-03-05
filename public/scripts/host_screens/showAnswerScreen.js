@@ -1,3 +1,6 @@
+let RGB_80_RED = "rgba(244, 67, 54, 0.8)";
+let RGB_80_YELLOW = "rgba(255, 221, 51, 0.8)";
+let RGB_80_ORANGE = "rgba(255, 153, 51, 0.8)";
 let RGB_80_GREEN = "rgba(76, 175, 80, 0.8)";
 
 function showAnswer() {
@@ -95,10 +98,20 @@ function checkAnswer(playerAnswer, correctAnswer) {
                 correctValues.splice(matchIndex, 1); // Remove matched value to prevent duplicate scoring
             }
         });
-    } else {
+    }
+    // If correctAnswer is an array of objects
+    else if(Array.isArray(correctAnswer)) {
+        // If correctAnswer is an array of strings
+        for (let i = 0; i < correctAnswer.length; i++) {
+            if (correctAnswer[i] === playerAnswer[i]) {
+                score++; // Found a mismatch
+            }
+        }
+    }
+    else {
         // If correctAnswer is a single string
         if (isCloseMatch(playerAnswer, correctAnswer)) {
-            score = 1;
+            score++;
         }
     }
 
@@ -140,25 +153,38 @@ socket.on("displayAnswerMatrix", (players) => {
         // Update the player's score based on correctness
         if (answerScore > 0) {
             socket.emit("updateScore", { id, score: score + answerScore }); // Award points for the answer
-            answerBox.classList.add("clicked");
-            answerBox.style.background = RGB_80_GREEN; // Make it green if correct
+            if (answerScore === answer.length) {
+                answerBox.style.background = RGB_80_GREEN; // Make it green if correct
+            }
+            else {
+                answerBox.style.background = RGB_80_YELLOW; // Make it yellow if partially correct
+                // Add a click option for one extra point
+            }
+        }
+        else {
+            answerBox.style.background = RGB_80_RED;
         }
 
-        // Add a click event to toggle points (in case you want to allow re-clicking)
-        answerBox.addEventListener("click", () => {
-            if (answerBox.classList.contains("clicked")) {
-                // If clicked, remove the 'clicked' class, deduct points, and reset background color
-                socket.emit("updateScore", { id, score: score });
-                answerBox.classList.remove("clicked");
-                answerBox.style.background = ""; // Reset background color
-            } else {
-                // If not clicked, add points and change background color to green
-                socket.emit("updateScore", { id, score: score + 1 });
-                answerBox.classList.add("clicked");
-                answerBox.style.background = RGB_80_GREEN; // Make it green
-            }
-        });
-
+        if (answerBox.style.background !== RGB_80_GREEN) {
+            // Add a click option for one extra point
+            answerBox.addEventListener("click", () => {
+                if (answerBox.classList.contains("clicked")) {
+                    // If clicked, remove the 'clicked' class, deduct points, and reset background color
+                    socket.emit("updateScore", { id, score: answerScore + score });
+                    answerBox.classList.remove("clicked");
+                    if (answerScore === 0) {
+                        answerBox.style.background = RGB_80_RED;
+                    } else {
+                        answerBox.style.background = RGB_80_YELLOW; // Reset background color
+                    }
+                } else {
+                    // If not clicked, add points and change background color to green
+                    socket.emit("updateScore", { id, score: score + answerScore + 1 });
+                    answerBox.classList.add("clicked");
+                    answerBox.style.background = RGB_80_ORANGE; // Make it green
+                }
+            });
+        }
         answerGrid.appendChild(answerBox);
     });
 });

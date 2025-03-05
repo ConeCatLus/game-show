@@ -21,6 +21,18 @@ function nextQuestion() {
         changeTheme(question.theme);
     }
 
+    if (question.order) {
+        let list = document.createElement("ul");
+        list.id = "sortable-list"; // Use the new styled ID
+        question.order.forEach((option) => {
+            let listItem = document.createElement("li");
+            listItem.innerText = option;
+            listItem.classList.add("sortable-item"); // Use the new styled class
+            list.appendChild(listItem);
+        });
+        mediaContainer.appendChild(list);
+    }
+
     // 🖼️ Handle Image
     if (question.image) {
         let img = document.createElement("img");

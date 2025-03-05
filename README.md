@@ -40,7 +40,7 @@ Add a .json file here [questions](public/quizes/)
 | Theme Name        | Colors        |
 |-------------------|--------------|
 | bubblegum-theme  | Purple/Pink  |
-| sports-theme     | Green/Blue   |
+| sport-theme     | Green/Blue   |
 | movie-theme      | Orange/Red   |
 | music-theme      | Purple/Red   |
 
@@ -73,7 +73,7 @@ You can have several 'optional' question items like image + audio + timer it's n
       "timer": 0,
       "timer-info": "Optional - Set to 0 for no timer, or a positive number for a countdown in seconds.",
       "theme": "music-theme",
-      "theme-info": "Optional - Sets a theme for the question. Available themes: 'bubblegum-theme' (purple/pink), 'sports-theme' (green/blue), 'movie-theme' (orange/red), 'music-theme' (purple/red)."
+      "theme-info": "Optional - Sets a theme for the question. Available themes: 'bubblegum-theme' (purple/pink), 'sport-theme' (green/blue), 'movie-theme' (orange/red), 'music-theme' (purple/red)."
     }
   ]
 }
