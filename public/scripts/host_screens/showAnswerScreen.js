@@ -47,7 +47,7 @@ function showAnswer() {
     // 🔄 Send answer to server
     socket.emit("sendAnswerToServer", question);
 
-    document.getElementById("answer-container").style.display = "flex";
+    document.getElementById("answer-container").classList.add("active");
 }
 
 function isCloseMatch(input, correct) {

@@ -219,7 +219,6 @@ h1 {
     height: 75vh;
     padding: 2vh;
     border-radius: 20px;
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start; /* Keeps elements spaced properly */
@@ -228,6 +227,19 @@ h1 {
     box-sizing: border-box;
     overflow-y: auto; /* Allow vertical scrolling */
     position: relative;
+}
+
+.screen {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    display: none;
+}
+
+.screen.active {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
 }
 
 /* Remove border-radius for join.html containers */
@@ -303,8 +315,20 @@ button {
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
 }
 
+button:hover {
+    animation: pulse 1.5s infinite;
+}
+.play-button.playing {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
 #setup-container {
-    display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1vh; /* Adjust gap using vh */

@@ -58,6 +58,7 @@ function nextQuestion() {
 
         question.audio.forEach((audioUrl, index) => {
             let playBtn = document.createElement("button");
+            playBtn.classList.add("play-button");
             playBtn.innerText = `▶ Play Track ${index + 1}`;
             
             playBtn.onclick = () => {
@@ -65,6 +66,7 @@ function nextQuestion() {
                     // Stop current track
                     playingIndex = -1;
                     playBtn.innerText = `▶ Play Track ${index + 1}`;
+                    playBtn.classList.remove("playing");
                     stopSong();
                     currentPlayingBtn = null;
                 } else {
@@ -76,6 +78,7 @@ function nextQuestion() {
                     // Start new track
                     playingIndex = index;
                     playBtn.innerText = `⏹ Stop`;
+                    playBtn.classList.add("playing");
                     playSong(audioUrl);
                     currentPlayingBtn = playBtn;
                 }
@@ -102,7 +105,7 @@ function nextQuestion() {
         document.getElementById("show-answer-btn").style.display = "inline-block";
     }
 
-    document.getElementById("question-container").style.display = "flex";
+    document.getElementById("question-container").classList.add("active")
 }
 
 /* Start progress bar - triggered if a question has a timer */

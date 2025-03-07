@@ -43,8 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error("Error fetching quizzes:", error));
 
-        document.getElementById("setup-container").style.display = "flex";
-        document.getElementById("players-container").style.display = "flex";
+        document.getElementById("setup-container").classList.add("active");
+        document.getElementById("players-container").classList.add("active");
 });
 
 /* Select quiz - Triggered when a quiz is selected in the dropdown */
@@ -96,8 +96,8 @@ function startGame() {
 
 function clearScreen() {
     document.getElementById("status").textContent = "";
-    document.getElementById("setup-container").style.display = "none";
-    document.getElementById("question-container").style.display = "none";
-    document.getElementById("answer-container").style.display = "none";
-    document.getElementById("game-over-container").style.display = "none";
+    document.getElementById("setup-container").classList.remove("active");
+    document.getElementById("question-container").classList.remove("active");
+    document.getElementById("answer-container").classList.remove("active");
+    document.getElementById("game-over-container").classList.remove("active");
 }

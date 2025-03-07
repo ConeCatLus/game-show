@@ -23,7 +23,7 @@ function showAnswerScreen(data) {
         document.getElementById("display-correct-answer").style.display = "none"; // Hide answer until we get it
     } 
     document.getElementById("display-your-answer").innerText = playerAnswerDisplay; 
-    document.getElementById("answer-container").style.display = "flex";
+    document.getElementById("answer-container").classList.add("active");
 }
 
 function displayQuestionAnswer(answer) {
