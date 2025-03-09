@@ -143,12 +143,13 @@ io.on("connection", (socket) => {
     });
 
     // Update player score on server
-    socket.on("updateScore", ({ id, score }) => {
+    socket.on("updateScore", ({ id, score, answerScore }) => {
         const playerEntry = Object.entries(players).find(([playerId, player]) => player.id === id);
         
         if (playerEntry) {
             const [playerId, player] = playerEntry;
             player.score = score;
+            player.answerScore = answerScore;
             io.emit("updatePlayers", Object.values(players));
         } else {
             console.warn(`Player with socket ID ${id} not found!`);

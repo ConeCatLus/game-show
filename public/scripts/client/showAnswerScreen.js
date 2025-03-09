@@ -23,7 +23,7 @@ function showAnswerScreen(data) {
         document.getElementById("display-correct-answer").style.display = "none"; // Hide answer until we get it
     } 
     document.getElementById("display-your-answer").innerText = playerAnswerDisplay; 
-    document.getElementById("answer-container").classList.add("active");
+    document.getElementById("answer-container").style.display = "block";
 }
 
 function displayQuestionAnswer(answer) {
@@ -42,7 +42,7 @@ function displayQuestionAnswer(answer) {
 socket.on("showAnswer", (question) => {
     // If a question doesn't have a timer this will trigger the show answer screen
     if (gameState === GameState.QUESTION_SCREEN) {
-        gameState = GameState.ANSWER_SCREEN; 
+        gameState = GameState.ANSWER_SCREEN;
         showAnswerScreen({question: question});
     }
 

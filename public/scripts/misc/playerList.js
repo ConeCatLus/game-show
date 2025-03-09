@@ -13,23 +13,43 @@ function updatePlayerList(players) {
         return b.score - a.score;
     });
 
-    // Code to update the player list in the UI
     const playerListElement = document.getElementById("player-list");
     playerListElement.innerHTML = ""; // Clear the existing list
 
     const highestScore = players[0]?.score || 0;
 
     players.forEach((player) => {
+        // Create the player item
         const playerItem = document.createElement("li");
+        playerItem.classList.add("player-entry");
         playerItem.textContent = `${player.name}: ${player.score}pts`;
+
+        // Add crown for highest score
         if (player.score === highestScore && player.score > 0) {
-            playerItem.textContent = `👑 ${playerItem.textContent}`; // Add crown emoji to players with the highest score
+            playerItem.textContent = `👑 ${playerItem.textContent}`;
         }
+
+        // Add the animated score bubble (if the player recently scored)
+        if (player.answerScore > 0) {
+            const scoreBubble = document.createElement("span");
+            scoreBubble.classList.add("score-bubble");
+            scoreBubble.textContent = `+${player.answerScore}`;
+            playerItem.appendChild(scoreBubble);
+        }
+
         playerListElement.appendChild(playerItem);
     });
 
-    // Update the top players list in the game-over-container
+    // Update top players
     updateTopPlayersList(players);
+}
+
+// Function to remove bubbles
+function removeScoreBubbles() {
+    document.querySelectorAll(".score-bubble").forEach(bubble => {
+        bubble.classList.add("fade-out");
+        setTimeout(() => bubble.remove(), 500);
+    });
 }
 
 function getTopPlayers() {

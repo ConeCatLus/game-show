@@ -2,6 +2,7 @@ let currentIndex = 0;
 
 /* Setup next question - Triggered by move to next question button */
 function nextQuestion() {
+    removeScoreBubbles();
     let question = questions[currentIndex];
     document.getElementById("question-text").innerText = question.question;
 

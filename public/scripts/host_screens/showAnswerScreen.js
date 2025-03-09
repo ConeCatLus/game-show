@@ -170,7 +170,7 @@ socket.on("displayAnswerMatrix", (players) => {
             answerBox.addEventListener("click", () => {
                 if (answerBox.classList.contains("clicked")) {
                     // If clicked, remove the 'clicked' class, deduct points, and reset background color
-                    socket.emit("updateScore", { id, score: answerScore + score });
+                    socket.emit("updateScore", { id, score: answerScore + score, answerScore: answerScore });
                     answerBox.classList.remove("clicked");
                     if (answerScore === 0) {
                         answerBox.style.background = RGB_80_RED;
@@ -179,7 +179,7 @@ socket.on("displayAnswerMatrix", (players) => {
                     }
                 } else {
                     // If not clicked, add points and change background color to green
-                    socket.emit("updateScore", { id, score: score + answerScore + 1 });
+                    socket.emit("updateScore", { id, score: score + answerScore + 1, answerScore: answerScore + 1 });
                     answerBox.classList.add("clicked");
                     answerBox.style.background = RGB_80_ORANGE; // Make it green
                 }
