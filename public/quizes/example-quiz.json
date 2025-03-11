@@ -3,6 +3,12 @@
   "quizTheme": "bubblegum-theme",
   "questions": [
     {
+      "question": "Is the sea blue?",
+      "alternatives": ["True", "False", "Maybe"],
+      "answer": "True",
+      "timer": 0
+    },
+    {
         "question": "You can have the player sort stuff",
         "order": ["World War 1", "Invention of Car", "Moon Landing"],
         "answer": ["Invention of Car", "World War 1", "Moon Landing"],
@@ -19,9 +25,9 @@
     {
       "question": "You can have multiple media objects (music + image) and several questions",
       "answer": { "First": "Answer", "Second": "Next answer" },
-      "answerImage": "quizes/images/måns-revolution.jpg",
+      "answerImage": "quizes/images/KAJ.jpg",
       "audio": ["https://open.spotify.com/track/1xYhFfJInHS8hsGfrJW4lI?si=db213efe66364b23"],
-      "image": "quizes/images/måns-revolution.jpg",
+      "image": "quizes/images/BBB-KAJ.avif",
       "timer": 0,
       "theme": "movie-theme"
     },

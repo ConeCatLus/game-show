@@ -5,7 +5,9 @@ function nextQuestion() {
     removeScoreBubbles();
     let question = questions[currentIndex];
     document.getElementById("question-text").innerText = question.question;
-
+    if (question.question.length > 110) {
+        document.getElementById("question-text").style.fontSize = "3vh"
+    }
     let mediaContainer = document.getElementById("media-container");
     mediaContainer.innerHTML = "";
     mediaContainer.style.display = "block";

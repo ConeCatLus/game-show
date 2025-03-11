@@ -11,11 +11,11 @@
       "theme": "bubblegum-theme"
     },
     {
-      "question": "Årets Melodifestival vanns av Måns Zelmerlöw men vad heter låten och i vilket land hölls Eurovision i år?",
-      "answer": { "Låt": "Revolution", "Land": "Schweiz" },
-      "answerImage": "quizes/images/måns-revolution.jpg",
-      "audio": ["https://open.spotify.com/track/1xYhFfJInHS8hsGfrJW4lI?si=db213efe66364b23"],
-      "image": "quizes/images/måns-revolution.jpg",
+      "question": "\"Bara bada bastu\" vann lite chockartat årets Melodifestival men vad heter gruppen och vilket var världlandet för Eurovision i år?",
+      "answer": { "Grupp": "KAJ", "Land": "Schweiz" },
+      "answerImage": "quizes/images/BBB-KAJ.avif",
+      "audio": ["https://open.spotify.com/track/2gThkoApt6B7ajBWZRLAVv?si=034304e18a06492b"],
+      "image": "quizes/images/KAJ.jpg",
       "timer": 0,
       "theme": "music-theme"
     },

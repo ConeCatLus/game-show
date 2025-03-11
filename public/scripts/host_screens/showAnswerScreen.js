@@ -152,16 +152,15 @@ socket.on("displayAnswerMatrix", (players) => {
 
         // Update the player's score based on correctness
         if (answerScore > 0) {
-            socket.emit("updateScore", { id, score: score + answerScore }); // Award points for the answer
-            if (answerScore === answer.length) {
+            socket.emit("updateScore", { id, score: score + answerScore, answerScore: answerScore }); // Award points for the answer
+            if (answerScore === answer.length || 
+                typeof answer == "string") {
                 answerBox.style.background = RGB_80_GREEN; // Make it green if correct
-            }
-            else {
-                answerBox.style.background = RGB_80_YELLOW; // Make it yellow if partially correct
+            } else {
                 // Add a click option for one extra point
+                answerBox.style.background = RGB_80_YELLOW; // Make it yellow if partially correct
             }
-        }
-        else {
+        } else {
             answerBox.style.background = RGB_80_RED;
         }
 
@@ -195,8 +194,7 @@ function moveToNextQuestion() {
     currentIndex++;
     if (currentIndex >= questions.length) {
         showGameOverScreen();
-    }
-    else {
+    } else {
         nextQuestion();
         socket.emit("nextQuestion");
     }

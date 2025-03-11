@@ -16,6 +16,20 @@
     background-color: #fb238f; /* Adjust hover color */
 }
 
+.bubblegum-theme .answer-button {
+    background-color: #ff4da6;
+}
+
+/* Hover Effect */
+.bubblegum-theme .answer-button:hover {
+    background-color: #fb238f;
+}
+
+/* Selected Answer Styling */
+.bubblegum-theme .answer-button.selected {
+    background-color: hsl(145, 63%, 49%);
+}
+
 /* Sports Theme */
 .sport-theme {
     background: linear-gradient(135deg, #4caf50, #1e88e5);
@@ -368,6 +382,32 @@ button:hover {
     100% { transform: scale(1); }
 }
 
+/* Container for answer buttons */
+#answers.alt-answers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+    justify-content: center;
+    gap: 20px; /* Space between buttons */
+    width: 100%;
+    margin-top: 20px;
+}
+
+.answer-button {
+    width: 100%; /* Make sure buttons take full column width */
+    padding: 15px;
+    text-align: center;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.answer-button.selected {
+    background-color: hsl(145, 63%, 49%);
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
 #setup-container {
     flex-direction: column;
     align-items: center;
@@ -415,10 +455,6 @@ h1 {
 h2 {
     font-size: 4vh; /* Responsive font size using vh */
     margin: 2vh;
-}
-
-#answer-container h2 {
-    font-size: 3vh; /* Smaller font size for h2 in answer-container */
 }
 
 p, button, select {

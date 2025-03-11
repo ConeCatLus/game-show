@@ -13,6 +13,7 @@ function showQuestionScreen(question) {
 
     // Clear any previous inputs or elements
     let answerContainer = document.getElementById("answers");
+    answerContainer.classList.remove("alt-answers"); // Clear class if previous was alt-answers
     answerContainer.innerHTML = ""; // Clear previous answer inputs
 
     if (q.order) {
@@ -30,7 +31,22 @@ function showQuestionScreen(question) {
         initializeDragDrop();
         updatePlayerAnswer();
     }
+    else if (q.alternatives) {
+        answerContainer.classList.add("alt-answers");
+        // Create buttons for each alternative answer
+        q.alternatives.forEach((alt) => {
+            let button = document.createElement("button");
+            button.innerText = alt;
+            button.classList.add("answer-button");
+            button.onclick = () => {
+                document.querySelectorAll(".answer-button").forEach(btn => btn.classList.remove("selected"));
+                button.classList.add("selected");
+                playerAnswer = button.innerText;
+            };
 
+            answerContainer.appendChild(button);
+        });
+    }
     // 📝 If the answer is an object (multi-part answer), create multiple inputs
     else if (typeof q.answer === "object") {
         for (let key in q.answer) {
@@ -91,7 +107,7 @@ function submitAnswer(noAnswer = false) {
         });
     } else {
         // If it's just one input (e.g., a single string answer), handle it normally
-        if (!Array.isArray(playerAnswer)) {
+        if (!Array.isArray(playerAnswer) && typeof playerAnswer !== "string") {
             playerAnswer = document.getElementById("client-answer").value.trim();
         }
     }
