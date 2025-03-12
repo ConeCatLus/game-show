@@ -67,6 +67,7 @@ function selectQuiz() {
                 changeTheme(data.quizTheme);
                 if (data.quizName) {
                     quizTitle.textContent = data.quizName;
+                    socket.emit("changeQuizTitle", data.quizName);
                 }
                 document.getElementById("status").textContent = "";
             } else {

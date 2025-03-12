@@ -32,3 +32,7 @@ function joinGame() {
         socket.emit("joinGame", {playerId, playerName});
     }   
 }
+
+socket.on("newTitle", (title) => {
+    document.getElementById("join-screen-name").innerText = title;
+});

@@ -1,0 +1,75 @@
+{
+    "quizName": "🇺🇸 Trump ❤️ Musk 🇺🇸",
+    "quizTheme": "usa-theme",
+    "questions": [
+      {
+        "question": "Cirkusen började direkt på insvärningen den 20 januari då prästen som höll i cermonin fick ta emot en kritikstorm från republikanerna. Men varför??",
+        "image": "quizes/images/USA/trump-inaugural-priest.png",
+        "answer": "Hon bad Trump \"have mercy\" främst mot LGBTQ+ och invandrare",
+        "answerImage": "quizes/images/USA/trump-inaugural-priest.png",
+        "timer": 0,
+        "theme": "usa-theme"
+      },
+      {
+        "question": "Dagen efter gjorde Elon Musk så här på ett Trump Rally, vad påstår han vara betydelsen av gesten?",
+        "image": "quizes/images/musk-heil.webp",
+        "answer": "Romersk salute",
+        "answerImage": "quizes/images/USA/romersk-hälsning.jpg",
+        "timer": 0,
+        "theme": "usa-theme"
+      },
+      {
+        "question": "Hur många presidentordrar fick Trump igenom under sin första vecka?",
+        "image": "quizes/images/USA/president-order.avif",
+        "alternatives": ["3", "6", "9","12"],
+        "answer": "12",
+        "answerImage": "quizes/images/USA/orders.png",
+        "timer": 15,
+        "theme": "usa-theme"
+      },
+      {
+        "question": "Är det sant att Trump vill göra Mexico till den 51e delstaten?",
+        "image": "quizes/images/USA/mexico.webp",
+        "alternatives": ["JA", "NEJ"],
+        "answer": "NEJ",
+        "answerImage": "quizes/images/USA/51-state.jpg",
+        "timer": 15,
+        "theme": "usa-theme"
+      },
+      {
+        "question": "Trump står på sig för ett namnbyte på den Mexikanska golfen. Vilket är det nya namet han vill få igenom?",
+        "image": "quizes/images/USA/mexican-gulf-q.png",
+        "answer": "Amerikanska golfen",
+        "answerImage": "quizes/images/USA/mexican-gulf-ans.png",
+        "timer": 0,
+        "theme": "usa-theme"
+      },
+      {
+        "question": "Musk har blivit ansvarig för projektet DOGE, men vad står förkortningen för?",
+        "alternatives": ["Decentralized Open Governance Entity", "Department of Governmental Ethics", "Department of Government Efficiency","Domain-Oriented Graph Engine"],
+        "answer": "Department of Government Efficiency",
+        "image": "quizes/images/USA/doge-nnsa.jpg",
+        "answerImage": "quizes/images/USA/doge-nnsa.jpg",
+        "timer": 0,
+        "theme": "usa-theme"
+      },
+      {
+        "question": "DOGE sa upp anställda inom institutionen för energi. Men insåg snabbt sitt misstag när de insåg att de egentligen jobbar med nationens kärnkraftsvapen. Men de hade problem att återanställa dem, varför?",
+        "image": "quizes/images/USA/doge-nnsa.jpg",
+        "answer": "De hade inte deras nya kontaktuppgifter",
+        "answerImage": "quizes/images/USA/doge-nnsa.jpg",
+        "timer": 0,
+        "theme": "usa-theme"
+      },
+      {
+        "question": "Är det sant att Trump kallade Ukrainas presided Zelenskyj för diktator?",
+        "image": "quizes/images/USA/Trump-Zelensky.jpg",
+        "alternatives": ["JA", "NEJ"],
+        "answer": "JA",
+        "answerImage": "quizes/images/USA/Trump-Zelensky.jpg",
+        "timer": 15,
+        "theme": "usa-theme"
+      }
+    ]
+  }
+  
