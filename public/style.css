@@ -445,7 +445,7 @@ input[type="text"] {
 
 /* Responsive font sizes */
 body {
-    font-size: 2vh; /* Base font size using vh */
+    font-size: 2.4vh; /* Base font size using vh */
 }
 
 h1 {

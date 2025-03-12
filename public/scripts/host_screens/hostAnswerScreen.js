@@ -51,7 +51,7 @@ function showAnswer() {
 }
 
 function isCloseMatch(input, correct) {
-    let distance = levenshteinDistance(input, correct);
+    let distance = levenshteinDistance(input.toLowerCase(), correct.toLowerCase());
     let threshold = Math.ceil(correct.length * 0.3); // Allow 30% of the length as errors
     return distance <= threshold;
 }
@@ -154,6 +154,7 @@ socket.on("displayAnswerMatrix", (players) => {
         if (answerScore > 0) {
             socket.emit("updateScore", { id, score: score + answerScore, answerScore: answerScore }); // Award points for the answer
             if (answerScore === answer.length || 
+                answerScore === Object.keys(answer).length ||
                 typeof answer == "string") {
                 answerBox.style.background = RGB_80_GREEN; // Make it green if correct
             } else {
