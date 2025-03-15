@@ -7,7 +7,6 @@ function showQuestionScreen(question) {
     clearScreen();
     playerAnswer = {};
     document.getElementById("display-question").innerText = q.question;
-    document.getElementById("join-screen-name").innerText = "Bubblegum Game";
     
     let timeLeft = q.timer;
 

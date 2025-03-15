@@ -33,6 +33,6 @@ function joinGame() {
     }   
 }
 
-socket.on("newTitle", (title) => {
+socket.on("setClientTitle", (title) => {
     document.getElementById("join-screen-name").innerText = title;
 });

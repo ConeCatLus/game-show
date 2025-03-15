@@ -119,7 +119,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("changeQuizTitle", (title) => {
-        io.emit("newTitle", title);
+        io.emit("setClientTitle", title);
     });
 
     socket.on("changeTheme", (theme) => {

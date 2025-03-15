@@ -43,7 +43,19 @@ function showAnswer() {
         img.alt = "Answer Image";
         mediaContainer.appendChild(img);
     }
-
+    if (question.answerVideo) {
+        let iframe = document.createElement("iframe");
+        let videoId = question.answerVideo.split("v=")[1]; // Extract video ID
+        let startTime = 0; // Set start time in seconds
+        if (question.startAt)
+        {
+            startTime = question.startAt;
+        }
+        iframe.src = `https://www.youtube.com/embed/${videoId}?start=${startTime}`;
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        mediaContainer.appendChild(iframe);
+    }
     // 🔄 Send answer to server
     socket.emit("sendAnswerToServer", question);
 

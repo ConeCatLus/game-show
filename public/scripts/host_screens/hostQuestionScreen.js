@@ -47,7 +47,13 @@ function nextQuestion() {
     // 📺 Handle Video
     if (question.video) {
         let iframe = document.createElement("iframe");
-        iframe.src = question.video;
+        let videoId = question.answerVideo.split("v=")[1]; // Extract video ID
+        let startTime = 0; // Set start time in seconds
+        if (question.startAt)
+        {
+            startTime = question.startAt;
+        }
+        iframe.src = `https://www.youtube.com/embed/${videoId}?start=${startTime}`;
         iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
         mediaContainer.appendChild(iframe);
