@@ -1,0 +1,77 @@
+{
+    "quizName": "🌸 Vårquiz 🌸",
+    "quizTheme": "bubblegum-theme",
+    "questions": [
+      {
+        "question": "Vårens första dag!\nNär infaller den meteorologiska våren och vilken artist sjunger låten?",
+        "audio": ["https://open.spotify.com/track/24WyDyJfAXgkcPddKdvfYA?si=51cbd3e7c810471e"],
+        "answer": {"När är det vår": "7 dygn i följd med medeltemperatur över 0 grader", "Artist": "Laleh"},
+        "image": "quizes/images/Springquiz/meterolog.avif",
+        "answerImage": "quizes/images/Springquiz/laleh.jpg",
+        "timer": 0,
+        "theme": "music-theme"
+      },
+      {
+        "question": "Vilket datum är sista datumet det är tillåtet att köra med dubbdäck?",
+        "alternatives": ["31 mars", "15 april", "Veckan efter påsk", "1 maj"],
+        "answer": "15 april",
+        "image": "quizes/images/Springquiz/nodubb.jpeg",
+        "answerImage": "quizes/images/Springquiz/nodubb.jpeg",
+        "timer": 0,
+        "theme": "bubblegum-theme"
+      },
+      {
+        "question": "Tranorna samlas för årets störst dansfest\nVid vilken sjö samlas dem?\nVad heter kallas V-formationen som de flyger i?",
+        "answer": {"Sjön": "Hornborgasjön", "V-formationen": "Fylking"},
+        "image": "quizes/images/Springquiz/v-form.jpg",
+        "answerImage": "quizes/images/Springquiz/tranor.jpg",
+        "timer": 0,
+        "theme": "bubblegum-theme"
+      },
+      {
+        "question": "Prisa gud, här kommer skatteåterbäringen!\nVilken av dess är vi skyldiga att betala skatt för?",
+        "alternatives": ["Gåva", "Förmögenhet", "Reavinst", "Arv"],
+        "answer": "Reavinst",
+        "image": "quizes/images/Springquiz/gud.webp",
+        "answerImage": "quizes/images/Springquiz/gud.webp",
+        "timer": 0,
+        "theme": "bubblegum-theme"
+      },
+      {
+        "question": "I vilken ordning blommar dessa pollenallergier?\n(Först högst upp)",
+        "order": ["Gräs", "Björk", "Hassel"],
+        "answer": ["Hassel", "Björk", "Gräs"],
+        "image": "quizes/images/Springquiz/pollen1.jpg",
+        "answerImage": "quizes/images/Springquiz/Pollen.png",
+        "timer": 20,
+        "theme": "bubblegum-theme"
+      },
+      {
+        "question": "Filmen ”The Producers” fick den svenska titeln ”Det våras för Hitler” och blev en stor succé. Alla regissörens filmer efter detta fick sedan heta något med ”Det våras för …”.\nVad heter han?",
+        "alternatives": ["Mel Brooks", "Woody Allen", "Charlie chaplin", "John Cleese"],
+        "answer": "Mel Brooks",
+        "image": "quizes/images/Springquiz/theproducers.jpg",
+        "answerImage": "quizes/images/Springquiz/melbrooks.jpg",
+        "timer": 0,
+        "theme": "movie-theme"
+      },
+      {
+        "question": "Valborg...\nVilka två städer förknippas främst med högtiden?\nVilken artist har gjort orginal versionen av låten?",
+        "answer": { "Stad 1": "Uppsala", "Stad 2": "Lund", "Artist": "Håkan Hellström"},
+        "audio": ["https://open.spotify.com/track/6rHvgDYUjdYRf4K5jVLfpw?si=b35ff7a366614677"],
+        "image": "quizes/images/Springquiz/heligavalborg.webp",
+        "answerVideo": "https://www.youtube.com/watch?v=K8M7fFwdM9w",
+        "timer": 0,
+        "theme": "music-theme"
+      },
+      {
+        "question": "Mer Valborg...\nVilken Svensk höghet fyller år på Valborgsmässoafton?\nVad händer dagen efter Valborgsmässoafton?",
+        "answer": { "Födelsedagsbarnet": "Kungen", "Dagen efter": "Första maj tåget"},
+        "image": "quizes/images/Springquiz/bakis.avif",
+        "answerImage": "quizes/images/Springquiz/sossar.jpg",
+        "timer": 0,
+        "theme": "bubblegum-theme"
+      }
+    ]
+  }
+  

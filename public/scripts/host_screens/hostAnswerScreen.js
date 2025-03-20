@@ -143,7 +143,7 @@ socket.on("displayAnswerMatrix", (players) => {
 
     let answerGrid = document.getElementById("answer-grid");
     answerGrid.innerHTML = ""; // Clear previous answers
-    currentAnswer = questions[currentIndex].answer;
+    correctAnswer = questions[currentIndex].answer;
 
     players.forEach(({ id, name, score, answer }) => {
         let answerBox = document.createElement("div");
@@ -160,7 +160,7 @@ socket.on("displayAnswerMatrix", (players) => {
         answerBox.innerHTML = `<strong>${name}:</strong> ${answerText}`;
 
         // Check if the player's answer is correct
-        let answerScore = checkAnswer(answer, currentAnswer);
+        let answerScore = checkAnswer(answer, correctAnswer);
 
         // Update the player's score based on correctness
         if (answerScore > 0) {
@@ -178,12 +178,14 @@ socket.on("displayAnswerMatrix", (players) => {
         }
 
         if (answerBox.style.background !== RGB_80_GREEN) {
+            let displayScore = answerScore;
             // Add a click option for one extra point
             answerBox.addEventListener("click", () => {
-                if (answerBox.classList.contains("clicked")) {
+                if (answerBox.classList.contains("max-points")) {
                     // If clicked, remove the 'clicked' class, deduct points, and reset background color
-                    socket.emit("updateScore", { id, score: answerScore + score, answerScore: answerScore });
-                    answerBox.classList.remove("clicked");
+                    displayScore = answerScore;
+                    socket.emit("updateScore", { id, score: score + answerScore, answerScore: answerScore });
+                    answerBox.classList.remove("max-points");
                     if (answerScore === 0) {
                         answerBox.style.background = RGB_80_RED;
                     } else {
@@ -191,9 +193,14 @@ socket.on("displayAnswerMatrix", (players) => {
                     }
                 } else {
                     // If not clicked, add points and change background color to green
-                    socket.emit("updateScore", { id, score: score + answerScore + 1, answerScore: answerScore + 1 });
-                    answerBox.classList.add("clicked");
-                    answerBox.style.background = RGB_80_ORANGE; // Make it green
+                    displayScore = displayScore + 1;
+                    socket.emit("updateScore", { id, score: score + displayScore, answerScore: displayScore });
+                    if (displayScore === correctAnswer.length || 
+                        displayScore === Object.keys(correctAnswer).length ||
+                        typeof correctAnswer == "string") {
+                        answerBox.classList.add("max-points");
+                        answerBox.style.background = RGB_80_GREEN;
+                    }
                 }
             });
         }

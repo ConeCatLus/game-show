@@ -453,7 +453,7 @@ h1 {
 }
 
 h2 {
-    font-size: 4vh; /* Responsive font size using vh */
+    font-size: 3vh; /* Responsive font size using vh */
     margin: 2vh;
 }
 
@@ -479,7 +479,7 @@ p {
     }
 
     h1 {
-        font-size: 4vh; /* Adjust font size for smaller screens */
+        font-size: 3vh; /* Adjust font size for smaller screens */
     }
 
     h2 {

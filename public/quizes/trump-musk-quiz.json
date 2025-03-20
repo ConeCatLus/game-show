@@ -54,7 +54,7 @@
         "theme": "usa-theme"
       },
       {
-        "question": "Musk ses ofta ihop med sin son i offentliga samangang.\nMen vad heter hans 4 åriga son?",
+        "question": "Musk ses ofta ihop med sin son i offentliga sammanhang.\nMen vad heter hans 4 åriga son?",
         "image": "quizes/images/USA/musk-son.webp",
         "answer": "X Æ A-Xii",
         "answerImage": "quizes/images/USA/musk-son.webp",
@@ -79,7 +79,7 @@
         "theme": "usa-theme"
       },
       {
-        "question": "Trump kallade Ukrainas presided Zelenskyj för diktator?",
+        "question": "Trump kallade Ukrainas president Zelenskyj för diktator?",
         "image": "quizes/images/USA/Trump-Zelensky.jpg",
         "alternatives": ["SANT", "FALSKT"],
         "answer": "SANT",
