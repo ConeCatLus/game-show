@@ -5,6 +5,7 @@ let RGB_80_GREEN = "rgba(76, 175, 80, 0.8)";
 
 function showAnswer() {
     clearScreen();
+    removeAnswerLock();
     let question = questions[currentIndex];
     let showAnswerBtn = document.getElementById("show-answer-btn");
     let mediaContainer = document.getElementById("answer-media-container");
@@ -145,7 +146,7 @@ socket.on("displayAnswerMatrix", (players) => {
     answerGrid.innerHTML = ""; // Clear previous answers
     correctAnswer = questions[currentIndex].answer;
 
-    players.forEach(({ id, name, score, answer }) => {
+    players.forEach(({ id, name, score, answer, answered }) => {
         let answerBox = document.createElement("div");
         answerBox.classList.add("answer-box");
         let answerText = "";
@@ -159,11 +160,18 @@ socket.on("displayAnswerMatrix", (players) => {
         }
         answerBox.innerHTML = `<strong>${name}:</strong> ${answerText}`;
 
+        const scoreBubble = document.createElement("span");
+        scoreBubble.classList.add("score-bubble");
+        scoreBubble.style.display = "none";
+
         // Check if the player's answer is correct
         let answerScore = checkAnswer(answer, correctAnswer);
 
+        answerBox.appendChild(scoreBubble);
         // Update the player's score based on correctness
         if (answerScore > 0) {
+            scoreBubble.textContent = `+${answerScore}`;
+            scoreBubble.style.display = "";
             socket.emit("updateScore", { id, score: score + answerScore, answerScore: answerScore }); // Award points for the answer
             if (answerScore === answer.length || 
                 answerScore === Object.keys(answer).length ||
@@ -184,6 +192,10 @@ socket.on("displayAnswerMatrix", (players) => {
                 if (answerBox.classList.contains("max-points")) {
                     // If clicked, remove the 'clicked' class, deduct points, and reset background color
                     displayScore = answerScore;
+                    scoreBubble.textContent = `+${displayScore}`;
+                    if (displayScore == 0)
+                        scoreBubble.style.display = "none";
+                    
                     socket.emit("updateScore", { id, score: score + answerScore, answerScore: answerScore });
                     answerBox.classList.remove("max-points");
                     if (answerScore === 0) {
@@ -194,6 +206,8 @@ socket.on("displayAnswerMatrix", (players) => {
                 } else {
                     // If not clicked, add points and change background color to green
                     displayScore = displayScore + 1;
+                    scoreBubble.textContent = `+${displayScore}`;
+                    scoreBubble.style.display = "";
                     socket.emit("updateScore", { id, score: score + displayScore, answerScore: displayScore });
                     if (displayScore === correctAnswer.length || 
                         displayScore === Object.keys(correctAnswer).length ||

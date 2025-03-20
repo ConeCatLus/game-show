@@ -197,6 +197,7 @@ h1 {
     margin-bottom: 0.5vh; /* Adjust margin using vh */
     border-radius: 10px;
     text-align: center;
+    position: relative;
 }
 
 /* Score Bubble */
@@ -211,6 +212,24 @@ h1 {
     transform-origin: center;
     margin-left: 5px;
     opacity: 0;
+    top: -15px;  /* Adjust as needed */
+    right: -15px; /* Adjust as needed */
+    animation: fade-in 0.5s ease-out forwards, wiggle 1.2s ease-in-out infinite;
+}
+
+/* Score Bubble */
+.locked-in {
+    position: absolute;
+    color: black;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 50%;
+    font-size: 1.2em;
+    transform-origin: center;
+    margin-left: 5px;
+    opacity: 0;
+    top: -15px;  /* Adjust as needed */
+    right: -15px; /* Adjust as needed */
     animation: fade-in 0.5s ease-out forwards, wiggle 1.2s ease-in-out infinite;
 }
 
@@ -437,6 +456,7 @@ input[type="text"] {
     margin: 0.5vh 0; /* Adjust margin using vh */
     background: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
+    position: relative;
 }
 
 .answer-box:hover {

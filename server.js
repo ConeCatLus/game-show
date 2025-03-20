@@ -187,6 +187,10 @@ io.on("connection", (socket) => {
             players[playerId].answer = playerAnswer;
             players[playerId].state = GameState.ANSWER_SCREEN;
             players[playerId].data.playerAnswer = playerAnswer; // Append player answer to data
+            players[playerId].answered = true;
+
+            io.emit("updatePlayers", Object.values(players));
+            
             setGameState(GameState.ANSWER_SCREEN, players[playerId].data, players[playerId].id);
         }
         else {
@@ -198,6 +202,7 @@ io.on("connection", (socket) => {
         Object.values(players).forEach(player => {
             player.state = GameState.ANSWER_SCREEN;
             player.data.showAnswer = true;
+            player.answered = false;
         });       
         console.info("Correct Answer:", question.answer);
         io.emit("showAnswer", question); 

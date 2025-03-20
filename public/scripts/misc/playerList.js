@@ -37,6 +37,13 @@ function updatePlayerList(players) {
             playerItem.appendChild(scoreBubble);
         }
 
+        if (player.answered) {
+            const lock = document.createElement("span");
+            lock.classList.add("locked-in");
+            lock.textContent = `🔒`;
+            playerItem.appendChild(lock);
+        }
+
         playerListElement.appendChild(playerItem);
     });
 
@@ -49,6 +56,14 @@ function removeScoreBubbles() {
     document.querySelectorAll(".score-bubble").forEach(bubble => {
         bubble.classList.add("fade-out");
         setTimeout(() => bubble.remove(), 500);
+    });
+}
+
+// Function to remove bubbles
+function removeAnswerLock() {
+    document.querySelectorAll(".locked-in").forEach(lock => {
+        lock.classList.add("fade-out");
+        setTimeout(() => lock.remove(), 500);
     });
 }
 
