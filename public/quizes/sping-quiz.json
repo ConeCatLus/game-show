@@ -21,6 +21,22 @@
         "theme": "bubblegum-theme"
       },
       {
+        "question": "Inom den kristendomen börjar fastan 6,5 vecka innan påsk.\nVilken händelse avgör när påsk inträffar?\nVilken veckodag börjar den kristna fastan på?\nVad kallas den sista veckan i fastan?",
+        "answer": {"Påsk": "Första söndagen efter första fullmånen efter vårdagjämningen", "Veckodag": "Onsdag", "Sista veckan": "Stilla veckan"},
+        "image": "quizes/images/Springquiz/jesus.jpg",
+        "answerImage": "quizes/images/Springquiz/paaskehare.jpg",
+        "timer": 0,
+        "theme": "bubblegum-theme"
+      },
+      {
+        "question": "Inom islam fastas det också.\nVad kallas den muslimska fastemånaden?\nSamt vad heter festen som avslutar fastemånaden?",
+        "answer": {"Fastan": "Ramadan", "Festen": "Eid"},
+        "image": "quizes/images/Springquiz/islam.png",
+        "answerImage": "quizes/images/Springquiz/eid.jpg",
+        "timer": 0,
+        "theme": "bubblegum-theme"
+      },
+      {
         "question": "Tranorna samlas för årets störst dansfest\nVid vilken sjö samlas dem?\nVad heter kallas V-formationen som de flyger i?",
         "answer": {"Sjön": "Hornborgasjön", "V-formationen": "Fylking"},
         "image": "quizes/images/Springquiz/v-form.jpg",
@@ -43,7 +59,7 @@
         "answer": ["Hassel", "Björk", "Gräs"],
         "image": "quizes/images/Springquiz/pollen1.jpg",
         "answerImage": "quizes/images/Springquiz/Pollen.png",
-        "timer": 20,
+        "timer": 15,
         "theme": "bubblegum-theme"
       },
       {

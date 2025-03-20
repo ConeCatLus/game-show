@@ -84,7 +84,7 @@
         "alternatives": ["SANT", "FALSKT"],
         "answer": "SANT",
         "answerImage": "quizes/images/USA/Trump-Zelensky.jpg",
-        "timer": 15,
+        "timer": 10,
         "theme": "usa-theme"
       },
       {
